@@ -4,13 +4,13 @@ const app = new Vue({
     data: {
         // ログイン機能用のデータ
         dialog: false,
-        loginID: '',
-        password: '',
+        user_mail: '',
+        user_pass: '',
     },
     methods: {
         // ログインメソッド
         async login() {
-            console.log('Attempting to login with ID:', this.loginID);
+            console.log('Attempting to login with mail:', this.user_mail);
 
             try {
                 // APIからユーザー情報を取得
