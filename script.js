@@ -18,7 +18,7 @@ const app = new Vue({
                 const users = response.data;
 
                 // ユーザー情報を検索
-                const user = users.find(user => user.loginID === this.loginID && user.password === this.password);
+                const user = users.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
 
                 if (user) {
                     console.log('Login successful');
@@ -27,7 +27,7 @@ const app = new Vue({
                     // 次のページにリダイレクト
                     window.location.href = 'https://www.google.co.jp/';
                 } else {
-                    console.log('Invalid login ID or password');
+                    console.log('Invalid user_mail or user_pass');
                     // エラーメッセージを表示するなどの処理
                 }
             } catch (error) {
