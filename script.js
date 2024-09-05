@@ -10,19 +10,20 @@ const app = new Vue({
     methods: {
         async login() {
             console.log('Attempting to login with mail:', this.user_mail);
-    
+
             try {
                 // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
-    
-                // レスポンスデータが配列であることを確認する
+                
+                // レスポンスデータの内容を確認する
                 const users = response.data;
-    
+                console.log('API response:', users);
+
                 // `users`がオブジェクトであり、`List`プロパティを持つか確認
                 if (users.List && Array.isArray(users.List)) {
                     // ユーザー情報を検索
                     const user = users.List.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
-    
+
                     if (user) {
                         console.log('Login successful');
                         
@@ -33,7 +34,7 @@ const app = new Vue({
                         sessionStorage.setItem('user_postcode', user.user_postcode);
                         sessionStorage.setItem('user_adress', user.user_adress);
                         sessionStorage.setItem('user_telenum', user.user_telenum);
-    
+
                         // デバッグ用のログ出力
                         console.log("Saved user_name:", sessionStorage.getItem('user_name'));
                         console.log("Saved user_pass:", sessionStorage.getItem('user_pass'));
@@ -41,7 +42,7 @@ const app = new Vue({
                         console.log("Saved user_postcode:", sessionStorage.getItem('user_postcode'));
                         console.log("Saved user_adress:", sessionStorage.getItem('user_adress'));
                         console.log("Saved user_telenum:", sessionStorage.getItem('user_telenum'));
-    
+
                         // ログイン成功時の処理
                         this.dialog = false;  // ダイアログを閉じる
                         // 次のページにリダイレクト
@@ -59,7 +60,6 @@ const app = new Vue({
             }
         }
     }
-    
 });
 
 document.addEventListener('DOMContentLoaded', function () {
