@@ -8,18 +8,25 @@ const app = new Vue({
         user_pass: '',
     },
     methods: {
-        // ログインメソッド
         async login() {
             console.log('Attempting to login with mail:', this.user_mail);
-
+    
             try {
                 // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
-                const users = response.data;
-
+                
+                // レスポンスデータをパースして配列に変換する
+                const users = JSON.parse(response.data); // ここでJSON文字列を配列に変換
+    
+                // 配列であるか確認
+                if (!Array.isArray(users)) {
+                    console.error('User data is not an array:', users);
+                    return;
+                }
+    
                 // ユーザー情報を検索
                 const user = users.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
-
+    
                 if (user) {
                     console.log('Login successful');
                     // ログイン成功時の処理
@@ -36,6 +43,7 @@ const app = new Vue({
             }
         }
     }
+    
 });
 
 document.addEventListener('DOMContentLoaded', function () {
