@@ -1,87 +1,42 @@
-.tab-group{
-  display:flex;
-  justify-content: center;
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+  font-family: 'Times New Roman', sans-serif !important;
 }
-.tab{
-  flex: 1 1 100px; /* タブの最小幅 */
-  padding: 15px; /* パディングを調整 */
-  list-style: none;
-  border: solid 1px #66a3ff; /* 薄い青色 */
+
+.top-wrapper {
+  padding: 180px 0 100px 0;
+  background-image: url('https://i.gyazo.com/7662a8e646a25c518d0626b99c3d06b4.jpg'); /* 画像URLを指定 */
+  background-size: contain; /* 画像の縦横比を維持しつつ表示 */
+  background-repeat: no-repeat; /* 画像を繰り返さない */
+  background-position: center; /* 画像を中央に配置 */
+  color: white;
+  height: 408px; /* 高さを画像の縦サイズに合わせる */
+}
+
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.login-header {
   text-align: center;
-  cursor: pointer;
-  background-color: #cce0ff; /* 淡い青色 */
-  color: #003366; /* 濃い青色 */
-  font-size: 18px; /* タブの文字サイズ */
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  box-sizing: border-box; /* パディングとボーダーを含む幅 */
-  border-radius: 10px; /* タブの角を丸くする */
-  margin: 5px; /* タブ間のスペースを追加 */
-}
-.panel-group{
-  height:100%;
-  border: solid 1px #66a3ff; /* 薄い青色 */
-  border-top:none;
-  background: #cce0ff; /* 淡い青色 */
-}
-.panel{
-  display:none;
-}
-.tab.is-active{
-  background:blue;
-  color:#FFF;
-  transition: all 0.2s ease-out;
-}
-.panel.is-show{
-  display:block;
+  margin-bottom: 2rem;
 }
 
-/* 四角い枠のスタイルをセレクトボックスに適用 */
-select.temperature {
-    padding: 10px; /* 内側の余白を設定 */
-    border: 1px solid gray; /* 枠線の太さと色を設定 */
-    border-radius: 4px; /* 角の丸みを設定 */
-    font-size: 16px; /* フォントサイズを設定 */
-  color:gray;
-    width: 150px; /* セレクトボックスの幅を設定 */
-    box-sizing: border-box; /* パディングを含む全体の幅を設定 */
-    margin: 5px; /* タブ間のスペースを追加 */
+.login-header h1 {
+  font-size: 2rem;
+  color: #C9A66B;
 }
 
-/* 必要に応じて、マウスホバー時のスタイルも設定できます */
-select.temperature:hover {
-    border-color: gray; /* ホバー時の枠線の色を変更 */
+.login-header p {
+  color: #555;
 }
 
-
-/* 四角い枠のスタイルをセレクトボックスに適用 */
-select.season {
-    padding: 10px; /* 内側の余白を設定 */
-    border: 1px solid gray; /* 枠線の太さと色を設定 */
-    border-radius: 4px; /* 角の丸みを設定 */
-    font-size: 16px; /* フォントサイズを設定 */
-    color:gray;
-    width: 150px; /* セレクトボックスの幅を設定 */
-    box-sizing: border-box; /* パディングを含む全体の幅を設定 */
-    margin: 5px; /* タブ間のスペースを追加 */
-}
-
-/* 必要に応じて、マウスホバー時のスタイルも設定できます */
-select.season:hover {
-    border-color: #888; /* ホバー時の枠線の色を変更 */
-}
-/* 四角い枠のスタイルをセレクトボックスに適用 */
-select.mark {
-    padding: 10px; /* 内側の余白を設定 */
-    border: 1px solid gray; /* 枠線の太さと色を設定 */
-    border-radius: 4px; /* 角の丸みを設定 */
-    font-size: 16px; /* フォントサイズを設定 */
-    color:gray;
-    width: 150px; /* セレクトボックスの幅を設定 */
-    box-sizing: border-box; /* パディングを含む全体の幅を設定 */
-    margin: 5px; /* タブ間のスペースを追加 */
-}
-
-/* 必要に応じて、マウスホバー時のスタイルも設定できます */
-select.mark:hover {
-    border-color: #888; /* ホバー時の枠線の色を変更 */
+.login-footer {
+  text-align: center;
+  margin-top: 1rem;
 }
