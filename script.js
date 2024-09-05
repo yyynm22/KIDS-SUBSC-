@@ -15,8 +15,8 @@ const app = new Vue({
                 // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
                 
-                // レスポンスデータをパースして配列に変換する
-                const users = JSON.parse(response.data); // ここでJSON文字列を配列に変換
+                // レスポンスデータが配列であることを確認する
+                const users = response.data;
     
                 // 配列であるか確認
                 if (!Array.isArray(users)) {
