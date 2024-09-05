@@ -18,13 +18,14 @@ const app = new Vue({
                 // レスポンスデータの内容を確認する
                 const users = response.data;
                 console.log('API response:', users);
-                const user = users.List.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
-
 
                 // `users`がオブジェクトであり、`List`プロパティを持つか確認
                 if (users.List && Array.isArray(users.List)) {
+                    console.log('User data (List):', users.List);
+
                     // ユーザー情報を検索
-                   
+                    const user = users.List.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
+
                     if (user) {
                         console.log('Login successful');
                         
