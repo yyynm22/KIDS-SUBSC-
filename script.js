@@ -24,7 +24,8 @@ const app = new Vue({
                     console.log('User data (List):', users.List);
 
                     // ユーザー情報を検索
-                    const user = users.List.find(user => user.user_mail === this.user_mail && user.user_pass === this.user_pass);
+                    const user = users.List.find(user => user.user_mail.trim() === this.user_mail.trim() && user.user_pass === this.user_pass);
+
 
                     if (user) {
                         console.log('Login successful');
