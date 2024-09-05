@@ -49,7 +49,7 @@ const app = new Vue({
                         // ログイン成功時の処理
                         this.dialog = false;  // ダイアログを閉じる
                         // 次のページにリダイレクト
-                        window.location.href = 'https://www.google.co.jp/';
+                        window.location.href = 'maiko.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
                         // エラーメッセージを表示するなどの処理
