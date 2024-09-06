@@ -2,16 +2,6 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title></title>
-  <link rel="stylesheet" href="./style1.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
   <title>Kids Sabsc(product)</title>
   <link rel="stylesheet" href="/style1.css">
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
@@ -28,7 +18,7 @@
             <!-- ヘッダー -->
             <v-app-bar app class="custom-font" style="justify-content: space-between;" >
                 
-                <v-btn v-on:click="addData"
+                <v-btn @click="Logout"
                   dark
                   rounded
                   class="custom-font"
@@ -46,7 +36,7 @@
                     Kids Sabsc</v-toolbar-title>
 
                 <div style="display: flex; margin-left: auto;">
-                <v-btn v-on:click="dialog = true"
+                <v-btn v-on:click="cartdialog = true"
                   dark
                   rounded
                   class="custom-font"
@@ -59,7 +49,7 @@
                 </v-icon>
                 </v-btn>
 
-                <v-btn v-on:click="addData" dark color="#f09199" rounded class="custom-font" 
+                <v-btn @click="mypage" dark color="#f09199" rounded class="custom-font" 
                 title="マイページ" aria-label="マイページ" >
                     <v-icon start>
                       mdi-weather-night
@@ -68,27 +58,28 @@
                   </v-btn>
                 </div>
             </v-app-bar>
-           <v-dialog v-model="dialog" max-width="600px">
+           <v-dialog v-model="cartdialog" max-width="600px">
         <v-card>
-          <v-card-title>
-            カートの中身
+          <v-card-title class="subheading font-weight-bold">
+            カート
             <v-spacer></v-spacer>
-            <v-btn icon @click="dialog = false">
+            <v-btn icon @click="cartdialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
           <v-card-text>
-            <v-list>
-              <v-list-item v-for="(item, index) in cartItems" :key="index">
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.name }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ item.price }}円</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
+            <v-row>
+            
+              <v-col v-for="(item, index) in cartItems" :key="index" cols="6">
+                  <div>{{ item.name }}</div>
+                  <div>{{ item.price }}円</div>
+              </v-col>
+            </v-row>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" text @click="dialog = false">閉じる</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="red" text @click="cartdialog = false">注文確定</v-btn>
+            <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -120,6 +111,14 @@
                                 > </v-select>
                                 </v-col>
                             </v-row>
+                          <v-row class="d-flex justify-center align-center" style="width: 100%;">
+<v-btn v-on:click="readData1" 
+                     dark color="#f09199" 
+                     rounded class="custom-font" 
+                     title="SEARCH" 
+                     aria-label="SEARCH">
+                     SEARCH</btn>
+</v-row>
                         </v-container>
                     </v-main>
                 </template>
@@ -147,8 +146,5 @@
     <script src="/script1.js"></script>
 </body>
 </html>
-<!-- partial -->
-  <script  src="./script1.js"></script>
 
-</body>
-</html>
+
