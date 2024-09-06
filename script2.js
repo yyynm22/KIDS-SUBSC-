@@ -24,8 +24,8 @@ new Vue({
           }
       },
       addData() {
-          // Googleの検索画面に遷移
-          window.location.href = 'https://www.google.com';
+        // 商品の検索画面に遷移
+        window.location.href = '/index1.html';
       },
   },
   mounted() {
