@@ -40,23 +40,3 @@
   text-align: center;
   margin-top: 1rem;
 }
-
-.footer-layout {
-  display: flex;
-  justify-content: space-between; /* 左右に要素を配置 */
-  align-items: center; /* 垂直方向の中央揃え */
-  padding: 0 16px; /* 左右に余白を追加 */
-}
-
-.footer-link {
-  color: black; /* 通常時の文字色 */
-  text-decoration: none; /* 下線を消す */
-  font-weight: bold; /* 文字を太字にする */
-  transition: color 0.3s ease; /* 色の変化を滑らかにする */
-}
-
-/* ホバー時のスタイル */
-.footer-link:hover {
-  color: #3cb371;
-}
-
