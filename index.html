@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - App開発２</title>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
+<link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
+<div id="app">
+  <v-app>
+    <v-content>
+      <v-container>
+        <v-row
+          class="text-h3 mb-3 mt-3"
+          justify="center"
+          >
+          TODAY's fashion
+        </v-row>
+         <!--タブ-->
+  <ul class="tab-group">
+    <li class="tab tab-A is-active">ファッションの登録</li>
+      <li class="tab tab-B">過去のファッションを見てみよう</li>
+      
+   </ul>
+	
+  <!--タブを切り替えて表示するコンテンツ-->
+  <div class="panel-group">
+	  <div class="panel tab-A is-show">
+	      <v-row
+          class="mb-3 mt-3"
+          align="center"
+          justify="center"
+          >
+          <v-col 
+            cols="4"            
+            >
+             <select id="temp-A" v-model:value="temperature" class="temperature">
+          <!-- 気温のオプション -->
+          <option value="">気温を選択してね</option>
+         
+          <option value="-6℃以下">-6℃以下</option>
+          <option value="-5">-5℃</option>
+          <option value="-4">-4℃</option>
+          <option value="-3">-3℃</option>
+          <option value="-2">-2℃</option>
+          <option value="-1">-1℃</option>
+          <option value="0">0℃</option>
+          <option value="0">0℃</option>
+          <option value="1">1℃</option>
+          <option value="2">2℃</option>
+          <option value="3">3℃</option>
+          <option value="4">4℃</option>
+          <option value="5">5℃</option>
+          <option value="6">6℃</option>
+          <option value="7">7℃</option>
+          <option value="8">8℃</option>
+          <option value="9">9℃</option>
+          <option value="10">10℃</option>
+          <option value="11">11℃</option>
+          <option value="12">12℃</option>
+          <option value="13">13℃</option>
+          <option value="14">14℃</option>
+          <option value="15">15℃</option>     
+           <option value="15">15℃</option>
+          <option value="16">16℃</option>
+          <option value="17">17℃</option>
+          <option value="18">18℃</option>
+          <option value="19">19℃</option>
+          <option value="20">20℃</option>     
+           <option value="21">21℃</option>
+          <option value="22">22℃</option>
+          <option value="23">23℃</option>
+          <option value="24">24℃</option>
+          <option value="25">25℃</option>
+          <option value="26">26℃</option>
+          <option value="27">27℃</option>
+          <option value="28">28℃</option>
+          <option value="29">29℃</option>
+          <option value="30">30℃</option>
+          <option value="31">31℃</option>
+          <option value="32">32℃</option>
+          <option value="33">33℃</option>
+          <option value="34">34℃</option>
+          <option value="35">35℃</option>
+           <option value="35">35℃</option>
+          <option value="36">36℃</option>
+          <option value="37">37℃</option>
+          <option value="38">38℃</option>
+          <option value="39">39℃</option>
+          <option value="40">40℃</option>
+          <option value="41">41℃以上</option>     
+        </select>
+            
+            
+        <select id="temp-B" v-model:value="season" class="season">
+          <!-- 気温のオプション -->
+           <option value="">季節を選択してね</option>
+          
+          <option value="春">春</option>
+           <option value="夏">夏</option>
+           <option value="秋">秋</option>
+           <option value="冬">冬</option>
+           </select>
+            
+          <select id="temp-B" v-model:value="mark" class="mark">
+          <!-- 気温のオプション -->
+           <option value="">お気に入り登録</option>
+          
+          <option value="☆">☆</option>
+           <option value="♡">♡</option>
+           <option value="🌞">🌞</option>
+           <option value="☔">☔</option>
+           <option value="☁">☁</option>
+           </select>
+            
+          </v-col>
+          
+          
+          <v-col cols="6">
+                <v-text-field
+                  class="ml-6 mr-6"
+                  v-model="dress"
+                  label="今日の服装ポイントを入力"
+                  placeholder="今日の服装ポイントを入力…"
+                  outlined>
+                </v-text-field>
+
+                <!-- 新しいテキストボックスを追加 -->
+                <v-text-field
+                  class="ml-6 mr-6"
+                  v-model="dressimg"
+                  label="写真のURL"
+                  placeholder="写真URLの入力…"
+                  outlined>
+                </v-text-field>
+              </v-col>
+            </v-row>
+      
+            
+              
+        <v-row
+          class="mb-3 mt-3"
+          align="center"
+          justify="center"
+          >
+          入力内容確認　→　お気に入りマーク: {{mark}}　気温: {{ temperature }} 　季節:{{season}} 　ファッションポイント: {{ dress }}　　写真:{{ dressimg }}
+          <v-btn v-on:click="addData"               
+               dark
+               big              
+               color="blue"
+               >保存
+               </v-btn>
+          
+        </v-row>
+      
+        <v-row
+          class="mb-3 mt-3"
+          justify="center"
+          > 
+	  </div>
+              
+              
+	  <div class="panel tab-B"><v-row
+          class="mb-3 mt-3"
+          justify="center"
+          > 
+          <v-btn v-on:click="readData"                 
+                 rounded
+                 >一覧を表示する</v-btn>
+    
+                 </div>
+	
+  </div>
+        
+        
+      
+        
+        </v-row>
+        <v-row 
+          class="mb-3 mt-3"
+          align="center"
+          justify="center"
+          v-for="data in dataList">
+          
+          お気に入りマーク:{{data.mark}},　気温:{{ data.temperature }}, 季節:{{data.season}},服装:{{ data.dress }},写真URL{{ data.dressimg }}
+        </v-row>
+     <button v-on:click="deleteItem(index)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </li>
+      </v-container>
+    </v-content>
+  </v-app>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
