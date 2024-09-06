@@ -41,10 +41,11 @@
   margin-top: 1rem;
 }
 
-.footer-link-container {
+.footer-layout {
   display: flex;
-  justify-content: flex-start; /* 左揃え */
-  padding-left: 16px; /* 少し余白を追加して左端にぴったりにならないように */
+  justify-content: space-between; /* 左右に要素を配置 */
+  align-items: center; /* 垂直方向の中央揃え */
+  padding: 0 16px; /* 左右に余白を追加 */
 }
 
 .footer-link {
@@ -58,3 +59,4 @@
 .footer-link:hover {
   color: #3cb371;
 }
+
