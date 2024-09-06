@@ -49,7 +49,7 @@ const app = new Vue({
                         // ログイン成功時の処理
                         this.dialog = false;  // ダイアログを閉じる
                         // 次のページにリダイレクト
-                        window.location.href = 'index1.html';
+                        window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
                         // エラーメッセージを表示するなどの処理
