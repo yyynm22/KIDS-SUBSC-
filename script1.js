@@ -17,12 +17,12 @@ const app = new Vue({
     methods: {
       mypage() {
         // マイページ遷移を実行
-  window.location.href = '';
+  window.location.href = '/index2.html';
         // ボタンのクリックイベントを処理する関数（必要に応じて追加）
       },
       Logout() {
         // ログアウトページ遷移を実行
-  window.location.href = '';
+  window.location.href = '/index.html';
         // ボタンのクリックイベントを処理する関数（必要に応じて追加）
       },
       readData1: async function () {
