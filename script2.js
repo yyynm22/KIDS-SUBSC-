@@ -20,7 +20,7 @@ new Vue({
       },
       addData() {
           // 商品の検索画面に遷移
-          window.location.href = 'file:///C:/Users/xedgeuser/Documents/kidssubsc/index1.html';
+          window.location.href = '/index1.html';
       },
   },
   mounted() {
