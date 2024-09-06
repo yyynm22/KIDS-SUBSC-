@@ -40,3 +40,9 @@
   text-align: center;
   margin-top: 1rem;
 }
+.footer-link {
+  color: black; /* 通常時の文字色 */
+  text-decoration: none; /* 下線を消す */
+  font-weight: bold; /* 文字を太字にする */
+  transition: color 0.3s ease; /* 色の変化を滑らかにする */
+}
