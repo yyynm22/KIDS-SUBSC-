@@ -69,8 +69,7 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-            
-              <v-col v-for="(item, index) in cartItems" :key="index" cols="6">
+              <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
                   <div>{{ item.name }}</div>
                   <div>{{ item.price }}円</div>
               </v-col>
@@ -86,7 +85,8 @@
             
                 <template>
                     <v-main>
-                        <v-container>
+                      <v-container> 
+                        
                             <v-row class="d-flex justify-center align-center" style="width: 100%;">
                                 <v-col
                                 cols="12"
@@ -112,18 +112,48 @@
                                 </v-col>
                             </v-row>
                           <v-row class="d-flex justify-center align-center" style="width: 100%;">
-<v-btn v-on:click="readData1" 
-                     dark color="#f09199" 
-                     rounded class="custom-font" 
-                     title="SEARCH" 
-                     aria-label="SEARCH">
-                     SEARCH</btn>
-</v-row>
-                        </v-container>
-                    </v-main>
-                </template>
-            </v-main>
-                    
+                            <v-col cols="auto">
+                            <v-btn v-on:click="readData1" 
+                               dark color="#f09199" 
+                               rounded class="custom-font" 
+                               title="検索" 
+                               aria-label="検索">
+                               SEARCH</v-btn>
+                              </v-col>
+                        <v-col cols="auto">
+                            <v-btn v-on:click="readData2" 
+                               dark color="#f09199" 
+                               rounded class="custom-font" 
+                               title="一覧" 
+                               aria-label="一覧"
+                                   >
+                               List</v-btn>
+                           </v-col>
+                           </v-row>
+                   <v-row class="d-flex justify-center align-center" style="width: 100%;">
+                  <v-col cols="4" v-for="(data, index) in dataList2" :key="index">
+                  <v-card max-width="300px" class="fasision-card">
+                  <v-card-title class="fasision-title">
+                  価格: {{ data.name }}<br>
+                  個数: {{ data.price }}
+                  </v-card-title>
+                  <v-card-actions class="instagram-actions">
+                  <v-btn icon v-on:click="toggleLike(index)">
+                  <v-icon :color="data.liked ? 'red' : 'grey'">mdi-heart</v-icon>
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn icon v-on:click="deleteData(index)" style="margin-left: 20px;">
+                  <v-icon>mdi-trash-can</v-icon>
+                  </v-btn>
+                  </v-card-actions>
+                  </v-card>
+                  </v-col>
+                  </v-row>
+                     </v-main>
+                       </template>
+                          </v-container>
+                              </v-main>
+
 
 
             <!-- フッター -->
@@ -143,7 +173,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script>
-    <script src="./script1.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
 

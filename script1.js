@@ -3,6 +3,7 @@ const app = new Vue({
     vuetify: new Vuetify(),
     data: {
       dataList1: [],
+      dataList2: [],
       Category: '',  // カテゴリー選択用のデータ
       Kidsgender: '',
       cartdialog: false,  // ダイアログの表示・非表示を管理
@@ -46,8 +47,99 @@ try {
   console.error("APIリクエストエラー: ", error);
 }
 },
-      
-      
+     readData2: async function () {
+          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
+          const newData = response.data.List.map(item => {
+              const existingItem = this.dataList2.find(oldItem => oldItem.Imageurl === item.Imageurl);
+              return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
+          });
+          this.dataList2 = newData;
+      },
+//カート追加確定
+addCart: async function() {
+  
+//POSTメソッドで送るパラメーターを作成
+const param = {
+  Table: 'subsc_ordercart_table',
+  product_id : this.product_id,
+  user_id : this.user_id,
+  product_size : this.product_size,
+  quantity : this.quantity
+   };
+
+//INSERT2用のAPIを呼び出し
+  // きちんと格納がなされているか確認用
+    console.log("送信するパラメーター:", param);
+  
+    try {
+      const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', param);
+
+      // APIレスポンスをコンソールに表示
+      console.log("APIレスポンス:", response.data);
+      this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
+    } catch (error) {
+      // エラーの詳細をコンソール表示：開発用だが残しておく
+      console.error("カート追加エラー:", error.message);
+      if (error.response) {
+        console.error("レスポンスエラー:", error.response.data);
+      } else if (error.request) {
+        console.error("リクエストエラー:", error.request);
+      } else {
+        console.error("設定エラー:", error.message);
+      }
+    }
+//結果をコンソールに出力
+    console.log(response.data);
+    this.product_id = '';
+    this.user_id = '';
+    this.product_size = '';
+    this.quantity = '';
+
+},      
+ //注文確定 未修正
+addOrder: async function() {
+  
+//POSTメソッドで送るパラメーターを作成
+const param = {
+  Table: 'subsc_ordercart_table',
+  product_id : this.product_id,
+  user_id : this.user_id,
+  product_size : this.product_size,
+  quantity : this.quantity
+   };
+
+//INSERT2用のAPIを呼び出し
+  // きちんと格納がなされているか確認用
+    console.log("送信するパラメーター:", param);
+    try {
+      const response = await axios.post('', param);
+
+      // APIレスポンスをコンソールに表示
+      console.log("APIレスポンス:", response.data);
+      this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
+    } catch (error) {
+      // エラーの詳細をコンソール表示：開発用だが残しておく
+      console.error("カート追加エラー:", error.message);
+      if (error.response) {
+        console.error("レスポンスエラー:", error.response.data);
+      } else if (error.request) {
+        console.error("リクエストエラー:", error.request);
+      } else {
+        console.error("設定エラー:", error.message);
+      }
+    }
+//結果をコンソールに出力
+    console.log(response.data);
+    this.product_id = '';
+    this.user_id = '';
+    this.product_size = '';
+    this.quantity = '';
+
+},       
+toggleLike: function (index, listType = 'dataList') {
+          const list = listType === 'dataList' ? this.dataList : this.dataList2;
+          list[index].liked = !list[index].liked;
+      },      
      
     }
   });
