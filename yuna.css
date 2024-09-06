@@ -41,6 +41,12 @@
   margin-top: 1rem;
 }
 
+.footer-link-container {
+  display: flex;
+  justify-content: flex-start; /* 左揃え */
+  padding-left: 16px; /* 少し余白を追加して左端にぴったりにならないように */
+}
+
 .footer-link {
   color: black; /* 通常時の文字色 */
   text-decoration: none; /* 下線を消す */
@@ -48,7 +54,7 @@
   transition: color 0.3s ease; /* 色の変化を滑らかにする */
 }
 
-/* ホバー時のスタイル（カーソルを当てた時の効果） */
+/* ホバー時のスタイル */
 .footer-link:hover {
-  color: #3cb371; /* カーソルをあてた時の文字色 */
+  color: #3cb371;
 }
