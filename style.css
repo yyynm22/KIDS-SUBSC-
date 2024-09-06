@@ -1,29 +1,42 @@
-.tab-group{
-  display: flex;
-  justify-content: center;
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+  font-family: 'Times New Roman', sans-serif !important;
 }
-.tab{
-  flex-grow: 1;
-  padding:5px;
-  list-style:none;
-  border:solid 1px #CCC;
-  text-align:center;
-  cursor:pointer;
+
+.top-wrapper {
+  padding: 180px 0 100px 0;
+  background-image: url('https://i.gyazo.com/7662a8e646a25c518d0626b99c3d06b4.jpg'); /* 画像URLを指定 */
+  background-size: contain; /* 画像の縦横比を維持しつつ表示 */
+  background-repeat: no-repeat; /* 画像を繰り返さない */
+  background-position: center; /* 画像を中央に配置 */
+  color: white;
+  height: 408px; /* 高さを画像の縦サイズに合わせる */
 }
-.panel-group{
-  height:100px;
-  border:solid 1px #CCC;
-  border-top:none;
-  background:#eee;
+
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
 }
-.panel{
-  display:none;
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-.tab.is-active{
-  background:#F00;
-  color:#FFF;
-  transition: all 0.2s ease-out;
+
+.login-header h1 {
+  font-size: 2rem;
+  color: #C9A66B;
 }
-.panel.is-show{
-  display:block;
+
+.login-header p {
+  color: #555;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 1rem;
 }
