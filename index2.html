@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="./style2.css">
 </head>
+
 <body>
     <div id="app">
         <v-app>
@@ -61,6 +63,7 @@
                                                         readonly
                                                         append-icon="mdi-eye"
                                                         @click:append="togglePasswordVisibility"
+                                                        class="custom-password"
                                                     ></v-text-field>
                                                 </v-list-item-action>
                                             </v-list-item>
@@ -107,4 +110,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
     <script src="./script2.js"></script>
 </body>
+
 </html>
