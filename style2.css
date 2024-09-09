@@ -42,25 +42,23 @@
     border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
 }
 
+/* パスワードフィールドにカスタムスタイルを適用 */
+.custom-password .v-input__control .v-input__append-inner .v-icon {
+    color: #f09199; /* 目のアイコンの色 */
+}
+
+/* パスワードフィールドのクリック時のアンダーライン色を変更 */
+.custom-password .v-input__control::after {
+    border-bottom: 2px solid #f09199 !important;
+}
+
 /* カードデザインの改善 */
 .custom-card {
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
+    border-radius: 8px; /* 角を少し丸める */
 }
 
-/* 情報リストのスタイル */
-.info-list .v-list-item {
-    padding: 10px 0;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.info-list .v-list-item-content {
-    font-weight: bold;
-    color: #495057;
-}
-
-.info-list .v-list-item-action {
-    color: #6c757d;
+/* フォントの設定 */
+body {
+    font-family: 'Roboto', sans-serif;
 }
