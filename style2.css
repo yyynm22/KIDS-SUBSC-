@@ -40,3 +40,10 @@
 .v-tabs .v-tab--active {
     color: #f09199 !important; /* タブが選択されたときの文字色 */
 }
+
+/* アンダーラインの色を指定カラーに設定 */
+.v-tabs .v-tab--active {
+    color: #f09199 !important; /* 選択されたタブの文字色 */
+    border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
+}
+
