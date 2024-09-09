@@ -26,27 +26,38 @@ const app = new Vue({
   window.location.href = '/index.html';
         // ボタンのクリックイベントを処理する関数（必要に応じて追加）
       },
+      
       readData1: async function () {
-if (!this.Category || !this.Kidsgender) {
-  console.log("CategoryまたはKidsgenderが入力されていません");
-  return;
-}
+  console.log("Category: ", this.Category);
+  console.log("Kidsgender: ", this.Kidsgender);
+  
+  if (!this.Category || !this.Kidsgender) {
+    console.log("CategoryまたはKidsgenderが入力されていません");
+    return;
+  }
 
-const param = {
-  product_category: this.Category,   // APIのパラメータ名に合わせる
-  product_gender: this.Kidsgender,   // APIのパラメータ名に合わせる
-};
+  const param = {
+    product_category: this.Category,   // APIのパラメータ名に合わせる
+    product_gender: this.Kidsgender,   // APIのパラメータ名に合わせる
+  };
 
-try {
-  // APIエンドポイントにPOSTリクエストを送信
-  const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
+  try {
+    console.log("APIリクエストを送信中...");
 
-  // レスポンスデータを処理し、likedとsavedプロパティを追加
-  this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
-} catch (error) {
-  console.error("APIリクエストエラー: ", error);
-}
+    // APIエンドポイントにPOSTリクエストを送信
+    const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
+
+    console.log("APIリクエストが成功しました。レスポンス: ", response.data);
+
+    // レスポンスデータを処理し、likedとsavedプロパティを追加
+    this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
+
+    console.log("dataList1: ", this.dataList1);
+  } catch (error) {
+    console.error("APIリクエストエラー: ", error);
+  }
 },
+
      readData2: async function () {
           const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
           const newData = response.data.List.map(item => {
