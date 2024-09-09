@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>App開発２</title>
+    <title>kidssubsc</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
@@ -112,10 +112,38 @@
 
             <!-- フッター -->
             <v-footer app padless class="custom-font">
+                <v-col class="text-left" cols="12">
+                    <v-btn color="gray" dark @click="dialog = true">
+                        employee login
+                    </v-btn>
+                </v-col>
                 <v-col class="text-center" cols="12">
                     © 2024 TeamA
                 </v-col>
             </v-footer>
+            
+
+        <!-- Employee Login Dialog -->
+        <v-dialog v-model="dialog" max-width="400">
+            <v-card>
+                <v-card-title class="headline">employee login</v-card-title>
+                <v-card-text>
+                    <v-text-field v-model="user_id" label="ID" outlined></v-text-field>
+                    <v-text-field
+                        v-model="user_pass"
+                        label="Password"
+                        type="password"
+                        outlined
+                    ></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click="login">Login</v-btn>
+                    <v-btn @click="dialog = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         </v-app>
     </div>
 
