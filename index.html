@@ -7,6 +7,34 @@
     <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="./style.css">
+    <style>
+        .slide-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .slide {
+            display: flex;
+            overflow: hidden;
+            scroll-behavior: smooth;
+        }
+        .slide img {
+            width: 100%;
+            height: auto;
+        }
+        .new-sections {
+            padding: 20px;
+            background: #f4f4f4;
+            border-top: 1px solid #ddd;
+        }
+        .new-sections h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .new-sections p {
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
     <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
@@ -46,29 +74,41 @@
             </v-dialog>
 
             <!-- スライドの外枠 -->
-<div class="slide-wrapper">
-    <!-- スライド（コンテンツ） -->
-    <div id="slide" class="slide">
-      <div>
-            <img src="https://i.gyazo.com/a7ad1a2a604a97145aa7036d387f34d8.jpg">  
-      </div>
-      <div>
-           <img src="https://i.gyazo.com/312c0a62a09c78741065f2184f6ce979.jpg">  
-      </div>
-      <div>
-           <img src="https://i.gyazo.com/d3d1be17b96ff29d9c82f63665f6caf5.jpg">  
-      </div>
-    </div>
-    <!-- 左右のボタン -->
-    <span id="prev" class="prev"></span>
-    <span id="next" class="next"></span>
-    <!-- インジケーター -->
-    <ul class="indicator" id="indicator">
-      <li class="list"></li>
-      <li class="list"></li>
-      <li class="list"></li>
-    </ul>
-  </div>
+            <div class="slide-wrapper">
+                <!-- スライド（コンテンツ） -->
+                <div id="slide" class="slide">
+                  <div>
+                        <img src="https://i.gyazo.com/a7ad1a2a604a97145aa7036d387f34d8.jpg">  
+                  </div>
+                  <div>
+                       <img src="https://i.gyazo.com/312c0a62a09c78741065f2184f6ce979.jpg">  
+                  </div>
+                  <div>
+                       <img src="https://i.gyazo.com/d3d1be17b96ff29d9c82f63665f6caf5.jpg">  
+                  </div>
+                </div>
+                <!-- 左右のボタン -->
+                <span id="prev" class="prev"></span>
+                <span id="next" class="next"></span>
+                <!-- インジケーター -->
+                <ul class="indicator" id="indicator">
+                  <li class="list"></li>
+                  <li class="list"></li>
+                  <li class="list"></li>
+                </ul>
+            </div>
+
+            <!-- 新しいセクション -->
+            <div class="explanation">
+                <h2>このホームページの説明</h2>
+                <p>このサイトでは、最新のアプリ開発情報や、チームによるプロジェクトの進捗をお届けします。</p>
+            </div>
+
+            <div class="plan">
+                <h2>このサイトの詳細</h2>
+                <p>利用料金: 無料</p>
+                <p>ルール: すべてのコンテンツは個人の利用に限ります。</p>
+            </div>
 
             <!-- フッター -->
             <v-footer app padless class="custom-font">
