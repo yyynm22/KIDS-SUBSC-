@@ -110,18 +110,21 @@
                 <p>ルール: すべてのコンテンツは個人の利用に限ります。</p>
             </div>
 
+
             <!-- フッター -->
-            <v-footer app padless class="custom-font">
-                <v-col class="text-left" cols="12">
+        <v-footer app padless class="custom-font">
+            <v-row class="d-flex align-center justify-space-between" cols="12">
+                <v-col>
                     <v-btn color="gray" dark @click="dialog = true">
                         employee login
                     </v-btn>
                 </v-col>
-                <v-col class="text-center" cols="12">
+                <v-col class="text-left">
                     © 2024 TeamA
                 </v-col>
-            </v-footer>
-            
+            </v-row>
+        </v-footer>
+
 
         <!-- Employee Login Dialog -->
         <v-dialog v-model="dialog" max-width="400">
