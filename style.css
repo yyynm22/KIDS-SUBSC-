@@ -90,6 +90,12 @@ li {
 .slide div:nth-of-type(3){ /* 背景色 */
   background-color: #E3F1E4;
 }
+
+.slide img{
+width: 100%;
+height: auto;
+}
+
 /* ↓ 左右のボタン */
 .next {
   position: absolute;
