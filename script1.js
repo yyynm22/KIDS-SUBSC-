@@ -50,12 +50,7 @@ const app = new Vue({
     console.log("APIリクエストが成功しました。レスポンス: ", response.data);
 
     // レスポンスデータを処理し、likedとsavedプロパティを追加
-    this.dataList1 = response.data.List.map(item => ({
-      name: item.product_name,   // 商品名
-      price: item.product_price, // 商品価格
-      liked: false,
-      saved: false
-    }));
+    this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
 
     console.log("dataList1: ", this.dataList1);
   } catch (error) {
