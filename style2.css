@@ -39,28 +39,28 @@
 /* タブの色の変更が適用されるようにする */
 .v-tabs .v-tab--active {
     color: #f09199 !important; /* タブが選択されたときの文字色 */
-}
-
-/* アンダーラインの色を指定カラーに設定 */
-.v-tabs .v-tab--active {
     border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
 }
 
-/* カードのスタイリング */
+/* カードデザインの改善 */
 .custom-card {
-    background-color: #f5f5f5; /* 背景色 */
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* カードの影 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    background-color: #f8f9fa;
 }
 
-/* リストアイテムのアイコンと内容を中央揃え */
-.v-list-item {
-    align-items: center;
+/* 情報リストのスタイル */
+.info-list .v-list-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-/* アイコンの色 */
-.v-list-item-icon > v-icon {
-    color: #f09199;
+.info-list .v-list-item-content {
+    font-weight: bold;
+    color: #495057;
 }
- 
+
+.info-list .v-list-item-action {
+    color: #6c757d;
+}
