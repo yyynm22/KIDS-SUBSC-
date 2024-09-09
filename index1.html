@@ -94,21 +94,24 @@
                                 md="3"
                                 >
                                 <v-select
-                              label="Category"
-                              solo
-                              :items="['Tops', 'Pants','Skirt']"
-                                ></v-select>
-                                </v-col>
-                                <v-col
-                                cols="12"
-                                sm="6"
-                                md="3"
-                                >
-                                <v-select
-                                label="Kids gender"
-                                solo
-                                :items="['Boy', 'Girl','All']"
-                                > </v-select>
+  v-model="Category"
+  label="Category"
+  solo
+  :items="['Tops', 'Pants','Skirt']"
+></v-select>
+
+<v-select
+  v-model="Kidsgender"
+  label="Kids gender"
+  solo
+  :items="['Boy', 'Girl','All']"
+></v-select>
+                                  
+                                  <!-- 選択されたCategoryとKidsgenderの値を表示 -->
+<p>Category: {{ Category }}</p>
+<p>Kids gender: {{ Kidsgender }}</p>
+
+
                                 </v-col>
                             </v-row>
                           <v-row class="d-flex justify-center align-center" style="width: 100%;">
@@ -176,5 +179,4 @@
     <script src="./script1.js"></script>
 </body>
 </html>
-
 
