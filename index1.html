@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Kids Sabsc(product)</title>
@@ -11,7 +10,6 @@
 </head>
 
 <body>
-  <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
   <div id="app">
     <v-app>
       <!-- ヘッダー -->
@@ -83,49 +81,49 @@
 
       <!-- dataList1の内容を表示 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
-  <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList1" :key="index">
-    <v-card class="mx-auto" max-width="344" outlined>
-      <!-- 商品画像を表示 -->
-      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-      
-      <v-card-title>{{ item.product_name }}</v-card-title>
-      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+        <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList1" :key="index">
+          <v-card class="mx-auto" max-width="344" outlined>
+            <!-- 商品画像を表示 -->
+            <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
 
-      <v-card-actions>
-        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
-          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-        </v-btn>
-        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-col>
-</v-row>
-      
+            <v-card-title>{{ item.product_name }}</v-card-title>
+            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+                <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+              </v-btn>
+              <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+                <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+
       <!-- dataList2の内容を表示 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
-  <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
-    <v-card class="mx-auto" max-width="344" outlined>
-      <!-- 商品画像を表示 -->
-      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-      
-      <v-card-title>{{ item.product_name }}</v-card-title>
-      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+        <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
+          <v-card class="mx-auto" max-width="344" outlined>
+            <!-- 商品画像を表示 -->
+            <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
 
-      <v-card-actions>
-        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
-          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-        </v-btn>
-        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-col>
-</v-row>
+            <v-card-title>{{ item.product_name }}</v-card-title>
+            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+                <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+              </v-btn>
+              <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+                <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
 
     </v-container>
   </v-main>
