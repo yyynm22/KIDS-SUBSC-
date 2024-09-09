@@ -12,6 +12,7 @@ new Vue({
                 user_adress: '',
                 user_telenum: ''
             }, // ログインユーザーの会員登録情報を格納するオブジェクト
+            showPassword: false // パスワードの表示・非表示を制御するフラグ
         };
     },
     methods: {
@@ -29,6 +30,9 @@ new Vue({
 
             // 取得したデータをコンソールで確認
             console.log('User Data:', this.userData);
+        },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
         },
         addData() {
             //商品の検索画面に遷移
