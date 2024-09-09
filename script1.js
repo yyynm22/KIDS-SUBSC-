@@ -4,8 +4,8 @@ const app = new Vue({
     data: {
       dataList1: [],
       dataList2: [],
-      Category: '',  // カテゴリー選択用のデータ
-      Kidsgender: '',
+      Category: null,  // カテゴリー選択用のデータ
+      Kidsgender: null,
       cartdialog: false,  // ダイアログの表示・非表示を管理
       
       cartItems: [  // 仮のカートアイテムデータ
@@ -150,7 +150,11 @@ const param = {
 toggleLike: function (index, listType = 'dataList') {
           const list = listType === 'dataList' ? this.dataList : this.dataList2;
           list[index].liked = !list[index].liked;
-      },      
+      },    
+      mounted() {
+        // ページが表示されたときにデータを自動で取得
+        this.readData2();
+      }
      
     }
   });
