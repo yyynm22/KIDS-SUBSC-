@@ -27,4 +27,13 @@
   flex-direction: column;
 }
 
+/* タブのスタイル */
+.v-tabs .v-tab {
+  color: black; /* タブの文字色 */
+}
 
+/* 表示されているタブのスタイル */
+.v-tabs .v-tab.v-tab--active {
+  background-color: #f09199; /* 表示中のタブの背景色 */
+  color: white; /* 表示中のタブの文字色 */
+}
