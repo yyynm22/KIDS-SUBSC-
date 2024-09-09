@@ -27,17 +27,4 @@
   flex-direction: column;
 }
 
-/* タブのラベルを黒に設定 */
-.v-tab {
-  color: black;
-}
 
-/* アクティブなタブの背景色を指定のピンク色に設定 */
-.v-tabs__item--active {
-  background-color: #f09199;
-}
-
-/* タブの枠線を削除 */
-.v-tabs__item {
-  border: none;
-}
