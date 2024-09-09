@@ -30,10 +30,11 @@
 /* タブのスタイル */
 .v-tabs .v-tab {
   color: black; /* タブの文字色 */
+  background-color: white; /* タブの背景色（未選択時） */
 }
 
 /* 表示されているタブのスタイル */
 .v-tabs .v-tab.v-tab--active {
   background-color: #f09199; /* 表示中のタブの背景色 */
-  color: white; /* 表示中のタブの文字色 */
+  color: black; /* 表示中のタブの文字色 */
 }
