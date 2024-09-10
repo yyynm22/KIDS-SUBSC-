@@ -64,6 +64,8 @@
                             type="password"
                             outlined
                         ></v-text-field>
+                     <!-- エラーメッセージの表示 -->
+                 <v-alert v-if="error_message" type="error">{{ error_message }}</v-alert>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
