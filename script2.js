@@ -38,12 +38,15 @@ new Vue({
             axios
                 .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4?user_id=${userId}`)
                 .then((response) => {
-                    // APIから取得したデータを注文履歴に格納
-                    const orders = response.data;
+                    // レスポンスデータが配列か確認
+                    console.log('Raw Order Data:', response.data);
+                    const orders = Array.isArray(response.data) ? response.data : [];
                     const orderDetailsPromises = orders.map((order) => {
                         return axios
                             .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6?order_id=${order.order_id}`)
                             .then((res) => {
+                                // レスポンスデータが配列か確認
+                                console.log(`Order Details for Order ID ${order.order_id}:`, res.data);
                                 const products = res.data.map((detail) => {
                                     return axios
                                         .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3?product_id=${detail.product_id}`)
@@ -61,6 +64,7 @@ new Vue({
                             });
                     });
                     Promise.all(orderDetailsPromises).then((orderHistory) => {
+                        console.log('Processed Order History:', orderHistory);
                         this.orderHistory = orderHistory;
                     });
                 })
