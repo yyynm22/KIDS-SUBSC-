@@ -63,28 +63,32 @@
     border-bottom: 2px solid #f09199 !important;
 }
 
-/* カードデザインの改善 */
-.custom-card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
-    border-radius: 8px; /* 角を少し丸める */
-}
-
 /* フォントの設定 */
 body {
     font-family: 'Roboto', sans-serif;
 }
 
-.order-card {
-    margin-bottom: 20px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: #ffffff;
+/* カードデザインの改善 */
+.custom-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
+    border-radius: 8px; /* 角を少し丸める */
+    padding: 16px;
 }
 
-.order-image {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 10px;
+/* 注文履歴のリスト */
+.order-list {
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
 }
 
+/* 商品画像を丸く表示 */
+.v-img {
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+/* 注文履歴のアイテム間の間隔 */
+.order-list .v-list-item {
+    margin-bottom: 16px;
+}
