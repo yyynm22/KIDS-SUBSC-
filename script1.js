@@ -71,46 +71,34 @@ const app = new Vue({
 },
 
   // 商品をカートに追加
-  addToCart: async function () {
-    // デバッグ用のログ出力
+  // 商品をカートに追加
+addToCart: async function () {
     console.log("ユーザーID:", this.user_id);
     console.log("選択された商品:", this.selectedItem);
     console.log("選択されたサイズ:", this.selectedSize);
     console.log("選択された個数:", this.selectedQuantity);
 
-    // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !this.selectedItem.product_id || !this.selectedSize || !this.selectedQuantity) {
         console.log("パラメーターが設定されていません");
         return;
     }
 
-    // 数量を数値型に変換
-    const params = {
-        product_id: this.selectedItem.product_id,
-        user_id: this.user_id,
-        product_size: this.selectedSize,
-        quantity: this.selectedQuantity
-    };
-
     try {
-    const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', {
-        params: {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', {
             product_id: this.selectedItem.product_id,
             user_id: this.user_id,
             product_size: this.selectedSize,
             quantity: this.selectedQuantity
-        }
-    });
-    console.log(response.data);
+        });
+        console.log("APIレスポンス:", response.data);
 
-    // フィールドをリセット
-    this.selectedSize = '';
-    this.selectedQuantity = 1;
-} catch (error) {
-    console.error('APIリクエストに失敗しました:', error);
-}
+        this.selectedSize = '';
+        this.selectedQuantity = 1;
+    } catch (error) {
+        console.error('APIリクエストに失敗しました:', error);
+    }
+},
 
-  },
 
 
       toggleLike(item) {
