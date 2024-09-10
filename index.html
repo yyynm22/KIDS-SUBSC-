@@ -114,15 +114,41 @@
             <v-footer app padless class="custom-font">
                 <v-row class="d-flex align-center justify-space-between" cols="12">
                     <v-col>
-                        <v-btn color="gray" dark @click="dialog = true">
+                        <v-btn v-on:click="dialog = true" class="empllogin">
                             employee login
-                        </v-btn>
+                            <v-icon start>
+                                mdi-pencil
+                            </v-icon>  
                     </v-col>
+
                     <v-col class="text-center"  style="position: absolute; left: 50%; transform: translateX(-50%);">
                         © 2024 TeamA
                     </v-col>
+
+            <!-- ログインダイアログ -->
+            <v-dialog v-model="dialog" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">employeeLogin</v-card-title>
+                    <v-card-text>
+                        <v-text-field v-model="empl_id" label="employeeID" outlined></v-text-field>
+                        <v-text-field
+                            v-model="empl_pass"
+                            label="Password"
+                            type="password"
+                            outlined
+                        ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" @click="login">Login</v-btn>
+                        <v-btn @click="dialog = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
                 </v-row>
             </v-footer>
+
+            
 
 
       
@@ -137,5 +163,3 @@
     <script src="./script.js"></script>
 </body>
 </html>
-
-＃Ateamの文字表示をヘッダーの真ん中に表示して
