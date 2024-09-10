@@ -12,8 +12,8 @@ new Vue({
                 user_adress: '',
                 user_telenum: ''
             }, // ログインユーザーの会員登録情報を格納するオブジェクト
-            showPassword: false, // パスワードの表示・非表示を制御するフラグ
-            orderHistory: [] // 注文履歴を格納する配列
+            orderHistory: [], // 注文履歴を格納する配列
+            showPassword: false // パスワードの表示・非表示を制御するフラグ
         };
     },
     methods: {
@@ -32,57 +32,48 @@ new Vue({
             // 取得したデータをコンソールで確認
             console.log('User Data:', this.userData);
         },
-        fetchOrderHistory() {
-            // 注文履歴のデータをAPIから取得
-            const userId = this.userData.user_id; // ユーザーIDを使用して注文履歴を取得
-            axios
-                .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4?user_id=${userId}`)
-                .then((response) => {
-                    // レスポンスデータが配列か確認
-                    console.log('Raw Order Data:', response.data);
-                    const orders = Array.isArray(response.data) ? response.data : [];
-                    const orderDetailsPromises = orders.map((order) => {
-                        return axios
-                            .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6?order_id=${order.order_id}`)
-                            .then((res) => {
-                                // レスポンスデータが配列か確認
-                                console.log(`Order Details for Order ID ${order.order_id}:`, res.data);
-                                const products = res.data.map((detail) => {
-                                    return axios
-                                        .get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3?product_id=${detail.product_id}`)
-                                        .then((productRes) => ({
-                                            ...productRes.data[0],
-                                            product_size: detail.product_size,
-                                            quantity: detail.quantity
-                                        }));
-                                });
-                                return Promise.all(products).then((products) => ({
-                                    ...order,
-                                    products,
-                                    total_quantity: products.reduce((sum, prod) => sum + prod.quantity, 0)
-                                }));
-                            });
-                    });
-                    Promise.all(orderDetailsPromises).then((orderHistory) => {
-                        console.log('Processed Order History:', orderHistory);
-                        this.orderHistory = orderHistory;
-                    });
-                })
-                .catch((error) => {
-                    console.error('注文履歴の取得に失敗しました:', error);
-                });
-        },
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
         addData() {
-            // 商品の検索画面に遷移
+            //商品の検索画面に遷移
             window.location.href = '/index1.html';
         },
+        fetchOrderHistory() {
+            // APIから注文履歴データを取得する
+            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
+                .then(response => {
+                    // サーバーから返された注文履歴データを格納
+                    this.orderHistory = response.data.map(order => {
+                        return {
+                            order_id: order.order_id,
+                            total_quantity: order.total_quantity,
+                            items: order.items.map(item => ({
+                                product_id: item.product_id,
+                                product_name: item.product_name,
+                                product_category: item.product_category,
+                                product_size: item.product_size,
+                                product_gender: item.product_gender,
+                                quantity: item.quantity,
+                                product_image_url: item.URL
+                            }))
+                        };
+                    });
+                    console.log('Order History:', this.orderHistory);
+                })
+                .catch(error => {
+                    console.error('注文履歴の取得に失敗しました:', error);
+                });
+        }
     },
     mounted() {
-        // マウント時にユーザーデータと注文履歴を取得
+        // マウント時にユーザーデータを取得
         this.fetchUserData();
+        
+        // マウント時に注文履歴を取得
         this.fetchOrderHistory();
+
+        // methods をコンソールに表示（Vue インスタンスのスコープ内で実行）
+        console.log('Methods in Vue instance:', this.$options.methods);
     },
 });
