@@ -31,6 +31,7 @@ const app = new Vue({
                         console.log('Login successful');
                         
                         // ユーザー情報を sessionStorage に保存
+                         sessionStorage.setItem('user_id', user.user_id);
                         sessionStorage.setItem('user_name', user.user_name);
                         sessionStorage.setItem('user_pass', user.user_pass);
                         sessionStorage.setItem('user_mail', user.user_mail);
@@ -39,6 +40,7 @@ const app = new Vue({
                         sessionStorage.setItem('user_telenum', user.user_telenum);
 
                         // デバッグ用のログ出力
+                        console.log("Saved user_id:", sessionStorage.getItem('user_id'));
                         console.log("Saved user_name:", sessionStorage.getItem('user_name'));
                         console.log("Saved user_pass:", sessionStorage.getItem('user_pass'));
                         console.log("Saved user_mail:", sessionStorage.getItem('user_mail'));
