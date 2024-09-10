@@ -17,7 +17,7 @@ const app = new Vue({
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: 1,  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
-      user_id: 'example_user_id',
+      user_id: sessionStorage.getItem('user_id'),
     },
     methods: {
       mypage() {
@@ -61,6 +61,9 @@ const app = new Vue({
       },
       // 商品をカートに追加
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+       // user_idとproduct_idがセットされているかを確認
+    console.log("ユーザーID:", this.user_id);
+    console.log("選択された商品:", selectedItem);
     if (!selectedSize || !selectedQuantity) {
         console.log("サイズまたは個数が入力されていません");
         return;
