@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Kids Sabsc(product)</title>
@@ -10,6 +11,7 @@
 </head>
 
 <body>
+  <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
   <div id="app">
     <v-app>
       <!-- ヘッダー -->
@@ -80,50 +82,108 @@
       </v-row>
 
       <!-- dataList1の内容を表示 -->
-      <v-row class="d-flex justify-center align-center" style="width: 100%;">
-        <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList1" :key="index">
-          <v-card class="mx-auto" max-width="344" outlined>
-            <!-- 商品画像を表示 -->
-            <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+<v-row class="d-flex justify-center align-center" style="width: 100%;">
+  <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList1" :key="index">
+    <!-- 商品カード -->
+    <v-card @click="selectedItem = item; dialog = true" class="mx-auto" max-width="344" outlined>
+      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+      <v-card-title>{{ item.product_name }}</v-card-title>
+      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+      <v-card-actions>
+        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+        </v-btn>
+        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-col>
 
-            <v-card-title>{{ item.product_name }}</v-card-title>
-            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+  <!-- 商品詳細ダイアログ -->
+<v-dialog v-model="dialog" max-width="600px">
+  <v-card>
+    <v-card-title>
+      <span class="headline">{{ selectedItem.product_name }}</span>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="dialog = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-card-title>
+    
+    <v-card-text>
+      <v-container>
+        <!-- 商品画像 -->
+        <v-row>
+          <v-col cols="12">
+            <v-img :src="selectedItem.URL" aspect-ratio="1.5"></v-img>
+          </v-col>
+        </v-row>
+        <!-- 商品情報 -->
+        <v-row>
+          <v-col cols="12">
+            <div>Category: {{ selectedItem.product_category }}</div>
+            <div>Gender: {{ selectedItem.product_gender }}</div>
+          </v-col>
+        </v-row>
+        <!-- サイズ選択 -->
+        <v-row>
+          <v-col cols="12">
+            <v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size"></v-select>
+          </v-col>
+        </v-row>
+        <!-- 個数入力 -->
+        <v-row>
+          <v-col cols="12">
+            <v-text-field v-model="selectedQuantity" label="Quantity" type="number"></v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+    
+    <v-card-action>
+      <v-spacer></v-spacer>
+      <!-- カートに追加 -->
+      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)">
+        Add to Cart
+      </v-btn>
+      <!-- ダイアログを閉じる -->
+      <v-btn @click="dialog = false">
+        Close
+      </v-btn>
+    </v-card-action>
+  </v-card>
+</v-dialog>
 
-            <v-card-actions>
-              <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
-                <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-              </v-btn>
-              <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-                <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
+</v-row>
 
+
+
+
+      
       <!-- dataList2の内容を表示 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
-        <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
-          <v-card class="mx-auto" max-width="344" outlined>
-            <!-- 商品画像を表示 -->
-            <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+  <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
+    <v-card class="mx-auto" max-width="344" outlined>
+      <!-- 商品画像を表示 -->
+      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+      
+      <v-card-title>{{ item.product_name }}</v-card-title>
+      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
 
-            <v-card-title>{{ item.product_name }}</v-card-title>
-            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
-
-            <v-card-actions>
-              <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
-                <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-              </v-btn>
-              <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-                <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-card-actions>
+        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+        </v-btn>
+        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-col>
+</v-row>
 
     </v-container>
   </v-main>
