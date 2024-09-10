@@ -100,7 +100,43 @@ const app = new Vue({
         console.error('APIリクエストに失敗しました:', error);
     }
 },            
+addOrder: async function() {
+    
+  //POSTメソッドで送るパラメーターを作成
+  const param = {
+    Table: 'subsc_detail_table',
+    order_id : this.selectedOrder.OrderId,
+     };
+  
+  //INSERT3用のAPIを呼び出し
+    // きちんと格納がなされているか確認用
+      console.log("送信するパラメーター:", param);
+      try {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', param);
 
+        // APIレスポンスをコンソールに表示
+        console.log("APIレスポンス:", response.data);
+        this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
+      } catch (error) {
+        // エラーの詳細をコンソール表示：開発用だが残しておく
+        console.error("カート追加エラー:", error.message);
+        if (error.response) {
+          console.error("レスポンスエラー:", error.response.data);
+        } else if (error.request) {
+          console.error("リクエストエラー:", error.request);
+        } else {
+          console.error("設定エラー:", error.message);
+        }
+      }
+  //結果をコンソールに出力
+      console.log(response.data);
+      this.order_id = '';
+
+  },       
+  toggleLike: function (index, listType = 'dataList') {
+            const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
+            list[index].liked = !list[index].liked;
+        },      
 
 
 
