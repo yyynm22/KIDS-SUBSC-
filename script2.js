@@ -43,6 +43,9 @@ new Vue({
             // APIから注文履歴データを取得する
             axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
                 .then(response => {
+                    // APIレスポンスの内容をコンソールに出力して確認
+                    console.log('API Response:', response.data);
+                    
                     // サーバーから返された注文履歴データを格納
                     this.orderHistory = response.data.map(order => {
                         return {
