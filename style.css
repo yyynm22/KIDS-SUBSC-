@@ -3,16 +3,6 @@
   font-family: 'Times New Roman', sans-serif !important;
 }
 
-.top-wrapper {
-  padding: 180px 0 100px 0;
-  background-image: url('https://i.gyazo.com/7662a8e646a25c518d0626b99c3d06b4.jpg'); /* 画像URLを指定 */
-  background-size: contain; /* 画像の縦横比を維持しつつ表示 */
-  background-repeat: no-repeat; /* 画像を繰り返さない */
-  background-position: center; /* 画像を中央に配置 */
-  color: white;
-  height: 408px; /* 高さを画像の縦サイズに合わせる */
-}
-
 /* ヘッダーとフッター分のスペースを確保 */
 body {
   margin: 0;
@@ -21,7 +11,7 @@ body {
 }
 
 header {
-  height: 100px; /* ヘッダーの高さを適宜調整 */
+  height: 80px; /* ヘッダーの高さを適宜調整 */
   background-color: #f1f1f1; /* 背景色を設定 */
 }
 
@@ -38,7 +28,7 @@ footer {
   height: 300px;
   position: relative;
   overflow: hidden;
-  margin-top: 10px; /* ヘッダーの高さ分マージンを追加 */
+  margin-top: 100px; /* ヘッダーの高さ分マージンを追加 */
   margin-bottom: 10px; /* フッターの高さ分マージンを追加 */
 }
 
@@ -79,12 +69,15 @@ footer {
 li {
   list-style: none;
 }
+
 /* ↓ スライドの外枠 */
 .slide-wrapper {
   width: 100%;
   height:450px;
   position: relative;
   overflow: hidden; /* はみ出したスライドを隠す */
+  margin-top: 70px;
+  margin-bottom: 10px; 
 }
 /*  ↓ スライド（コンテンツ） */
 .slide { /*スライド全体 */
@@ -174,8 +167,6 @@ height: auto;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
-
 .plan{
   background-color: #E0FFFF;
   height: 500px;
