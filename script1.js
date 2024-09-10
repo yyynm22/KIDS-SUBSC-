@@ -60,45 +60,46 @@ const app = new Vue({
         this.dataList2 = newData;
       },
       // 商品を選択してダイアログを開く
-  openDialog(item) {
-    this.selectedItem = item;
-    this.selectedSize = '';
-    this.selectedQuantity = 1;
-    this.dialog = true;
-
+      openDialog(item) {
+        this.selectedItem = item;
+        this.selectedSize = '';
+        this.quantity = 1;
+        this.dialog = true;
+      },
+      // 商品をカートに追加
+     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
     // デバッグ用のログ出力
-    console.log("ダイアログオープン時の選択された商品:", this.selectedItem);
-},
-
-  // 商品をカートに追加
-  // 商品をカートに追加
-addToCart: async function () {
     console.log("ユーザーID:", this.user_id);
-    console.log("選択された商品:", this.selectedItem);
-    console.log("選択されたサイズ:", this.selectedSize);
-    console.log("選択された個数:", this.selectedQuantity);
+    console.log("選択された商品:", selectedItem);
+    console.log("選択されたサイズ:", selectedSize);
+    console.log("選択された個数:", selectedQuantity);
 
-    if (!this.user_id || !this.selectedItem.product_id || !this.selectedSize || !this.selectedQuantity) {
-        console.log("パラメーターが設定されていません");
+    // 必須パラメーターが設定されているかチェック
+    if (!this.user_id || !selectedItem.product_id || !selectedSize || !selectedQuantity) {
+        console.log("パラメーターが設定されてない");
         return;
     }
 
-    try {
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', {
-            product_id: this.selectedItem.product_id,
-            user_id: this.user_id,
-            product_size: this.selectedSize,
-            quantity: this.selectedQuantity
-        });
-        console.log("APIレスポンス:", response.data);
+    // 数量を数値型に変換
+    const params = {
+        product_id: this.selectedItem.product_id,
+        user_id: this.user_id,
+        product_size: this.selectedSize,
+        quantity: this.selectedQuantity
+    };
 
+    try {
+        // パラメーターを含んだAPIリクエスト
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
+        console.log(response.data);
+
+        // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = 1;
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
 },
-
 
 
       toggleLike(item) {
