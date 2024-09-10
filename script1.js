@@ -62,10 +62,14 @@ const app = new Vue({
       // 商品を選択してダイアログを開く
   openDialog(item) {
     this.selectedItem = item;
-    this.selectedSize = '';  // 修正: this.selectedSize
-    this.selectedQuantity = 1;  // 修正: this.selectedQuantity
+    this.selectedSize = '';
+    this.selectedQuantity = 1;
     this.dialog = true;
-  },
+
+    // デバッグ用のログ出力
+    console.log("ダイアログオープン時の選択された商品:", this.selectedItem);
+},
+
   // 商品をカートに追加
   addToCart: async function () {
     // デバッグ用のログ出力
@@ -89,16 +93,23 @@ const app = new Vue({
     };
 
     try {
-        // パラメーターを含んだAPIリクエスト
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', { params });
-        console.log(response.data);
+    const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', {
+        params: {
+            product_id: this.selectedItem.product_id,
+            user_id: this.user_id,
+            product_size: this.selectedSize,
+            quantity: this.selectedQuantity
+        }
+    });
+    console.log(response.data);
 
-        // フィールドをリセット
-        this.selectedSize = '';
-        this.selectedQuantity = 1;
-    } catch (error) {
-        console.error('APIリクエストに失敗しました:', error);
-    }
+    // フィールドをリセット
+    this.selectedSize = '';
+    this.selectedQuantity = 1;
+} catch (error) {
+    console.error('APIリクエストに失敗しました:', error);
+}
+
   },
 
 
