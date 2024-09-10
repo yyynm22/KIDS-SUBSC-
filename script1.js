@@ -80,10 +80,10 @@ const app = new Vue({
     }
 
     const params = {
-        product_id: selectedItem.product_id,
+        product_id: this.selectedItem.product_id,
                 user_id: this.user_id,  // ここで取得した user_id を使用
-                product_size: selectedSize,
-                quantity: Number(selectedQuantity)
+                product_size: this.selectedSize,
+                quantity: this.selectedQuantity
     };
 
     try {
