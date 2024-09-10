@@ -15,9 +15,9 @@ const app = new Vue({
       ],
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
-      selectedQuantity: '',  // 個数
+      selectedQuantity: 1,  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
-      user_id: sessionStorage.getItem('user_id'),
+      user_id: 'example_user_id',
     },
     methods: {
       mypage() {
@@ -79,7 +79,7 @@ const app = new Vue({
 
         // フィールドをリセット
         this.selectedSize = '';
-        this.selectedQuantity = '';
+        this.selectedQuantity = 1;
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
