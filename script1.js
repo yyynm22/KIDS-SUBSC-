@@ -75,17 +75,21 @@ const app = new Vue({
     console.log("選択された個数:", selectedQuantity);
 
     // 必須パラメーターが設定されているかチェック
-    if (!this.user_id || !selectedItem.product_id || !selectedSize || !selectedQuantity) {
+    if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
+        if (!this.user_id) console.log("ユーザーIDが設定されていません");
+        if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
+        if (!selectedSize) console.log("サイズが設定されていません");
+        if (!selectedQuantity) console.log("数量が設定されていません");
         return;
     }
 
     // 数量を数値型に変換
     const params = {
-        product_id: this.selectedItem.product_id,
+        product_id: selectedItem.product_id,
         user_id: this.user_id,
-        product_size: this.selectedSize,
-        quantity: this.selectedQuantity
+        product_size: selectedSize,
+        quantity: selectedQuantity
     };
 
     try {
@@ -100,6 +104,7 @@ const app = new Vue({
         console.error('APIリクエストに失敗しました:', error);
     }
 },
+
 
 
       toggleLike(item) {
