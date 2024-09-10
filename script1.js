@@ -68,25 +68,28 @@ const app = new Vue({
       },
       // 商品をカートに追加
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-      // user_id が取得されているか確認
-            if (!this.user_id) {
-                console.log("ユーザーIDが取得されていません");
-                return;
-            }
-       
-    if (!selectedSize || !selectedQuantity) {
-        console.log("サイズまたは個数が入力されていません");
+    // デバッグ用のログ出力
+    console.log("ユーザーID:", this.user_id);
+    console.log("選択された商品:", selectedItem);
+    console.log("選択されたサイズ:", selectedSize);
+    console.log("選択された個数:", selectedQuantity);
+
+    // 必須パラメーターが設定されているかチェック
+    if (!this.user_id || !selectedItem.product_id || !selectedSize || !selectedQuantity) {
+        console.log("パラメーターが設定されていません");
         return;
     }
 
+    // 数量を数値型に変換
     const params = {
-        product_id: this.selectedItem.product_id,
-                user_id: this.user_id,  // ここで取得した user_id を使用
-                product_size: this.selectedSize,
-                quantity: this.selectedQuantity
+        product_id: selectedItem.product_id,
+        user_id: this.user_id,
+        product_size: selectedSize,
+        quantity: Number(selectedQuantity)
     };
 
     try {
+        // パラメーターを含んだAPIリクエスト
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', { params });
         console.log(response.data);
 
@@ -97,6 +100,7 @@ const app = new Vue({
         console.error('APIリクエストに失敗しました:', error);
     }
 },
+
 
       toggleLike(item) {
         item.liked = !item.liked;
