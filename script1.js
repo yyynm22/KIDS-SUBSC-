@@ -74,7 +74,7 @@ const app = new Vue({
     };
 
     try {
-        const response = await axios.get('https://m3hminagawafunction.azurewebsites.net/api/INSERT2', { params });
+        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', { params });
         console.log(response.data);
 
         // フィールドをリセット
