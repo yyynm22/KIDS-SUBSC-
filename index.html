@@ -1,141 +1,175 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>kidssubsc</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="./style.css">
-    <style>
-        .slide-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-        .slide {
-            display: flex;
-            overflow: hidden;
-            scroll-behavior: smooth;
-        }
-        .slide img {
-            width: 100%;
-            height: auto;
-        }
-        .new-sections {
-            padding: 20px;
-            background: #f4f4f4;
-            border-top: 1px solid #ddd;
-        }
-        .new-sections h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .new-sections p {
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
-    <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
-    <div id="app">
-        <v-app>
-            <!-- ヘッダー -->
-            <v-app-bar app class="custom-font">
-                <v-toolbar-title>Kids Sabsc</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn v-on:click="dialog = true" dark color="#3cb371" rounded class="custom-font">
-                    Login
-                    <v-icon start>
-                        mdi-pencil
-                    </v-icon>
-                </v-btn>
-            </v-app-bar>
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+  font-family: 'Times New Roman', sans-serif !important;
+}
 
-            <!-- ログインダイアログ -->
-            <v-dialog v-model="dialog" max-width="400">
-                <v-card>
-                    <v-card-title class="headline">Login</v-card-title>
-                    <v-card-text>
-                        <v-text-field v-model="user_mail" label="mail" outlined></v-text-field>
-                        <v-text-field
-                            v-model="user_pass"
-                            label="Password"
-                            type="password"
-                            outlined
-                        ></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" @click="login">Login</v-btn>
-                        <v-btn @click="dialog = false">Cancel</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+/* ヘッダーとフッター分のスペースを確保 */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-            <!-- スライドの外枠 -->
-            <div class="slide-wrapper">
-                <!-- スライド（コンテンツ） -->
-                <div id="slide" class="slide">
-                  <div>
-                        <img src="https://i.gyazo.com/a7ad1a2a604a97145aa7036d387f34d8.jpg">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/312c0a62a09c78741065f2184f6ce979.jpg">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/d3d1be17b96ff29d9c82f63665f6caf5.jpg">  
-                  </div>
-                </div>
-                <!-- 左右のボタン -->
-                <span id="prev" class="prev"></span>
-                <span id="next" class="next"></span>
-                <!-- インジケーター -->
-                <ul class="indicator" id="indicator">
-                  <li class="list"></li>
-                  <li class="list"></li>
-                  <li class="list"></li>
-                </ul>
-            </div>
+header {
+  height: 80px; /* ヘッダーの高さを適宜調整 */
+  background-color: #f1f1f1; /* 背景色を設定 */
+}
 
-            <!-- 新しいセクション -->
-            <div class="explanation">
-                <h2>このホームページの説明</h2>
-                <p>このサイトでは、最新のアプリ開発情報や、チームによるプロジェクトの進捗をお届けします。</p>
-            </div>
+footer {
+  height: 80px; /* フッターの高さを適宜調整 */
+  background-color: #f1f1f1; /* 背景色を設定 */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
-            <div class="plan">
-                <h2>このサイトの詳細</h2>
-                <p>利用料金: 無料</p>
-                <p>ルール: すべてのコンテンツは個人の利用に限ります。</p>
-            </div>
-
-            <!-- フッター -->
-            <v-footer app padless class="custom-font">
-                <v-row class="d-flex align-center justify-space-between" cols="12">
-                    <v-col>
-                        <v-btn color="gray" dark @click="dialog = true">
-                            employee login
-                        </v-btn>
-                    </v-col>
-                    <v-col class="text-center">
-                        © 2024 TeamA
-                    </v-col>
-                </v-row>
-            </v-footer>
+.slide-wrapper {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 100px; /* ヘッダーの高さ分マージンを追加 */
+  margin-bottom: 10px; /* フッターの高さ分マージンを追加 */
+}
 
 
-      
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 100px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
 
-        </v-app>
-    </div>
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-    <!-- Vue.js、Vuetify、Axiosのスクリプトを読み込む -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
-    <script src="./script.js"></script>
-</body>
-</html>
+.login-header h1 {
+  font-size: 2rem;
+  color: #C9A66B;
+}
 
-＃Ateamの文字表示をヘッダーの真ん中に表示して
+.login-header p {
+  color: #555;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+*,body,ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+
+/* ↓ スライドの外枠 */
+.slide-wrapper {
+  width: 100%;
+  height:450px;
+  position: relative;
+  overflow: hidden; /* はみ出したスライドを隠す */
+  margin-top: 70px;
+  margin-bottom: 10px; 
+}
+/*  ↓ スライド（コンテンツ） */
+.slide { /*スライド全体 */
+  width: 300%;
+  height: 100%;
+  display: flex;
+  transition: all 0.3s;
+}
+.slide div { /* スライド */
+  width: 33.33%;
+  height: 100%;
+  font-size: 16px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.slide1 { /* スライドさせるために必要なクラス */
+  transform: translateX(0);
+}
+.slide2 { /* スライドさせるために必要なクラス */
+  transform: translateX(-33.33%);
+}
+.slide3 { /* スライドさせるために必要なクラス */
+  transform: translateX(-66.66%);
+}
+
+.slide img{
+width: 100%;
+height: auto;
+}
+
+/* ↓ 左右のボタン */
+.next {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  right: 10px;
+  bottom: 50%;
+  z-index: 10;
+  cursor: pointer;
+  border-top: solid 3px #000;
+  border-right: solid 3px #000;
+  -webkit-transform: rotate(45deg) translateY(50%);
+  transform: rotate(45deg) translateY(50%);
+}
+.prev {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  left: 25px;
+  bottom: 50%;
+  z-index: 10;
+  cursor: pointer;
+  border-top: solid 3px #000;
+  border-right: solid 3px #000;
+  -webkit-transform: rotate(-135deg) translateY(-50%);
+  transform: rotate(-135deg) translateY(-50%);
+}
+/* ↓ インジケーター */
+.indicator {
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  column-gap: 18px;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+}
+.indicator li {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  list-style: none;
+  background-color: #fff;
+  border: 2px #000 solid;
+  cursor: pointer;
+}
+.indicator li:first-of-type {
+  background-color: #000;
+}
+
+.explanation{
+  background-color: #FFF0F5;
+  height: 500px; 
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.plan{
+  background-color: #E0FFFF;
+  height: 500px;
+  margin-top: 10px;
+  margin-bottom: 10px; 
+}
