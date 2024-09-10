@@ -85,7 +85,7 @@
 <v-row class="d-flex justify-center align-center" style="width: 100%;">
   <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList1" :key="index">
     <!-- 商品カード -->
-    <v-card @click="selectedItem = item; dialog = true" class="mx-auto" max-width="344" outlined>
+    <v-card class="mx-auto" max-width="344" outlined>
       <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
       <v-card-title>{{ item.product_name }}</v-card-title>
       <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
@@ -167,7 +167,7 @@
   <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
     <v-card class="mx-auto" max-width="344" outlined>
       <!-- 商品画像を表示 -->
-      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+      <v-img :src="item.URL" aspect-ratio="1.5" @click="selectedItem = item; dialog = true"></v-img>
       
       <v-card-title>{{ item.product_name }}</v-card-title>
       <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
