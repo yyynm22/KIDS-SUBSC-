@@ -8,11 +8,7 @@ const app = new Vue({
       Kidsgender: '',
       cartdialog: false,  // カートダイアログの表示・非表示
       dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
-      cartItems: [  // 仮のカートアイテムデータ
-        { name: 'T-shirt', price: 1000 },
-        { name: 'Pants', price: 1500 },
-        { name: 'Skirt', price: 1200 }
-      ],
+      cartItems: [],
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: 1,  // 個数
