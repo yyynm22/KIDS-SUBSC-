@@ -6,6 +6,7 @@ const app = new Vue({
       dialog: false,
       user_mail: '',
       user_pass: '',
+　　　error_message: '' // 追加
 
   },
   methods: {
@@ -26,6 +27,7 @@ const app = new Vue({
 
             if (user) {
                 console.log('Login successful');
+　　　　　　　　this.error_message = ''; // ログイン成功時にエラーメッセージをクリア
                 
                 // ユーザー情報を sessionStorage に保存
                 sessionStorage.setItem('user_id', user.user_id);
@@ -50,12 +52,15 @@ const app = new Vue({
                 window.location.href = '/index1.html';
             } else {
                 console.log('Invalid user_mail or user_pass');
+　　　　　　　this.error_message = 'ユーザーIDまたはパスワードが間違っています。'; // エラーメッセージを設定
+                }
             }
         } else {
             console.error('User data is not an array:', users);
         }
     } catch (error) {
         console.error('Error fetching user data:', error);
+　　　　 this.error_message = 'システムエラーが発生しました。後でもう一度お試しください。'; // APIエラー時のメッセージ
     }
 }
 
@@ -92,16 +97,16 @@ for (let i = 0; i < lists.length; i++) {
 }
 }
 function nextClick() {
-slide.classList.remove(`slide${count % totalSlides + 1}`);
+slide.classList.remove(slide${count % totalSlides + 1});
 count++;
-slide.classList.add(`slide${count % totalSlides + 1}`);
+slide.classList.add(slide${count % totalSlides + 1});
 updateListBackground();
 }
 function prevClick() {
-slide.classList.remove(`slide${count % totalSlides + 1}`);
+slide.classList.remove(slide${count % totalSlides + 1});
 count--;
 if (count < 0) count = totalSlides - 1;
-slide.classList.add(`slide${count % totalSlides + 1}`);
+slide.classList.add(slide${count % totalSlides + 1});
 updateListBackground();
 }
 function startAutoPlay() {
@@ -122,9 +127,9 @@ resetAutoPlayInterval();
 indicator.addEventListener('click', (event) => {
 if (event.target.classList.contains('list')) {
   const index = Array.from(lists).indexOf(event.target);
-  slide.classList.remove(`slide${count % totalSlides + 1}`);
+  slide.classList.remove(slide${count % totalSlides + 1});
   count = index;
-  slide.classList.add(`slide${count % totalSlides + 1}`);
+  slide.classList.add(slide${count % totalSlides + 1});
   updateListBackground();
   resetAutoPlayInterval();
 }
