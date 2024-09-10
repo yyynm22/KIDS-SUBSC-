@@ -42,33 +42,41 @@ new Vue({
         fetchOrderHistory() {
             // APIから注文履歴データを取得する
             axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
-                .then(response => {
-                    // APIレスポンスの内容をコンソールに出力して確認
-                    console.log('API Response:', response.data);
-                    
-                    // サーバーから返された注文履歴データを格納
-                    this.orderHistory = response.data.map(order => {
-                        return {
-                            order_id: order.order_id,
-                            total_quantity: order.total_quantity,
-                            items: order.items.map(item => ({
-                                product_id: item.product_id,
-                                product_name: item.product_name,
-                                product_category: item.product_category,
-                                product_size: item.product_size,
-                                product_gender: item.product_gender,
-                                quantity: item.quantity,
-                                product_image_url: item.URL
-                            }))
-                        };
-                    });
-                    console.log('Order History:', this.orderHistory);
-                })
-                .catch(error => {
-                    console.error('注文履歴の取得に失敗しました:', error);
-                });
+    .then(response => {
+        // APIレスポンスの内容をコンソールに出力して確認
+        console.log('API Response:', response.data);
+
+        // ここでレスポンスが正しい形式であることを確認します
+        // 例えば、JSONが文字列として返されている場合の処理
+        try {
+            // JSON文字列としてレスポンスをパース
+            let data = JSON.parse(response.data);
+
+            // サーバーから返された注文履歴データを格納
+            this.orderHistory = data.map(order => {
+                return {
+                    order_id: order.order_id,
+                    total_quantity: order.total_quantity,
+                    items: order.items.map(item => ({
+                        product_id: item.product_id,
+                        product_name: item.product_name,
+                        product_category: item.product_category,
+                        product_size: item.product_size,
+                        product_gender: item.product_gender,
+                        quantity: item.quantity,
+                        product_image_url: item.URL
+                    }))
+                };
+            });
+            console.log('Order History:', this.orderHistory);
+        } catch (error) {
+            console.error('レスポンスのパースに失敗しました:', error);
         }
-    },
+    })
+    .catch(error => {
+        console.error('注文履歴の取得に失敗しました:', error);
+    });
+
     mounted() {
         // マウント時にユーザーデータを取得
         this.fetchUserData();
