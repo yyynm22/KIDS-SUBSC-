@@ -61,6 +61,19 @@ footer {
   margin-top: 1rem;
 }
 
+.empllogin {
+  margin: 20px 30px;
+  padding: 10px 20px; /* パディングを小さくしてボタンを小さくする */
+  z-index: 10; /* 高い値に設定して他の要素より前面に */
+  background-color: #f1f1f1; 
+  color: gray;
+  border: none; /* 枠線なし */
+  box-shadow: none; /* 影なし */
+  outline: none; /* フォーカスのアウトラインを削除 */
+  font-size: 0.875rem; /* フォントサイズを小さくする */
+  border-radius: 4px; /* 角の丸みを調整（必要に応じて） */
+}
+
 
 *,body,ul {
   margin: 0;
@@ -69,6 +82,8 @@ footer {
 li {
   list-style: none;
 }
+
+
 
 /* ↓ スライドの外枠 */
 .slide-wrapper {
