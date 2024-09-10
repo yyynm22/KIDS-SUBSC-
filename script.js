@@ -6,8 +6,6 @@ const app = new Vue({
         dialog: false,
         user_mail: '',
         user_pass: '',
-        empl_id:'',
-        empl_pass:'',
     },
     methods: {
         async login() {
@@ -30,15 +28,21 @@ const app = new Vue({
                 
                 // ユーザー情報を sessionStorage に保存
                 sessionStorage.setItem('user_id', user.user_id);
-                console.log("Saved user_id:", sessionStorage.getItem('user_id'));  // 保存された user_id を確認
-
-                // 他のユーザー情報も保存
                 sessionStorage.setItem('user_name', user.user_name);
                 sessionStorage.setItem('user_pass', user.user_pass);
                 sessionStorage.setItem('user_mail', user.user_mail);
                 sessionStorage.setItem('user_postcode', user.user_postcode);
                 sessionStorage.setItem('user_adress', user.user_adress);
                 sessionStorage.setItem('user_telenum', user.user_telenum);
+
+                // すべての情報が保存されたか確認するためのログ出力
+                console.log("Saved user_id:", sessionStorage.getItem('user_id'));
+                console.log("Saved user_name:", sessionStorage.getItem('user_name'));
+                console.log("Saved user_pass:", sessionStorage.getItem('user_pass'));
+                console.log("Saved user_mail:", sessionStorage.getItem('user_mail'));
+                console.log("Saved user_postcode:", sessionStorage.getItem('user_postcode'));
+                console.log("Saved user_adress:", sessionStorage.getItem('user_adress'));
+                console.log("Saved user_telenum:", sessionStorage.getItem('user_telenum'));
 
                 // ログイン成功時の処理
                 this.dialog = false;
@@ -53,6 +57,7 @@ const app = new Vue({
         console.error('Error fetching user data:', error);
     }
 }
+
 
     }
 });
