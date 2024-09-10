@@ -76,16 +76,16 @@ const app = new Vue({
 
     // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem.product_id || !selectedSize || !selectedQuantity) {
-        console.log("パラメーターが設定されていません");
+        console.log("パラメーターが設定されていませ");
         return;
     }
 
     // 数量を数値型に変換
     const params = {
-        product_id: selectedItem.product_id,
+        product_id: this.selectedItem.product_id,
         user_id: this.user_id,
-        product_size: selectedSize,
-        quantity: Number(selectedQuantity)
+        product_size: this.selectedSize,
+        quantity: this.selectedQuantity
     };
 
     try {
