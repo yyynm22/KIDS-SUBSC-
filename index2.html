@@ -85,35 +85,39 @@
                             </v-card-text>
                         </v-tab-item>
 
-                        <!-- 注文履歴タブ -->
 <!-- 注文履歴タブ -->
 <v-tab-item>
-    <v-card flat class="custom-card">
+    <v-card flat>
         <v-card-text class="centered-content">
-            <v-list dense class="order-list">
-                <v-list-item v-for="(order, index) in orderHistory" :key="index">
-                    <v-list-item-content>
-                        <v-row>
-                            <v-col cols="12">
-                                <h3>注文番号: {{ order.order_id }}</h3>
-                                <p>合計個数: {{ order.total_quantity }}</p>
-                                <v-row v-for="(product, index) in order.products" :key="index">
-                                    <v-col cols="4">
-                                        <v-img :src="product.image_url" aspect-ratio="1"></v-img>
-                                    </v-col>
-                                    <v-col cols="8">
-                                        <p>商品名: {{ product.product_name }}</p>
-                                        <p>カテゴリ: {{ product.product_category }}</p>
-                                        <p>サイズ: {{ product.product_size }}</p>
-                                        <p>個数: {{ product.quantity }}</p>
-                                        <p>性別: {{ product.product_gender }}</p>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
+            <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory.length">
+                <v-col cols="12">
+                    <v-list dense class="order-list">
+                        <v-list-item v-for="order in orderHistory" :key="order.order_id">
+                            <v-list-item-content>
+                                <v-list-item-title>注文番号: {{ order.order_id }}</v-list-item-title>
+                                <v-list-item-subtitle>合計個数: {{ order.total_quantity }}</v-list-item-subtitle>
+                                <v-list dense>
+                                    <v-list-item v-for="item in order.items" :key="item.product_id">
+                                        <v-img :src="item.product_image_url" alt="商品画像" max-width="100" class="mr-3"></v-img>
+                                        <v-list-item-content>
+                                            <v-list-item-title>{{ item.product_name }}</v-list-item-title>
+                                            <v-list-item-subtitle>カテゴリ: {{ item.product_category }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>サイズ: {{ item.product_size }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>性別: {{ item.product_gender }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>個数: {{ item.quantity }}</v-list-item-subtitle>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-col>
+            </v-row>
+            <v-row justify="center" v-else>
+                <v-col cols="12">
+                    <p>注文履歴がありません。</p>
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </v-tab-item>
