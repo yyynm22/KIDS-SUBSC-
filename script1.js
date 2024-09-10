@@ -17,6 +17,7 @@ const app = new Vue({
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: '',  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
+      user_id: sessionStorage.getItem('user_id'),
     },
     methods: {
       mypage() {
@@ -66,10 +67,10 @@ const app = new Vue({
     }
 
     const params = {
-        product_id: This.selectedItem.product_id,
+        product_id: this.selectedItem.product_id,
         user_id: this.user_id,  // ログインしたユーザーのIDを使用
-        product_size: selectedSize,
-        quantity: selectedQuantity
+        product_size: this.selectedSize,
+        quantity: this.selectedQuantity
     };
 
     try {
@@ -78,7 +79,7 @@ const app = new Vue({
 
         // フィールドをリセット
         this.selectedSize = '';
-        this.quantity = '';
+        this.selectedQuantity = '';
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
