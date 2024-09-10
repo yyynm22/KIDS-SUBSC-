@@ -4,157 +4,91 @@ const app = new Vue({
     data: {
       dataList1: [],
       dataList2: [],
-      Category: null,  // カテゴリー選択用のデータ
-      Kidsgender: null,
-      cartdialog: false,  // ダイアログの表示・非表示を管理
-      
+      Category: '',  // カテゴリー選択用のデータ
+      Kidsgender: '',
+      cartdialog: false,  // カートダイアログの表示・非表示
+      dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
       cartItems: [  // 仮のカートアイテムデータ
         { name: 'T-shirt', price: 1000 },
         { name: 'Pants', price: 1500 },
         { name: 'Skirt', price: 1200 }
       ],
-      
+      selectedItem: {},  // 選択された商品を保存
+      selectedSize: '',  // 選択されたサイズ
+      selectedQuantity: '',  // 個数
+      sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
     },
     methods: {
       mypage() {
-        // マイページ遷移を実行
-  window.location.href = '/index2.html';
-        // ボタンのクリックイベントを処理する関数（必要に応じて追加）
+        // マイページ遷移
+        window.location.href = '/index2.html';
       },
       Logout() {
-        // ログアウトページ遷移を実行
-  window.location.href = '/index.html';
-        // ボタンのクリックイベントを処理する関数（必要に応じて追加）
+        // ログアウトページ遷移
+        window.location.href = '/index.html';
       },
-      
       readData1: async function () {
-  console.log("Category: ", this.Category);
-  console.log("Kidsgender: ", this.Kidsgender);
+        if (!this.Category || !this.Kidsgender) {
+          console.log("CategoryまたはKidsgenderが入力されていません");
+          return;
+        }
+        const param = {
+          product_category: this.Category,
+          product_gender: this.Kidsgender,
+        };
+        try {
+          const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
+          this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
+        } catch (error) {
+          console.error("APIリクエストエラー: ", error);
+        }
+      },
+      readData2: async function () {
+        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
+        const newData = response.data.List.map(item => {
+          const existingItem = this.dataList2.find(oldItem => oldItem.Imageurl === item.Imageurl);
+          return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
+        });
+        this.dataList2 = newData;
+      },
+      // 商品を選択してダイアログを開く
+      openDialog(item) {
+        this.selectedItem = item;
+        this.selectedSize = '';
+        this.quantity = 1;
+        this.dialog = true;
+      },
+      // 商品をカートに追加
+     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+    if (!selectedSize || !selectedQuantity) {
+        console.log("サイズまたは個数が入力されていません");
+        return;
+    }
 
-  if (!this.Category || !this.Kidsgender) {
-    console.log("CategoryまたはKidsgenderが入力されていません");
-    return;
-  }
+    const params = {
+        product_id: This.selectedItem.product_id,
+        user_id: this.user_id,  // ログインしたユーザーのIDを使用
+        product_size: selectedSize,
+        quantity: selectedQuantity
+    };
 
-  const param = {
-    product_category: this.Category,   // APIのパラメータ名に合わせる
-    product_gender: this.Kidsgender,   // APIのパラメータ名に合わせる
-  };
+    try {
+        const response = await axios.get('https://m3hminagawafunction.azurewebsites.net/api/INSERT2', { params });
+        console.log(response.data);
 
-  try {
-    console.log("APIリクエストを送信中...");
-
-    // APIエンドポイントにPOSTリクエストを送信
-    const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
-
-    console.log("APIリクエストが成功しました。レスポンス: ", response.data);
-
-    // レスポンスデータを処理し、likedとsavedプロパティを追加
-    this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
-
-    console.log("dataList1: ", this.dataList1);
-  } catch (error) {
-    console.error("APIリクエストエラー: ", error);
-  }
+        // フィールドをリセット
+        this.selectedSize = '';
+        this.quantity = '';
+    } catch (error) {
+        console.error('APIリクエストに失敗しました:', error);
+    }
 },
 
-     readData2: async function () {
-          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-          const newData = response.data.List.map(item => {
-              const existingItem = this.dataList2.find(oldItem => oldItem.Imageurl === item.Imageurl);
-              return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
-          });
-          this.dataList2 = newData;
+      toggleLike(item) {
+        item.liked = !item.liked;
       },
-//カート追加確定
-addCart: async function() {
-  
-//POSTメソッドで送るパラメーターを作成
-const param = {
-  Table: 'subsc_ordercart_table',
-  product_id : this.product_id,
-  user_id : this.user_id,
-  product_size : this.product_size,
-  quantity : this.quantity
-   };
-
-//INSERT2用のAPIを呼び出し
-  // きちんと格納がなされているか確認用
-    console.log("送信するパラメーター:", param);
-  
-    try {
-      const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', param);
-
-      // APIレスポンスをコンソールに表示
-      console.log("APIレスポンス:", response.data);
-      this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
-    } catch (error) {
-      // エラーの詳細をコンソール表示：開発用だが残しておく
-      console.error("カート追加エラー:", error.message);
-      if (error.response) {
-        console.error("レスポンスエラー:", error.response.data);
-      } else if (error.request) {
-        console.error("リクエストエラー:", error.request);
-      } else {
-        console.error("設定エラー:", error.message);
+      toggleSave(item) {
+        item.saved = !item.saved;
       }
     }
-//結果をコンソールに出力
-    console.log(response.data);
-    this.product_id = '';
-    this.user_id = '';
-    this.product_size = '';
-    this.quantity = '';
-
-},      
- //注文確定 未修正
-addOrder: async function() {
-  
-//POSTメソッドで送るパラメーターを作成
-const param = {
-  Table: 'subsc_ordercart_table',
-  product_id : this.product_id,
-  user_id : this.user_id,
-  product_size : this.product_size,
-  quantity : this.quantity
-   };
-
-//INSERT2用のAPIを呼び出し
-  // きちんと格納がなされているか確認用
-    console.log("送信するパラメーター:", param);
-    try {
-      const response = await axios.post('', param);
-
-      // APIレスポンスをコンソールに表示
-      console.log("APIレスポンス:", response.data);
-      this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
-    } catch (error) {
-      // エラーの詳細をコンソール表示：開発用だが残しておく
-      console.error("カート追加エラー:", error.message);
-      if (error.response) {
-        console.error("レスポンスエラー:", error.response.data);
-      } else if (error.request) {
-        console.error("リクエストエラー:", error.request);
-      } else {
-        console.error("設定エラー:", error.message);
-      }
-    }
-//結果をコンソールに出力
-    console.log(response.data);
-    this.product_id = '';
-    this.user_id = '';
-    this.product_size = '';
-    this.quantity = '';
-
-},       
-toggleLike: function (index, listType = 'dataList') {
-          const list = listType === 'dataList' ? this.dataList : this.dataList2;
-          list[index].liked = !list[index].liked;
-      },    
-      mounted() {
-        // ページが表示されたときにデータを自動で取得
-        this.readData2();
-      }
-     
-    }
-  });
+});
