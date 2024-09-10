@@ -12,38 +12,70 @@ new Vue({
                 user_adress: '',
                 user_telenum: ''
             }, // ログインユーザーの会員登録情報を格納するオブジェクト
-            showPassword: false // パスワードの表示・非表示を制御するフラグ
+            showPassword: false, // パスワードの表示・非表示を制御するフラグ
+            orderHistory: [] // 注文履歴を格納する配列
         };
     },
     methods: {
         fetchUserData() {
-            // sessionStorageからユーザー情報を取得し、存在するか確認する
             this.userData.user_name = sessionStorage.getItem('user_name') || '';
             this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
             this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
             this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
             this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
             this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
-            
-            // 任意でuser_idを設定（ここではメールアドレスを使用）
             this.userData.user_id = sessionStorage.getItem('user_mail') || '';
 
-            // 取得したデータをコンソールで確認
-            console.log('User Data:', this.userData);
+            this.fetchOrderHistory();
+        },
+        fetchOrderHistory() {
+            const userId = this.userData.user_id;
+            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
+                params: { user_id: userId }
+            })
+            .then(response => {
+                const orders = response.data;
+
+                orders.forEach(order => {
+                    axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
+                        params: { order_id: order.order_id }
+                    })
+                    .then(detailResponse => {
+                        const details = detailResponse.data;
+
+                        details.forEach(detail => {
+                            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
+                                params: { product_id: detail.product_id }
+                            })
+                            .then(productResponse => {
+                                const product = productResponse.data[0];
+                                this.orderHistory.push({
+                                    order_id: order.order_id,
+                                    total_quantity: detail.quantity,
+                                    product_name: product.product_name,
+                                    product_category: product.product_category,
+                                    product_size: order.product_size,
+                                    product_gender: product.product_gender,
+                                    quantity: detail.quantity,
+                                    product_url: product.URL
+                                });
+                            });
+                        });
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('注文履歴の取得に失敗しました:', error);
+            });
         },
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
         addData() {
-            //商品の検索画面に遷移
             window.location.href = '/index1.html';
         },
     },
     mounted() {
-        // マウント時にユーザーデータを取得
         this.fetchUserData();
-
-        // methods をコンソールに表示（Vue インスタンスのスコープ内で実行）
-        console.log('Methods in Vue instance:', this.$options.methods);
     },
 });
