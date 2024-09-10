@@ -1,98 +1,81 @@
-const app = new Vue({
-  el: '#app',
+new Vue({
+    el: '#app',
     vuetify: new Vuetify(),
-    data: {
-      dataList1: [],
-      dataList2: [],
-      Category: '',  // カテゴリー選択用のデータ
-      Kidsgender: '',
-      cartdialog: false,  // カートダイアログの表示・非表示
-      dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
-      cartItems: [  // 仮のカートアイテムデータ
-        { name: 'T-shirt', price: 1000 },
-        { name: 'Pants', price: 1500 },
-        { name: 'Skirt', price: 1200 }
-      ],
-      selectedItem: {},  // 選択された商品を保存
-      selectedSize: '',  // 選択されたサイズ
-      selectedQuantity: 1,  // 個数
-      sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
-      user_id: sessionStorage.getItem('user_id'),
+    data() {
+        return {
+            tab: 0, // 初期タブ
+            userData: {
+                user_id: '',
+                user_name: '',
+                user_pass: '',
+                user_postcode: '',
+                user_adress: '',
+                user_telenum: ''
+            }, // ログインユーザーの会員登録情報を格納するオブジェクト
+            showPassword: false, // パスワードの表示・非表示を制御するフラグ
+            orderHistory: [] // 注文履歴を格納する配列
+        };
     },
     methods: {
-      mypage() {
-        // マイページ遷移
-        window.location.href = '/index2.html';
-      },
-      Logout() {
-        // ログアウトページ遷移
-        window.location.href = '/index.html';
-      },
-      readData1: async function () {
-        if (!this.Category || !this.Kidsgender) {
-          console.log("CategoryまたはKidsgenderが入力されていません");
-          return;
-        }
-        const param = {
-          product_category: this.Category,
-          product_gender: this.Kidsgender,
-        };
-        try {
-          const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
-          this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
-        } catch (error) {
-          console.error("APIリクエストエラー: ", error);
-        }
-      },
-      readData2: async function () {
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-        const newData = response.data.List.map(item => {
-          const existingItem = this.dataList2.find(oldItem => oldItem.Imageurl === item.Imageurl);
-          return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
-        });
-        this.dataList2 = newData;
-      },
-      // 商品を選択してダイアログを開く
-      openDialog(item) {
-        this.selectedItem = item;
-        this.selectedSize = '';
-        this.quantity = 1;
-        this.dialog = true;
-      },
-      // 商品をカートに追加
-     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // user_idとproduct_idがセットされているかを確認
-    console.log("ユーザーID:", this.user_id);
-    console.log("選択された商品:", selectedItem);
-    if (!selectedSize || !selectedQuantity) {
-        console.log("サイズまたは個数が入力されていません");
-        return;
-    }
+        fetchUserData() {
+            this.userData.user_name = sessionStorage.getItem('user_name') || '';
+            this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
+            this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
+            this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
+            this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
+            this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
+            this.userData.user_id = sessionStorage.getItem('user_mail') || '';
 
-    const params = {
-        product_id: this.selectedItem.product_id,
-        user_id: this.user_id,  // ログインしたユーザーのIDを使用
-        product_size: this.selectedSize,
-        quantity: this.selectedQuantity
-    };
+            this.fetchOrderHistory();
+        },
+        fetchOrderHistory() {
+            const userId = this.userData.user_id;
+            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
+                params: { user_id: userId }
+            })
+            .then(response => {
+                const orders = response.data;
 
-    try {
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', { params });
-        console.log(response.data);
+                orders.forEach(order => {
+                    axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
+                        params: { order_id: order.order_id }
+                    })
+                    .then(detailResponse => {
+                        const details = detailResponse.data;
 
-        // フィールドをリセット
-        this.selectedSize = '';
-        this.selectedQuantity = 1;
-    } catch (error) {
-        console.error('APIリクエストに失敗しました:', error);
-    }
-},
-
-      toggleLike(item) {
-        item.liked = !item.liked;
-      },
-      toggleSave(item) {
-        item.saved = !item.saved;
-      }
-    }
+                        details.forEach(detail => {
+                            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
+                                params: { product_id: detail.product_id }
+                            })
+                            .then(productResponse => {
+                                const product = productResponse.data[0];
+                                this.orderHistory.push({
+                                    order_id: order.order_id,
+                                    total_quantity: detail.quantity,
+                                    product_name: product.product_name,
+                                    product_category: product.product_category,
+                                    product_size: order.product_size,
+                                    product_gender: product.product_gender,
+                                    quantity: detail.quantity,
+                                    product_url: product.URL
+                                });
+                            });
+                        });
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('注文履歴の取得に失敗しました:', error);
+            });
+        },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
+        addData() {
+            window.location.href = '/index1.html';
+        },
+    },
+    mounted() {
+        this.fetchUserData();
+    },
 });
