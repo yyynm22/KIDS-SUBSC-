@@ -6,6 +6,8 @@ const app = new Vue({
         dialog: false,
         user_mail: '',
         user_pass: '',
+        empl_id:'',
+        empl_pass:'',
     },
     methods: {
         async login() {
