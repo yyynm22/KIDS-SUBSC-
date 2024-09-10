@@ -87,10 +87,47 @@
 
                         <!-- 注文履歴タブ -->
                         <v-tab-item>
-                            <v-card flat>
-                                <v-card-text class="centered-content">
-                                    <p>注文履歴の詳細がここに表示されます。</p>
-                                </v-card-text>
+    <v-card flat>
+        <v-card-text class="centered-content">
+            <v-row v-for="order in orderHistory" :key="order.order_id" class="order-card">
+                <v-col cols="12" sm="6" md="4">
+                    <v-list dense>
+                        <v-list-item>
+                            <v-list-item-content>注文番号:</v-list-item-content>
+                            <v-list-item-action>{{ order.order_id }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>合計個数:</v-list-item-content>
+                            <v-list-item-action>{{ order.total_quantity }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>商品名:</v-list-item-content>
+                            <v-list-item-action>{{ order.product_name }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>カテゴリ:</v-list-item-content>
+                            <v-list-item-action>{{ order.product_category }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>サイズ:</v-list-item-content>
+                            <v-list-item-action>{{ order.product_size }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>性別:</v-list-item-content>
+                            <v-list-item-action>{{ order.product_gender }}</v-list-item-action>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>個数:</v-list-item-content>
+                            <v-list-item-action>{{ order.quantity }}</v-list-item-action>
+                        </v-list-item>
+                    </v-list>
+                    <v-img :src="order.product_url" aspect-ratio="1" class="order-image"></v-img>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
+</v-tab-item>
+
                             </v-card>
                         </v-tab-item>
                     </v-tabs-items>
