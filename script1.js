@@ -17,8 +17,15 @@ const app = new Vue({
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: 1,  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
-      user_id: sessionStorage.getItem('user_id'),
+     user_id: '',  // ログインしているユーザーIDを保存
     },
+  
+  mounted() {
+        // コンポーネントがマウントされたときに sessionStorage から user_id を取得
+        this.user_id = sessionStorage.getItem('user_id');
+        console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
+    },
+  
     methods: {
       mypage() {
         // マイページ遷移
@@ -61,19 +68,22 @@ const app = new Vue({
       },
       // 商品をカートに追加
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // user_idとproduct_idがセットされているかを確認
-    console.log("ユーザーID:", this.user_id);
-    console.log("選択された商品:", selectedItem);
+      // user_id が取得されているか確認
+            if (!this.user_id) {
+                console.log("ユーザーIDが取得されていません");
+                return;
+            }
+       
     if (!selectedSize || !selectedQuantity) {
         console.log("サイズまたは個数が入力されていません");
         return;
     }
 
     const params = {
-        product_id: this.selectedItem.product_id,
-        user_id: this.user_id,  // ログインしたユーザーのIDを使用
-        product_size: this.selectedSize,
-        quantity: this.selectedQuantity
+        product_id: selectedItem.product_id,
+                user_id: this.user_id,  // ここで取得した user_id を使用
+                product_size: selectedSize,
+                quantity: Number(selectedQuantity)
     };
 
     try {
