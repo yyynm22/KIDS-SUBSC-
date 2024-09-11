@@ -96,7 +96,11 @@ const app = new Vue({
             product_id: selectedItem.product_id,
             user_id: this.user_id,
             product_size: selectedSize,
-            quantity: selectedQuantity
+            quantity: selectedQuantity,
+            product_name: selectedItem.product_name,  // 商品名を追加
+            product_category: selectedItem.product_category,  // カテゴリを追加
+            product_gender: selectedItem.product_gender,  // 性別を追加
+            URL: selectedItem.URL  // 画像のURLを追加
         });
         // フィールドをリセット
         this.selectedSize = '';
@@ -112,45 +116,37 @@ const app = new Vue({
   const param = {
     Table: 'subsc_detail_table',
     order_id : this.selectedOrder.OrderId,
-  };
+     };
   
   //INSERT3用のAPIを呼び出し
-  console.log("送信するパラメーター:", param);
-  try {
-    const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', param);
+    // きちんと格納がなされているか確認用
+      console.log("送信するパラメーター:", param);
+      try {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', param);
 
-    // APIレスポンスをコンソールに表示
-    console.log("APIレスポンス:", response.data);
+        // APIレスポンスをコンソールに表示
+        console.log("APIレスポンス:", response.data);
+        this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
+      } catch (error) {
+        // エラーの詳細をコンソール表示：開発用だが残しておく
+        console.error("カート追加エラー:", error.message);
+        if (error.response) {
+          console.error("レスポンスエラー:", error.response.data);
+        } else if (error.request) {
+          console.error("リクエストエラー:", error.request);
+        } else {
+          console.error("設定エラー:", error.message);
+        }
+      }
+  //結果をコンソールに出力
+      console.log(response.data);
+      this.order_id = '';
 
-    // カートダイアログを閉じる
-    this.detailsDialog = false;
-    
-    // カート情報をリセット
-    this.cartItems = [];  // カートをクリア
-
-  } catch (error) {
-    // エラーの詳細をコンソール表示
-    console.error("カート追加エラー:", error.message);
-    if (error.response) {
-      console.error("レスポンスエラー:", error.response.data);
-    } else if (error.request) {
-      console.error("リクエストエラー:", error.request);
-    } else {
-      console.error("設定エラー:", error.message);
-    }
-  }
-
-  // 結果をコンソールに出力
-  console.log(response.data);
-  this.order_id = '';  // `order_id` をリセット
-},
-
-// 既存の `toggleLike` メソッドはそのまま残す
-toggleLike: function (index, listType = 'dataList') {
-  const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
-  list[index].liked = !list[index].liked;
-},
-
+  },       
+  toggleLike: function (index, listType = 'dataList') {
+            const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
+            list[index].liked = !list[index].liked;
+        },      
 
 
       toggleLike(item) {
