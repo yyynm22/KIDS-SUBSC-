@@ -65,7 +65,7 @@ const app = new Vue({
                 this.errorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
             }
         }
-    }
+    
   });
   document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.getElementsByClassName('tab');
