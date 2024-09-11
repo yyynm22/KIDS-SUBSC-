@@ -8,7 +8,8 @@ const app = new Vue({
         user_pass: '',
         errorMessage: '',  // エラーメッセージ用のデータ
     },
-          async login() {
+    methods: {
+        async login() {
             console.log('Attempting to login with mail:', this.user_mail);
   
             try {
@@ -65,8 +66,10 @@ const app = new Vue({
                 this.errorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
             }
         }
-    
+    }
   });
+  
+
   document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.getElementsByClassName('tab');
     for (let i = 0; i < tabs.length; i++) {
