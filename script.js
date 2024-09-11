@@ -100,16 +100,16 @@ const app = new Vue({
   }
   }
   function nextClick() {
-  slide.classList.remove(slide${count % totalSlides + 1});
+  slide.classList.remove(`slide${count % totalSlides + 1}`);
   count++;
-  slide.classList.add(slide${count % totalSlides + 1});
+  slide.classList.add(`slide${count % totalSlides + 1}`);
   updateListBackground();
   }
   function prevClick() {
-  slide.classList.remove(slide${count % totalSlides + 1});
+  slide.classList.remove(`slide${count % totalSlides + 1}`);
   count--;
   if (count < 0) count = totalSlides - 1;
-  slide.classList.add(slide${count % totalSlides + 1});
+  slide.classList.add(`slide${count % totalSlides + 1}`);
   updateListBackground();
   }
   function startAutoPlay() {
@@ -130,9 +130,9 @@ const app = new Vue({
   indicator.addEventListener('click', (event) => {
   if (event.target.classList.contains('list')) {
     const index = Array.from(lists).indexOf(event.target);
-    slide.classList.remove(slide${count % totalSlides + 1});
+    slide.classList.remove(`slide${count % totalSlides + 1}`);
     count = index;
-    slide.classList.add(slide${count % totalSlides + 1});
+    slide.classList.add(`slide${count % totalSlides + 1}`);
     updateListBackground();
     resetAutoPlayInterval();
   }
