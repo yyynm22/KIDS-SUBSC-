@@ -8,11 +8,7 @@ const app = new Vue({
       Kidsgender: '',
       cartdialog: false,  // カートダイアログの表示・非表示
       dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
-      cartItems: [  // 仮のカートアイテムデータ
-        { name: 'T-shirt', price: 1000 },
-        { name: 'Pants', price: 1500 },
-        { name: 'Skirt', price: 1200 }
-      ],
+      cartItems: [],
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: 1,  // 個数
@@ -111,6 +107,14 @@ const app = new Vue({
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
+      
+      // カートに追加した商品情報を cartItems に追加
+        this.cartItems.push({
+            product_id: selectedItem.product_id,
+            user_id: this.user_id,
+            product_size: selectedSize,
+            quantity: selectedQuantity
+        });
 
         // フィールドをリセット
         this.selectedSize = '';
@@ -119,7 +123,44 @@ const app = new Vue({
         console.error('APIリクエストに失敗しました:', error);
     }
 },
+//注文確定
+  confirmOrder: async function() {
+    
+  //POSTメソッドで送るパラメーターを作成
+  const param = {
+    Table: 'subsc_detail_table',
+    order_id : this.selectedOrder.OrderId,
+     };
+  
+  //INSERT3用のAPIを呼び出し
+    // きちんと格納がなされているか確認用
+      console.log("送信するパラメーター:", param);
+      try {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', param);
 
+        // APIレスポンスをコンソールに表示
+        console.log("APIレスポンス:", response.data);
+        this.detailsDialog = false;  //カートに追加時点でオーバレイを閉じるfalse
+      } catch (error) {
+        // エラーの詳細をコンソール表示：開発用だが残しておく
+        console.error("カート追加エラー:", error.message);
+        if (error.response) {
+          console.error("レスポンスエラー:", error.response.data);
+        } else if (error.request) {
+          console.error("リクエストエラー:", error.request);
+        } else {
+          console.error("設定エラー:", error.message);
+        }
+      }
+  //結果をコンソールに出力
+      console.log(response.data);
+      this.order_id = '';
+
+  },       
+  toggleLike: function (index, listType = 'dataList') {
+            const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
+            list[index].liked = !list[index].liked;
+        },      
 
 
       toggleLike(item) {
