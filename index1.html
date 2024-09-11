@@ -46,15 +46,18 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
-                <div>{{ item.name }}</div>
-                <div>{{ item.price }}円</div>
+             <v-col v-for="(item, index) in cartItems" :key="index" cols="6">
+                <div>{{ item.product_name }}</div>
+                <div>Category: {{ item.product_category }}</div>
+      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+                <div>Size: {{ item.size }}</div>
+                <div>Quantity : {{ item.quantity }}</div>
               </v-col>
             </v-row>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red" text @click="cartdialog = false">注文確定</v-btn>
+            <v-btn color="red" text @click="confirmOrder">注文確定</v-btn>
             <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
           </v-card-actions>
         </v-card>
