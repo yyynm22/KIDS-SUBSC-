@@ -3,7 +3,7 @@ new Vue({
     vuetify: new Vuetify(),
     data() {
         return {
-            tab: 0, // 初期タブ
+            tab: 0,
             userData: {
                 user_id: '',
                 user_name: '',
@@ -11,42 +11,32 @@ new Vue({
                 user_postcode: '',
                 user_adress: '',
                 user_telenum: ''
-            }, // ログインユーザーの会員登録情報を格納するオブジェクト
-            orderHistory: [], // 注文履歴を格納する配列
-            showPassword: false // パスワードの表示・非表示を制御するフラグ
+            },
+            orderHistory: [],
+            showPassword: false
         };
     },
     methods: {
         fetchUserData() {
-            // sessionStorageからユーザー情報を取得し、存在するか確認する
             this.userData.user_name = sessionStorage.getItem('user_name') || '';
             this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
             this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
             this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
             this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
             this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
-            
-            // 任意でuser_idを設定（ここではメールアドレスを使用）
             this.userData.user_id = sessionStorage.getItem('user_mail') || '';
-
-            // 取得したデータをコンソールで確認
             console.log('User Data:', this.userData);
         },
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
         addData() {
-            // 商品の検索画面に遷移
             window.location.href = '/index1.html';
         },
         fetchOrderHistory() {
-            // APIから注文履歴データを取得する
             axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
                 .then(response => {
-                    // APIレスポンスの内容をコンソールに出力して確認
                     console.log('API Response:', response.data);
-                    
-                    // サーバーから返された注文履歴データを格納
                     if (response.data && Array.isArray(response.data)) {
                         this.orderHistory = response.data.map(order => ({
                             order_id: order.order_id,
@@ -69,16 +59,14 @@ new Vue({
                 .catch(error => {
                     console.error('注文履歴の取得に失敗しました:', error);
                 });
+        },
+        Logout() {
+            window.location.href = '/index.html';
         }
     },
     mounted() {
-        // マウント時にユーザーデータを取得
         this.fetchUserData();
-        
-        // マウント時に注文履歴を取得
         this.fetchOrderHistory();
-
-        // methods をコンソールに表示（Vue インスタンスのスコープ内で実行）
         console.log('Methods in Vue instance:', this.$options.methods);
     },
 });
