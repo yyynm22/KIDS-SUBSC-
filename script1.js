@@ -33,11 +33,15 @@ const app = new Vue({
     methods: {
       
 filterData() {
+  console.log("Data List2 items: ", this.dataList2);  // データ全体を確認
+
   if (this.Category === '' && this.Kidsgender === '') {
     this.filteredList = this.dataList2;
   } else {
-    // フィルタリング条件ごとにコンソール出力
     this.filteredList = this.dataList2.filter(item => {
+      // 各 item の構造を確認
+      console.log("Item details: ", item);
+
       const matchesCategory = this.Category === '' || item.ItemCategory === this.Category;
       const matchesGender = this.Kidsgender === 'All' || item.KidsGender === this.Kidsgender;
 
@@ -48,7 +52,6 @@ filterData() {
     });
   }
 
-  // フィルタリング後の結果を確認
   console.log("Filtered List after search: ", this.filteredList);
 },
 
