@@ -15,14 +15,24 @@
     <div id="app">
         <v-app>
             <v-app-bar app class="custom-font">
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="centered-title">Kids Sabsc</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn @click="addData" dark color="#f09199" rounded class="custom-font">
+                <!-- ログアウトボタン -->
+                <v-btn @click="Logout" dark rounded class="custom-font logout-btn" aria-label="ログアウト" title="ログアウト">
+                    <v-icon start>mdi-logout</v-icon>
+                    Logout
+                </v-btn>
+                
+                <!-- HOMEボタン -->
+                <v-btn @click="addData" dark color="#f09199" rounded class="custom-font home-btn">
                     Home
                     <v-icon start>mdi-home</v-icon>
                 </v-btn>
+            
+                <v-spacer></v-spacer>
+                <v-toolbar-title class="centered-title">Kids Sabsc</v-toolbar-title>
+                <v-spacer></v-spacer>
             </v-app-bar>
+            
+            
 
             <v-main>
                 <v-container>
