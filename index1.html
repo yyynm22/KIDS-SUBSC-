@@ -46,17 +46,15 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col v-for="(item, index) in cartItems" :key="index" cols="6">
+              <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
                 <div>{{ item.name }}</div>
                 <div>{{ item.price }}円</div>
-                <div>サイズ: {{ item.size }}</div>
-                <div>個数: {{ item.quantity }}</div>
               </v-col>
             </v-row>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red" text @click="confirmOrder">注文確定</v-btn>
+            <v-btn color="red" text @click="cartdialog = false">注文確定</v-btn>
             <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
           </v-card-actions>
         </v-card>
@@ -76,12 +74,10 @@
       <!-- 検索ボタン -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
         <v-col cols="auto">
-          <v-btn v-on:click="readData1" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="検索">SEARCH</v-btn>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn v-on:click="readData2" dark color="#f09199" rounded class="custom-font" title="一覧" aria-label="一覧">List</v-btn>
+          <v-btn @click="filterData" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="検索">SEARCH</v-btn>
         </v-col>
       </v-row>
+
 
       <!-- dataList1の内容を表示 -->
 <v-row class="d-flex justify-center align-center" style="width: 100%;">
@@ -164,28 +160,28 @@
 
 
       
-      <!-- dataList2の内容を表示 -->
+       <!-- filteredListの内容を表示 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
-  <v-col cols="12" sm="6" md="3" v-for="(item, index) in dataList2" :key="index">
-    <v-card class="mx-auto" max-width="344" outlined>
-      <!-- 商品画像を表示 -->
-      <v-img :src="item.URL" aspect-ratio="1.5" @click="selectedItem = item; dialog = true"></v-img>
-      
-      <v-card-title>{{ item.product_name }}</v-card-title>
-      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+        <v-col cols="12" sm="6" md="3" v-for="(item, index) in filteredList" :key="index">
+          <v-card class="mx-auto" max-width="344" outlined>
+            <!-- 商品画像を表示 -->
+            <v-img :src="item.URL" aspect-ratio="1.5" @click="selectedItem = item; dialog = true"></v-img>
+            
+            <v-card-title>{{ item.product_name }}</v-card-title>
+            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
 
-      <v-card-actions>
-        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
-          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-        </v-btn>
-        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-col>
-</v-row>
+            <v-card-actions>
+              <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+                <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+              </v-btn>
+              <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+                <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
 
     </v-container>
   </v-main>
