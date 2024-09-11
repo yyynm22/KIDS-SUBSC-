@@ -1,203 +1,188 @@
 /* フッター、ヘッダーのフォント設定 */
 .custom-font {
-  font-family: 'Times New Roman', sans-serif !important;
-}
-
-/* ヘッダーとフッター分のスペースを確保 */
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-header {
-  height: 80px; /* ヘッダーの高さを適宜調整 */
-  background-color: #f1f1f1; /* 背景色を設定 */
-}
-
-footer {
-  height: 80px; /* フッターの高さを適宜調整 */
-  background-color: #f1f1f1; /* 背景色を設定 */
-  position: fixed;
-  bottom: 0;
+    font-family: 'Times New Roman', sans-serif !important;
+  }
+  
+  /* ヘッダーとフッター分のスペースを確保 */
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  header {
+    height: 80px; /* ヘッダーの高さを適宜調整 */
+    background-color: #f1f1f1; /* 背景色を設定 */
+  }
+  
+  footer {
+    height: 80px; /* フッターの高さを適宜調整 */
+    background-color: #f1f1f1; /* 背景色を設定 */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .slide-wrapper {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 100px; /* ヘッダーの高さ分マージンを追加 */
+    margin-bottom: 10px; /* フッターの高さ分マージンを追加 */
+  }
+  
+  
+  .login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .login-header h1 {
+    font-size: 2rem;
+    color: #C9A66B;
+  }
+  
+  .login-header p {
+    color: #555;
+  }
+  
+  .login-footer {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .empllogin {
+    margin: 20px 30px;
+    padding: 10px 20px; /* パディングを小さくしてボタンを小さくする */
+    z-index: 10; /* 高い値に設定して他の要素より前面に */
+    background-color: #f1f1f1; 
+    color: gray;
+    border: none; /* 枠線なし */
+    box-shadow: none; /* 影なし */
+    outline: none; /* フォーカスのアウトラインを削除 */
+    font-size: 0.875rem; /* フォントサイズを小さくする */
+    border-radius: 4px; /* 角の丸みを調整（必要に応じて） */
+  }
+  
+  
+  *,body,ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style: none;
+  }
+  
+  
+  
+  /* ↓ スライドの外枠 */
+  .slide-wrapper {
+    width: 100%;
+    height:450px;
+    position: relative;
+    overflow: hidden; /* はみ出したスライドを隠す */
+    margin-top: 70px;
+    margin-bottom: 10px; 
+  }
+  /*  ↓ スライド（コンテンツ） */
+  .slide { /*スライド全体 */
+    width: 300%;
+    height: 100%;
+    display: flex;
+    transition: all 0.3s;
+  }
+  .slide div { /* スライド */
+    width: 33.33%;
+    height: 100%;
+    font-size: 16px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+  .slide1 { /* スライドさせるために必要なクラス */
+    transform: translateX(0);
+  }
+  .slide2 { /* スライドさせるために必要なクラス */
+    transform: translateX(-33.33%);
+  }
+  .slide3 { /* スライドさせるために必要なクラス */
+    transform: translateX(-66.66%);
+  }
+  
+  .slide img{
   width: 100%;
-}
-
-.slide-wrapper {
-  width: 100%;
-  height: 300px;
-  position: relative;
-  overflow: hidden;
-  margin-top: 100px; /* ヘッダーの高さ分マージンを追加 */
-  margin-bottom: 10px; /* フッターの高さ分マージンを追加 */
-}
-
-
-.login-container {
-  max-width: 400px;
-  margin: auto;
-  padding: 2rem;
-  border-radius: 100px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: #fff;
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.login-header h1 {
-  font-size: 2rem;
-  color: #C9A66B;
-}
-
-.login-header p {
-  color: #555;
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.empllogin {
-  margin: 20px 30px;
-  padding: 10px 20px; /* パディングを小さくしてボタンを小さくする */
-  z-index: 10; /* 高い値に設定して他の要素より前面に */
-  background-color: #f1f1f1; 
-  color: gray;
-  border: none; /* 枠線なし */
-  box-shadow: none; /* 影なし */
-  outline: none; /* フォーカスのアウトラインを削除 */
-  font-size: 0.875rem; /* フォントサイズを小さくする */
-  border-radius: 4px; /* 角の丸みを調整（必要に応じて） */
-}
-
-
-*,body,ul {
-  margin: 0;
-  padding: 0;
-}
-li {
-  list-style: none;
-}
-
-
-
-/* ↓ スライドの外枠 */
-.slide-wrapper {
-  width: 100%;
-  height:450px;
-  position: relative;
-  overflow: hidden; /* はみ出したスライドを隠す */
-  margin-top: 70px;
-  margin-bottom: 10px; 
-}
-/*  ↓ スライド（コンテンツ） */
-.slide { /*スライド全体 */
-  width: 300%;
-  height: 100%;
-  display: flex;
-  transition: all 0.3s;
-}
-.slide div { /* スライド */
-  width: 33.33%;
-  height: 100%;
-  font-size: 16px;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-.slide1 { /* スライドさせるために必要なクラス */
-  transform: translateX(0);
-}
-.slide2 { /* スライドさせるために必要なクラス */
-  transform: translateX(-33.33%);
-}
-.slide3 { /* スライドさせるために必要なクラス */
-  transform: translateX(-66.66%);
-}
-
-.slide img{
-width: 100%;
-height: auto;
-}
-
-/* ↓ 左右のボタン */
-.next {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  right: 10px;
-  bottom: 50%;
-  z-index: 10;
-  cursor: pointer;
-  border-top: solid 3px #000;
-  border-right: solid 3px #000;
-  -webkit-transform: rotate(45deg) translateY(50%);
-  transform: rotate(45deg) translateY(50%);
-}
-.prev {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  left: 25px;
-  bottom: 50%;
-  z-index: 10;
-  cursor: pointer;
-  border-top: solid 3px #000;
-  border-right: solid 3px #000;
-  -webkit-transform: rotate(-135deg) translateY(-50%);
-  transform: rotate(-135deg) translateY(-50%);
-}
-/* ↓ インジケーター */
-.indicator {
-  width: 100%;
-  position: absolute;
-  bottom: 20px;
-  display: flex;
-  column-gap: 18px;
-  z-index: 10;
-  justify-content: center;
-  align-items: center;
-}
-.indicator li {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  list-style: none;
-  background-color: #fff;
-  border: 2px #000 solid;
-  cursor: pointer;
-}
-.indicator li:first-of-type {
-  background-color: #000;
-}
-
-.explanation{
-  background-color: #FFF0F5;
-  height: 500px; 
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 20px;
- 
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.plan{
-  background-color: #E0FFFF;
-  height: 500px;
-  margin-top: 10px;
-  margin-bottom: 100px; 
-  padding: 20px;
-    
+  height: auto;
+  }
+  
+  /* ↓ 左右のボタン */
+  .next {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 10px;
+    bottom: 50%;
+    z-index: 10;
+    cursor: pointer;
+    border-top: solid 3px #000;
+    border-right: solid 3px #000;
+    -webkit-transform: rotate(45deg) translateY(50%);
+    transform: rotate(45deg) translateY(50%);
+  }
+  .prev {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 25px;
+    bottom: 50%;
+    z-index: 10;
+    cursor: pointer;
+    border-top: solid 3px #000;
+    border-right: solid 3px #000;
+    -webkit-transform: rotate(-135deg) translateY(-50%);
+    transform: rotate(-135deg) translateY(-50%);
+  }
+  /* ↓ インジケーター */
+  .indicator {
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    column-gap: 18px;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+  }
+  .indicator li {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    list-style: none;
+    background-color: #fff;
+    border: 2px #000 solid;
+    cursor: pointer;
+  }
+  .indicator li:first-of-type {
+    background-color: #000;
+  }
+  
+  .explanation{
+    background-color: #FFF0F5;
+    height: 500px; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 20px;
+   
     border: 1px solid #ddd;
     border-radius: 8px;
     display: flex;
@@ -205,4 +190,19 @@ height: auto;
     align-items: center;
     justify-content: center;
     text-align: center;
-}
+  }
+  .plan{
+    background-color: #E0FFFF;
+    height: 500px;
+    margin-top: 10px;
+    margin-bottom: 100px; 
+    padding: 20px;
+      
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+  }
