@@ -22,9 +22,9 @@
                 </v-btn>
                 
                 <!-- HOMEボタン -->
-                <v-btn @click="addData" dark color="#f09199" rounded class="custom-font home-btn">
+                <v-btn v-on:click="dialog = true" dark color="#f09199" rounded class="custom-font">
+                <v-icon start>mdi-home</v-icon>
                     Home
-                    <v-icon start>mdi-home</v-icon>
                 </v-btn>
             
                 <v-spacer></v-spacer>
