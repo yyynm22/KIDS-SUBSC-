@@ -46,9 +46,12 @@ new Vue({
                     // APIレスポンスの内容をコンソールに出力して確認
                     console.log('API Response:', response.data);
                     
-                    // サーバーから返された注文履歴データを格納
                     if (response.data && Array.isArray(response.data)) {
-                        this.orderHistory = response.data.map(order => ({
+                        // ログインしているユーザーのIDでフィルタリング
+                        const filteredOrders = response.data.filter(order => order.user_id === this.userData.user_id);
+
+                        // サーバーから返された注文履歴データを格納
+                        this.orderHistory = filteredOrders.map(order => ({
                             order_id: order.order_id,
                             total_quantity: order.total_quantity,
                             items: order.items.map(item => ({
