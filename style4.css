@@ -1,0 +1,42 @@
+/* 商品追加セクションのスタイル */
+.product-section {
+  margin-top: 100px; /* 商品追加セクションの上部に100pxのスペースを追加 */
+}
+
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+  font-family: 'Times New Roman', sans-serif !important;
+}
+
+.custom-font {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.v-app {
+  flex: 1;
+}
+
+.v-app-bar {
+  height: 64px; /* ヘッダーの高さ */
+}
+
+.v-footer {
+  height: 56px; /* フッターの高さ */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.v-container {
+  padding-top: 64px; /* ヘッダーの高さ分 */
+  padding-bottom: 56px; /* フッターの高さ分 */
+  box-sizing: border-box; /* パディングがサイズに影響しないように */
+}

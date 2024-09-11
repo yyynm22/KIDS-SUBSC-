@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kids Sabsc (Product)</title>
+  <link rel="stylesheet" href="./style1.css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <!-- ヘッダー -->
+      <v-app-bar app class="custom-font" style="justify-content: space-between;">
+        <v-btn @click="Logout" dark rounded class="custom-font" aria-label="ログアウト" title="ログアウト">
+          <v-icon start>mdi-logout</v-icon>
+          Logout
+        </v-btn>
+        <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
+      </v-app-bar>
+
+      <!-- コンテンツ -->
+      <v-container>
+        <!-- 商品追加セクション -->
+        <v-row class="product-section mb-3 mt-3">
+          <v-col cols="12" md="4">
+            <v-text-field v-model="product_name" label="商品名" outlined></v-text-field>
+            <v-text-field v-model="product_category" label="カテゴリ" outlined></v-text-field>
+            <v-text-field v-model="product_gender" label="性別" outlined></v-text-field>
+            <v-text-field v-model="product_URL" label="画像URL" outlined></v-text-field>
+            <v-btn @click="addData" color="pink" class="mt-3">商品を追加</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <!-- フッター -->
+      <v-footer app padless class="custom-font">
+        <v-col class="text-center" cols="12">
+          © 2024 TeamA
+        </v-col>
+        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199">
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
+      </v-footer>
+    </v-app>
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        product_name: '',
+        product_category: '',
+        product_gender: '',
+        product_URL: ''
+      },
+      methods: {
+        // 商品を追加するメソッド
+        addData: async function () {
+          if (!this.product_name || !this.product_category || !this.product_gender || !this.product_URL) {
+            console.log("すべての項目が入力されていません");
+            return;
+          }
+
+          const param = {
+            product_name: this.product_name,
+            product_category: this.product_category,
+            product_gender: this.product_gender,
+            URL: this.product_URL
+          };
+
+          try {
+            const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT1', param);
+            console.log(response.data);
+            
+            // フィールドのリセット
+            this.product_name = '';
+            this.product_category = '';
+            this.product_gender = '';
+            this.product_URL = '';
+          } catch (error) {
+            console.error("データの追加に失敗しました:", error);
+          }
+        },
+        Logout: function () {
+          console.log("ログアウト処理");
+        }
+      }
+    });
+  </script>
+</body>
+</html>
