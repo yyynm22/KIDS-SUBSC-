@@ -1,163 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>kidssubsc</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="./style.css">
-    <style>
-        .slide-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
+const app = new Vue({
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+        // ログイン機能用のデータ
+        dialog: false,
+        user_mail: '',
+        user_pass: '',
+        errorMessage: '',  // エラーメッセージ用のデータ
+    },
+    methods: {
+        async login() {
+            console.log('Attempting to login with mail:', this.user_mail);
+
+            try {
+                // APIからユーザー情報を取得
+                const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+                
+                // レスポンスデータの内容を確認する
+                const users = response.data;
+                console.log('API response:', users);
+
+                // usersがオブジェクトであり、Listプロパティを持つか確認
+                if (users.List && Array.isArray(users.List)) {
+                    console.log('User data (List):', users.List);
+
+                    // ユーザー情報を検索
+                    const user = users.List.find(user => user.user_mail.trim() === this.user_mail.trim() && user.user_pass === this.user_pass);
+
+                    if (user) {
+                        console.log('Login successful');
+                        
+                        // ユーザー情報を sessionStorage に保存
+                        sessionStorage.setItem('user_id', user.user_id);
+                        sessionStorage.setItem('user_name', user.user_name);
+                        sessionStorage.setItem('user_pass', user.user_pass);
+                        sessionStorage.setItem('user_mail', user.user_mail);
+                        sessionStorage.setItem('user_postcode', user.user_postcode);
+                        sessionStorage.setItem('user_adress', user.user_adress);
+                        sessionStorage.setItem('user_telenum', user.user_telenum);
+
+                        // デバッグ用のログ出力
+                        console.log("Saved user_id:", sessionStorage.getItem('user_id'));
+                        console.log("Saved user_name:", sessionStorage.getItem('user_name'));
+                        console.log("Saved user_pass:", sessionStorage.getItem('user_pass'));
+                        console.log("Saved user_mail:", sessionStorage.getItem('user_mail'));
+                        console.log("Saved user_postcode:", sessionStorage.getItem('user_postcode'));
+                        console.log("Saved user_adress:", sessionStorage.getItem('user_adress'));
+                        console.log("Saved user_telenum:", sessionStorage.getItem('user_telenum'));
+
+                        // ログイン成功時の処理
+                        this.dialog = false;  // ダイアログを閉じる
+                        this.errorMessage = '';  // エラーメッセージをクリア
+
+                        // メールアドレスに＠が含まれる場合とIDが数字である場合の処理
+                        if (this.user_mail.includes('@')) {
+                            window.location.href = '/index1.html';
+                        } else if (!isNaN(this.user_mail)) {
+                            window.location.href = '/index4.html';
+                        } else {
+                            this.errorMessage = 'ログイン情報が無効です。';  // エラーメッセージを設定
+                        }
+                    } else {
+                        console.log('Invalid user_mail or user_pass');
+                        this.errorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                    }
+                } else {
+                    console.error('User data is not an array:', users);
+                    this.errorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                this.errorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+            }
         }
-        .slide {
-            display: flex;
-            overflow: hidden;
-            scroll-behavior: smooth;
-        }
-        .slide img {
-            width: 100%;
-            height: auto;
-        }
-        .new-sections {
-            padding: 20px;
-            background: #f4f4f4;
-            border-top: 1px solid #ddd;
-        }
-        .new-sections h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .new-sections p {
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
-    <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
-    <div id="app">
-        <v-app>
-            <!-- ヘッダー -->
-            <v-app-bar app class="custom-font">
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="centered-title">Kids Sabsc</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn v-on:click="dialog = true" dark color="#f09199" rounded class="custom-font">
-                    Login
-                    <v-icon start>
-                        mdi-pencil
-                    </v-icon>
-                </v-btn>
-            </v-app-bar>
-
-<!-- ログインダイアログ -->
-<v-dialog v-model="dialog" max-width="400">
-  <v-card>
-      <v-card-title class="headline">Login</v-card-title>
-      <v-card-text>
-          <!-- エラーメッセージ表示 -->
-          <v-alert v-if="errorMessage" type="error" dismissible>
-              {{ errorMessage }}
-          </v-alert>
-          <v-text-field v-model="user_mail" label="mail" outlined></v-text-field>
-          <v-text-field
-              v-model="user_pass"
-              label="Password"
-              type="password"
-              outlined
-          ></v-text-field>
-      </v-card-text>
-      <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="login">Login</v-btn>
-          <v-btn @click="dialog = false">Cancel</v-btn>
-      </v-card-actions>
-  </v-card>
-</v-dialog>
-
-
-            <!-- スライドの外枠 -->
-            <div class="slide-wrapper">
-                <!-- スライド（コンテンツ） -->
-                <div id="slide" class="slide">
-                  <div>
-                        <img src="https://i.gyazo.com/a7ad1a2a604a97145aa7036d387f34d8.jpg">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/312c0a62a09c78741065f2184f6ce979.jpg">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/d3d1be17b96ff29d9c82f63665f6caf5.jpg">  
-                  </div>
-                </div>
-                <!-- 左右のボタン -->
-                <span id="prev" class="prev"></span>
-                <span id="next" class="next"></span>
-                <!-- インジケーター -->
-                <ul class="indicator" id="indicator">
-                  <li class="list"></li>
-                  <li class="list"></li>
-                  <li class="list"></li>
-                </ul>
-            </div>
-
-            <!-- 新しいセクション -->
-            <div class="explanation">
-                <h2>「毎日がもっと楽しく、もっと便利に。お子様の成長をサポートするサブスクリプションサービス」</h2>
-                <p>私たちのサブスクリプションサービスは、<br>
-                    お子様の成長に合わせた高品質な用品を毎月お届けします。<br>
-                    忙しいパパママにも安心してご利用いただけるよう、厳選された商品をお手元にお届け。<br>
-                    お子様にぴったりのアイテムが、自動で届く便利さを是非体験してください。
-                </p>
-            </div>
-
-            <div class="plan">
-                <h2>借りられる商品数: 1回のご利用で最大5点まで<br>
-                    配送: 月に1回、お手元にお届けします<br>
-                    交換: ご希望の商品を新しいものと交換することができます
-                </h2>
-                <p>ご利用方法<br>
-                    オンラインで選ぶ: お好きな商品を5点までカートに追加します。<br>
-                    配送: ご自宅にお届けします。<br>
-                    使った後: 商品のご返却、または交換をご希望の場合は、次回の配送時にお知らせください。
-                </p>
-                <p>
-                    注意事項<br>
-                    商品は返却後、次のお客様に再利用されます。清潔で良好な状態でご返却ください。<br>
-                    借りられる商品数は、1回のご利用で最大5点までです。<br>
-                    返却期限を守ってください。遅延が発生した場合、追加料金が発生することがあります。<br>
-                    商品の破損や紛失にはご注意ください。補償が必要な場合は別途費用が発生することがあります。<br>
-                    シンプルなプランで、お子様の成長に合わせたアイテムを手軽にお試しください。<br>
-                    ご不明な点がございましたら、お気軽にお問い合わせください。
-                </p>
-            </div>
-
-            <!-- フッター -->
-            <v-footer app padless class="custom-font">
-                <v-row class="d-flex align-center justify-space-between" cols="12">
-                    <v-col>
-                        <v-btn v-on:click="dialog = true" class="empllogin">
-                            employee login
-                            <v-icon start>
-                                mdi-pencil
-                            </v-icon>  
-                    </v-col>
-
-                    <v-col class="text-center"  style="position: absolute; left: 50%; transform: translateX(-50%);">
-                        © 2024 TeamA
-                    </v-col>
-                </v-row>
-            </v-footer>
-        </v-app>
-    </div>
-
-    <!-- Vue.js、Vuetify、Axiosのスクリプトを読み込む -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
-    <script src="./script.js"></script>
-</body>
-</html>
+    }
+});
