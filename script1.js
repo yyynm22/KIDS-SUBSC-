@@ -28,6 +28,7 @@ const app = new Vue({
         console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
     
     // ページ読み込み時に readData2 を呼び出し
+     console.log("readData2 メソッドが呼び出されます");
     this.readData2();
     },
   
