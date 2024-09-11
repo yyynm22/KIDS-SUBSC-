@@ -33,20 +33,15 @@ const app = new Vue({
     methods: {
       
 filterData() {
-  console.log("Data List2 items: ", this.dataList2);  // データ全体を確認
-
   if (this.Category === '' && this.Kidsgender === '') {
     this.filteredList = this.dataList2;
   } else {
     this.filteredList = this.dataList2.filter(item => {
-      // 各 item の構造を確認
-      console.log("Item details: ", item);
+      const matchesCategory = this.Category === '' || item.product_category === this.Category;
+      const matchesGender = this.Kidsgender === 'All' || item.product_gender === this.Kidsgender;
 
-      const matchesCategory = this.Category === '' || item.ItemCategory === this.Category;
-      const matchesGender = this.Kidsgender === 'All' || item.KidsGender === this.Kidsgender;
-
-      console.log("Item Category: ", item.ItemCategory, "Matches Category: ", matchesCategory);
-      console.log("Item Gender: ", item.KidsGender, "Matches Gender: ", matchesGender);
+      console.log("Item Category: ", item.product_category, "Matches Category: ", matchesCategory);
+      console.log("Item Gender: ", item.product_gender, "Matches Gender: ", matchesGender);
 
       return matchesCategory && matchesGender;
     });
