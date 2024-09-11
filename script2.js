@@ -51,9 +51,9 @@ new Vue({
                         // APIレスポンスの内容をコンソールに出力して確認
                         console.log('API Response:', response.data);
                         
-                        if (response.data && Array.isArray(response.data)) {
+                        if (response.data && response.data.List && Array.isArray(response.data.List)) {
                             // ログインしているユーザーのIDでフィルタリング
-                            const filteredOrders = response.data.filter(order => order.user_id === this.userData.user_id);
+                            const filteredOrders = response.data.List.filter(order => order.user_id === this.userData.user_id);
 
                             // サーバーから返された注文履歴データを格納
                             this.orderHistory = filteredOrders.map(order => ({
