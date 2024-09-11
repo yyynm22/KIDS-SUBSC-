@@ -49,6 +49,8 @@
               <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
                 <div>{{ item.name }}</div>
                 <div>{{ item.price }}円</div>
+                <div>サイズ: {{ item.size }}</div>
+                <div>個数: {{ item.quantity }}</div>
               </v-col>
             </v-row>
           </v-card-text>
