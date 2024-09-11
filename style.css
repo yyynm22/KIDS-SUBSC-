@@ -15,13 +15,13 @@
     background-color: #f1f1f1; /* 背景色を設定 */
   }
 
-  .v-toolbar-title {
-    margin: 0 auto; /* 左右のマージンを自動に設定して中央配置 */
-    text-align: center; /* 文字を中央に寄せる */
+/* ヘッダーのタイトルを中央に配置 */
+.centered-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-
-  
   footer {
     height: 80px; /* フッターの高さを適宜調整 */
     background-color: #f1f1f1; /* 背景色を設定 */
