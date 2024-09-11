@@ -1,115 +1,84 @@
-const app = new Vue({
-  el: '#app',
+new Vue({
+    el: '#app',
     vuetify: new Vuetify(),
-    data: {
-      dataList1: [],
-      dataList2: [],
-      Category: '',  // カテゴリー選択用のデータ
-      Kidsgender: '',
-      cartdialog: false,  // カートダイアログの表示・非表示
-      dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
-      cartItems: [  // 仮のカートアイテムデータ
-        { name: 'T-shirt', price: 1000 },
-        { name: 'Pants', price: 1500 },
-        { name: 'Skirt', price: 1200 }
-      ],
-      selectedItem: {},  // 選択された商品を保存
-      selectedSize: '',  // 選択されたサイズ
-      selectedQuantity: 1,  // 個数
-      sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
-     user_id: '',  // ログインしているユーザーIDを保存
-    },
-  
-  mounted() {
-        // コンポーネントがマウントされたときに sessionStorage から user_id を取得
-        this.user_id = sessionStorage.getItem('user_id');
-        console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
-    
-    // ページ読み込み時に readData2 を呼び出し
-    this.readData2();
-    },
-  
-    methods: {
-      mypage() {
-        // マイページ遷移
-        window.location.href = '/index2.html';
-      },
-      Logout() {
-        // ログアウトページ遷移
-        window.location.href = '/index.html';
-      },
-      readData1: async function () {
-        if (!this.Category || !this.Kidsgender) {
-          console.log("CategoryまたはKidsgenderが入力されていません");
-          return;
-        }
-        const param = {
-          product_category: this.Category,
-          product_gender: this.Kidsgender,
+    data() {
+        return {
+            tab: 0, // 初期タブ
+            userData: {
+                user_id: '',
+                user_name: '',
+                user_pass: '',
+                user_postcode: '',
+                user_adress: '',
+                user_telenum: ''
+            }, // ログインユーザーの会員登録情報を格納するオブジェクト
+            orderHistory: [], // 注文履歴を格納する配列
+            showPassword: false // パスワードの表示・非表示を制御するフラグ
         };
-        try {
-          const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
-          this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
-        } catch (error) {
-          console.error("APIリクエストエラー: ", error);
+    },
+    methods: {
+        fetchUserData() {
+            // sessionStorageからユーザー情報を取得し、存在するか確認する
+            this.userData.user_name = sessionStorage.getItem('user_name') || '';
+            this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
+            this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
+            this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
+            this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
+            this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
+            
+            // 任意でuser_idを設定（ここではメールアドレスを使用）
+            this.userData.user_id = sessionStorage.getItem('user_mail') || '';
+
+            // 取得したデータをコンソールで確認
+            console.log('User Data:', this.userData);
+        },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
+        addData() {
+            // 商品の検索画面に遷移
+            window.location.href = '/index1.html';
+        },
+        fetchOrderHistory() {
+            // APIから注文履歴データを取得する
+            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
+                .then(response => {
+                    // APIレスポンスの内容をコンソールに出力して確認
+                    console.log('API Response:', response.data);
+                    
+                    // サーバーから返された注文履歴データを格納
+                    if (response.data && Array.isArray(response.data)) {
+                        this.orderHistory = response.data.map(order => ({
+                            order_id: order.order_id,
+                            total_quantity: order.total_quantity,
+                            items: order.items.map(item => ({
+                                product_id: item.product_id,
+                                product_name: item.product_name,
+                                product_category: item.product_category,
+                                product_size: item.product_size,
+                                product_gender: item.product_gender,
+                                quantity: item.quantity,
+                                product_image_url: item.URL
+                            }))
+                        }));
+                        console.log('Order History:', this.orderHistory);
+                    } else {
+                        console.error('期待する形式のデータが返されていません:', response.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('注文履歴の取得に失敗しました:', error);
+                });
         }
-      },
-      readData2: async function () {
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-        const newData = response.data.List.map(item => {
-          const existingItem = this.dataList2.find(oldItem => oldItem.Imageurl === item.Imageurl);
-          return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
-        });
-        this.dataList2 = newData;
-      },
-      // 商品を選択してダイアログを開く
-      openDialog(item) {
-        this.selectedItem = item;
-        this.selectedSize = '';
-        this.quantity = 1;
-        this.dialog = true;
-      },
-      
-      // 商品をカートに追加
-     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // 必須パラメーターが設定されているかチェック
-    if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
-        console.log("パラメーターが設定されてない");
-        if (!this.user_id) console.log("ユーザーIDが設定されていません");
-        if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
-        if (!selectedSize) console.log("サイズが設定されていません");
-        if (!selectedQuantity) console.log("数量が設定されていません");
-        return;
-    }
+    },
+    mounted() {
+        // マウント時にユーザーデータを取得
+        this.fetchUserData();
+        
+        // マウント時に注文履歴を取得
+        this.fetchOrderHistory();
 
-    // 数量を数値型に変換
-    const params = {
-        product_id: selectedItem.product_id,
-        user_id: this.user_id,
-        product_size: selectedSize,
-        quantity: selectedQuantity
-    };
-
-    try {
-        // パラメーターを含んだAPIリクエスト
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
-        console.log(response.data);
-
-        // フィールドをリセット
-        this.selectedSize = '';
-        this.selectedQuantity = 1;
-    } catch (error) {
-        console.error('APIリクエストに失敗しました:', error);
-    }
-},
-
-
-
-      toggleLike(item) {
-        item.liked = !item.liked;
-      },
-      toggleSave(item) {
-        item.saved = !item.saved;
-      }
-    }
+        // methods をコンソールに表示（Vue インスタンスのスコープ内で実行）
+        console.log('Methods in Vue instance:', this.$options.methods);
+    },
 });
