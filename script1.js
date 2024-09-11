@@ -123,6 +123,7 @@ const app = new Vue({
      // selectedOrder が存在するかチェック
   if (!this.selectedOrder || !this.selectedOrder.OrderId) {
     console.error("注文が選択されていません");
+    console.log("selectedOrder:", this.selectedOrder);
     return;
   }
     
