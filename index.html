@@ -84,6 +84,43 @@
             </div>
         </v-app>
     </div>
+
+                <p>ご利用方法<br>
+                    オンラインで選ぶ: お好きな商品を5点までカートに追加します。<br>
+                    配送: ご自宅にお届けします。<br>
+                    使った後: 商品のご返却、または交換をご希望の場合は、次回の配送時にお知らせください。
+                </p>
+                <p>
+                    注意事項<br>
+                    商品は返却後、次のお客様に再利用されます。清潔で良好な状態でご返却ください。<br>
+                    借りられる商品数は、1回のご利用で最大5点までです。<br>
+                    返却期限を守ってください。遅延が発生した場合、追加料金が発生することがあります。<br>
+                    商品の破損や紛失にはご注意ください。補償が必要な場合は別途費用が発生することがあります。<br>
+                    シンプルなプランで、お子様の成長に合わせたアイテムを手軽にお試しください。<br>
+                    ご不明な点がございましたら、お気軽にお問い合わせください。
+                </p>
+            </div>
+
+            <!-- フッター -->
+            <v-footer app padless class="custom-font">
+                <v-row class="d-flex align-center justify-space-between" cols="12">
+                    <v-col>
+                        <v-btn v-on:click="dialog = true" class="empllogin">
+                            employee login
+                            <v-icon start>
+                                mdi-pencil
+                            </v-icon>  
+                    </v-col>
+
+                    <v-col class="text-center"  style="position: absolute; left: 50%; transform: translateX(-50%);">
+                        © 2024 TeamA
+                    </v-col>
+                </v-row>
+            </v-footer>
+        </v-app>
+    </div>
+
+     <!-- Vue.js、Vuetify、Axiosのスクリプトを読み込む -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
