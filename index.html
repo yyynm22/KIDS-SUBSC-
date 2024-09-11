@@ -52,26 +52,31 @@
                 </v-btn>
             </v-app-bar>
 
-            <!-- ログインダイアログ -->
-            <v-dialog v-model="dialog" max-width="400">
-                <v-card>
-                    <v-card-title class="headline">Login</v-card-title>
-                    <v-card-text>
-                        <v-text-field v-model="user_mail" label="mail" outlined></v-text-field>
-                        <v-text-field
-                            v-model="user_pass"
-                            label="Password"
-                            type="password"
-                            outlined
-                        ></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" @click="login">Login</v-btn>
-                        <v-btn @click="dialog = false">Cancel</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+<!-- ログインダイアログ -->
+<v-dialog v-model="dialog" max-width="400">
+  <v-card>
+      <v-card-title class="headline">Login</v-card-title>
+      <v-card-text>
+          <v-text-field v-model="user_mail" label="mail" outlined></v-text-field>
+          <v-text-field
+              v-model="user_pass"
+              label="Password"
+              type="password"
+              outlined
+          ></v-text-field>
+          <!-- エラーメッセージの表示 -->
+          <v-alert v-if="error_message" type="error" border="left" colored-border>
+              {{ error_message }}
+          </v-alert>
+      </v-card-text>
+      <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="login">Login</v-btn>
+          <v-btn @click="dialog = false">Cancel</v-btn>
+      </v-card-actions>
+  </v-card>
+</v-dialog>
+
 
             <!-- スライドの外枠 -->
             <div class="slide-wrapper">
