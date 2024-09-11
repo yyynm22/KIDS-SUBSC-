@@ -15,11 +15,6 @@
     margin-right: 5mm; /* HOMEボタンとのスペースを確保 */
 }
 
-/* HOMEボタンにスタイルを追加（必要に応じて） */
-.home-btn {
-    /* 必要に応じてスタイルを追加 */
-}
-
 /* タブのコンテナを中央に配置 */
 .custom-tabs {
     display: flex;
