@@ -14,8 +14,6 @@ const app = new Vue({
       selectedQuantity: 1,  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
-      searchQuery: '',  // 絞り込み用の検索クエリ
-    filteredList: [],  // 絞り込まれたリストを保存するためのデータ
     },
   
   mounted() {
@@ -24,25 +22,10 @@ const app = new Vue({
         console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
     
     // ページ読み込み時に readData2 を呼び出し
-     console.log("readData2 メソッドが呼び出されます");
     this.readData2();
     },
   
     methods: {
-      
-      filterData() {
-  const lowerQuery = this.searchQuery.toLowerCase();
-  
-  this.filteredList = this.dataList2.filter(item => {
-    const matchesSearchQuery = lowerQuery === '' || item.product_name.toLowerCase().includes(lowerQuery);
-    const matchesCategory = !this.Category || item.product_category === this.Category;
-    const matchesGender = !this.Kidsgender || item.product_gender === this.Kidsgender;
-
-    return matchesSearchQuery && matchesCategory && matchesGender;
-  });
-},
-
-      
       mypage() {
         // マイページ遷移
         window.location.href = '/index2.html';
@@ -107,15 +90,18 @@ const app = new Vue({
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
-      
+
       // カートに追加した商品情報を cartItems に追加
         this.cartItems.push({
             product_id: selectedItem.product_id,
             user_id: this.user_id,
             product_size: selectedSize,
-            quantity: selectedQuantity
+            quantity: selectedQuantity,
+            product_name: selectedItem.product_name,  // 商品名を追加
+            product_category: selectedItem.product_category,  // カテゴリを追加
+            product_gender: selectedItem.product_gender,  // 性別を追加
+            URL: selectedItem.URL  // 画像のURLを追加
         });
-
         // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = 1;
