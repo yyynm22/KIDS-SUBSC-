@@ -34,15 +34,23 @@ new Vue({
             window.location.href = '/index1.html';
         },
         fetchOrderHistory() {
-            // ログイン中のユーザーIDを取得（sessionStorage等から）
-            const userId = sessionStorage.getItem('userId');
-
-            axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/orders/${userId}`)
+            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
                 .then(response => {
                     console.log('API Response:', response.data);
-                    if (Array.isArray(response.data)) {
-                        // レスポンスの形式に合わせてorderHistoryを設定
-                        this.orderHistory = response.data;
+                    if (response.data && Array.isArray(response.data)) {
+                        this.orderHistory = response.data.map(order => ({
+                            order_id: order.order_id,
+                            total_quantity: order.total_quantity,
+                            items: order.items.map(item => ({
+                                product_id: item.product_id,
+                                product_name: item.product_name,
+                                product_category: item.product_category,
+                                product_size: item.product_size,
+                                product_gender: item.product_gender,
+                                quantity: item.quantity,
+                                product_image_url: item.URL
+                            }))
+                        }));
                         console.log('Order History:', this.orderHistory);
                     } else {
                         console.error('期待する形式のデータが返されていません:', response.data);
