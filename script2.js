@@ -46,40 +46,43 @@ new Vue({
                         })
                     );
         
-                    return Promise.all(select4Promises);
-                })
-                .then(select4Responses => {
-                    const orderDetails = [];
+                    return Promise.all(select4Promises).then(select4Responses => {
+                        const orderDetails = select4Responses.map((response, index) => {
+                            const order_id = orderIds[index];
+                            const cartItems = response.data.List || []; // カートのアイテムがない場合は空配列
         
-                    select4Responses.forEach((response, index) => {
-                        const order_id = response.config.params.order_id;
-                        const cartItems = response.data.List || [];  // cartItemsが存在しない場合は空配列を使用
+                            let totalQuantity = 0;
+                            cartItems.forEach(item => {
+                                totalQuantity += item.quantity;
+                            });
         
-                        let totalQuantity = 0;
-                        cartItems.forEach(item => {
-                            totalQuantity += item.quantity;
-                        });
+                            // 各カートアイテムに対応する商品情報を取得する
+                            const productPromises = cartItems.map(item =>
+                                axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
+                                    params: { product_id: item.product_id }
+                                }).then(productResponse => {
+                                    const productData = productResponse.data.List[0]; // 商品情報の1件目を使用
+                                    return {
+                                        ...item,
+                                        product_name: productData.product_name,
+                                        product_category: productData.product_category,
+                                        product_gender: productData.product_gender,
+                                        product_image_url: productData.URL
+                                    };
+                                })
+                            );
         
-                        orderDetails.push({
-                            order_id,
-                            total_quantity: totalQuantity,
-                            cartItems
-                        });
-        
-                        const productPromises = cartItems.map(item =>
-                            axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
-                                params: { product_id: item.product_id }
-                            })
-                        );
-        
-                        return Promise.all(productPromises).then(productResponses => {
-                            productResponses.forEach((productResponse, i) => {
-                                cartItems[i].productInfo = productResponse.data;
+                            return Promise.all(productPromises).then(itemsWithProductInfo => {
+                                return {
+                                    order_id,
+                                    total_quantity: totalQuantity,
+                                    items: itemsWithProductInfo
+                                };
                             });
                         });
-                    });
         
-                    return orderDetails;
+                        return Promise.all(orderDetails);
+                    });
                 })
                 .then(orderHistory => {
                     this.orderHistory = orderHistory;
