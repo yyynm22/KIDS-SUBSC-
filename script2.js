@@ -12,45 +12,79 @@ new Vue({
         user_adress: '',
         user_telenum: ''
       },
-      orderHistory: [],  // 注文履歴データ
+      orderHistory: [],
       showPassword: false
     };
   },
-  mounted() {
-    this.fetchUserData();   // ユーザー情報を取得
-    this.fetchOrderHistory();  // 注文履歴を取得
-  },
   methods: {
-    // ログインしたユーザーのデータを取得
     fetchUserData() {
-      const storedUserData = JSON.parse(sessionStorage.getItem('loggedInUser'));  // セッションストレージから取得
-      if (storedUserData) {
-        this.userData = storedUserData;
+      // セッションストレージからユーザーデータを取得
+      this.userData.user_id = sessionStorage.getItem('user_id') || '';
+      this.userData.user_name = sessionStorage.getItem('user_name') || '';
+      this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
+      this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
+      this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
+      this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
+    },
+
+    async fetchOrderHistory() {
+      try {
+        const userId = this.userData.user_id;
+        
+        // 注文履歴の取得
+        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
+          params: { user_id: userId }
+        });
+
+        // 商品情報の取得
+        const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
+
+        // 注文履歴データをマッピング
+        const orders = orderResponse.data.List;
+        const products = productResponse.data.List;
+
+        this.orderHistory = orders.map(order => {
+          const items = products
+            .filter(product => product.product_id === order.product_id)
+            .map(product => ({
+              product_name: product.product_name,
+              product_category: product.product_category,
+              product_gender: product.product_gender,
+              product_image_url: product.URL,
+              product_size: order.product_size,
+              quantity: order.quantity
+            }));
+
+          return {
+            order_id: order.order_id,
+            total_quantity: order.quantity,
+            items
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching order history:', error);
       }
     },
-    
-    // 注文履歴を取得し、ログインユーザーのデータをフィルタリング
-    fetchOrderHistory() {
-      axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4')
-        .then(response => {
-          const allOrders = response.data.List;
-          // ログインしているユーザーの注文履歴のみを抽出
-          this.orderHistory = allOrders.filter(order => order.user_id === this.userData.user_id);
-        })
-        .catch(error => {
-          console.error('注文履歴の取得に失敗しました:', error);
-        });
-    },
-    
-    // パスワード表示のトグル
+
     togglePasswordVisibility() {
+      // パスワード表示の切り替え
       this.showPassword = !this.showPassword;
     },
-    
-    // ログアウト処理（例）
-    Logout() {
-      sessionStorage.removeItem('loggedInUser');  // セッションストレージから削除
-      window.location.href = 'login.html';  // ログインページにリダイレクト
+
+    logout() {
+      // ログアウト処理
+      sessionStorage.clear();
+      window.location.href = './login.html';
+    },
+
+    goToHome() {
+      // HOMEボタンの動作
+      window.location.href = './home.html';
     }
+  },
+  mounted() {
+    // マウント時にデータを取得
+    this.fetchUserData();
+    this.fetchOrderHistory();
   }
 });
