@@ -18,7 +18,6 @@ new Vue({
   },
   methods: {
     fetchUserData() {
-      // セッションストレージからユーザーデータを取得
       this.userData.user_id = sessionStorage.getItem('user_id') || '';
       this.userData.user_name = sessionStorage.getItem('user_name') || '';
       this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
@@ -30,20 +29,22 @@ new Vue({
     async fetchOrderHistory() {
       try {
         const userId = this.userData.user_id;
-        
-        // 注文履歴の取得
         const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
           params: { user_id: userId }
         });
 
-        // 商品情報の取得
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
 
+        // デバッグログを追加してレスポンスを確認
+        console.log('Order Response:', orderResponse.data);
+        console.log('Product Response:', productResponse.data);
+
         // 注文履歴データをマッピング
-        const orders = orderResponse.data.List;
-        const products = productResponse.data.List;
+        const orders = orderResponse.data.List || []; // デフォルト空の配列に修正
+        const products = productResponse.data.List || []; // デフォルト空の配列に修正
 
         this.orderHistory = orders.map(order => {
+          // 注文に関連する商品情報を結びつける
           const items = products
             .filter(product => product.product_id === order.product_id)
             .map(product => ({
@@ -67,23 +68,21 @@ new Vue({
     },
 
     togglePasswordVisibility() {
-      // パスワード表示の切り替え
       this.showPassword = !this.showPassword;
     },
 
-    logout() {
+    Logout() {
       // ログアウト処理
       sessionStorage.clear();
       window.location.href = './login.html';
     },
 
-    goToHome() {
-      // HOMEボタンの動作
+    addData() {
+      // HOME ボタンの動作
       window.location.href = './home.html';
     }
   },
   mounted() {
-    // マウント時にデータを取得
     this.fetchUserData();
     this.fetchOrderHistory();
   }
