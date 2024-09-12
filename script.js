@@ -8,10 +8,10 @@ const app = new Vue({
         user_mail: '',
         user_pass: '',
         usererrorMessage: '',  // エラーメッセージ用のデータ
-        employee_id:'',
+        employee_name:'',
         employee_pass:'',
         employeeerrorMessage: '',  // エラーメッセージ用のデータ
-        errorMessage: '', // 追加
+        errorMessage: ''
     },
     methods: {
         async login1() {
@@ -73,7 +73,7 @@ const app = new Vue({
         },
 
         async login2() {
-            console.log('Attempting to login with id:', this.employee_id);
+            console.log('Attempting to login with name:', this.employee_name);
   
             try {
                 // APIからユーザー情報を取得
@@ -88,12 +88,8 @@ const app = new Vue({
                     console.log('Employee data (List):', employees.List);
   
                     // ユーザー情報を検索
-                    const employee = employees.List.find(employee =>
-                        employee.employee_id && this.employee_id &&
-                        employee.employee_id.trim() === this.employee_id.trim() &&
-                        employee.employee_pass === this.employee_pass
-                    );
-                    
+                    const employee = employees.List.find(employee => employee.employee_name.trim() === this.employee_name.trim() && employee.employee_pass === this.employee_pass);
+  
                     if (employee) {
                         console.log('Login successful');
                         
@@ -114,7 +110,7 @@ const app = new Vue({
                         // 次のページにリダイレクト
                         window.location.href = '/index4.html';
                     } else {
-                        console.log('Invalid employee_id or employee_pass');
+                        console.log('Invalid employee_name or employee_pass');
                         this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
                     }
                 } else {
