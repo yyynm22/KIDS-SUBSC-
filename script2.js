@@ -88,3 +88,4 @@ new Vue({
     this.fetchOrderHistory();
   }
 });
+
