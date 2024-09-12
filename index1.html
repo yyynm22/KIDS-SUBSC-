@@ -24,9 +24,9 @@
         <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
 
         <div style="display: flex; margin-left: auto;">
-          <v-btn v-on:click="cartdialog = true; loadSubscOrderCart();" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート">
-            <v-icon start>mdi-cart</v-icon>
-          </v-btn>
+          <v-btn v-on:click="openCartDialog" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート">
+  <v-icon start>mdi-cart</v-icon>
+</v-btn>
 
           <v-btn @click="mypage" dark color="#f09199" rounded class="custom-font" title="マイページ" aria-label="マイページ">
             <v-icon start>mdi-weather-night</v-icon>
@@ -36,34 +36,37 @@
       </v-app-bar>
 
       <v-dialog v-model="cartdialog" max-width="600px">
-        <v-card>
-          <v-card-title class="subheading font-weight-bold">
-            カート
-            <v-spacer></v-spacer>
-            <v-btn icon @click="cartdialog = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
-                 <v-card-title>{{ item.product_name }} </v-card-title>
-                 <v-divider></v-divider>
-                <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-                <div>Category: {{ item.product_category }}</div>
-                <div>Gender: {{ item.product_gender }}</div>
-                <div>Size: {{ item.product_size }}</div>
-                <div>Quantity: {{ item.quantity }}</div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="red" text @click="cartdialog = false">注文確定</v-btn>
-            <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+  <v-card>
+    <v-card-title class="subheading font-weight-bold">
+      カート
+      <v-spacer></v-spacer>
+      <v-btn icon @click="cartdialog = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-card-title>
+
+    <v-card-text>
+      <v-row>
+        <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
+          <v-card class="mx-auto" max-width="344" outlined>
+            <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+            <v-card-title>{{ item.product_name }}</v-card-title>
+            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+            <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
+            <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="red" text @click="cartdialog = false">注文確定</v-btn>
+      <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
 
       <template>
   <v-main>
