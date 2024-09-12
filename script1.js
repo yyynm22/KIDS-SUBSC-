@@ -193,9 +193,10 @@ readData3: async function () {
     }));
 
     const params = {
-        user_id: this.user_id,
-        order_details: orderDetails
-    };
+    user_id: this.user_id,
+    order_details: orderDetails
+};
+
 
  
       try {
