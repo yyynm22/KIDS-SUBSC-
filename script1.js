@@ -199,7 +199,7 @@ readData3: async function () {
 
  
       try {
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', param);
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', params);
         console.log("注文が正常に送信されました:", response.data);
 
         // APIレスポンスをコンソールに表示
@@ -209,6 +209,10 @@ readData3: async function () {
         // カート情報をリセット
         this.dataList3 = [];  // カートをクリア
         this.cartdialog = false;
+        
+        //結果をコンソールに出力
+        console.log(response.data);
+        this.order_id = '';
       
       } catch (error) {
         // エラーの詳細をコンソール表示：開発用だが残しておく
@@ -221,9 +225,7 @@ readData3: async function () {
           console.error("設定エラー:", error.message);
         }
       }
-  //結果をコンソールに出力
-      console.log(response.data);
-      this.order_id = '';
+ 
 
   },       
   toggleLike: function (index, listType = 'dataList') {
