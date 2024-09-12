@@ -24,7 +24,7 @@
         <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
 
         <div style="display: flex; margin-left: auto;">
-          <v-btn v-on:click="cartdialog = true; loadSubscOrderCart();" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート">
+          <v-btn v-on:click="cartdialog = true" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート">
             <v-icon start>mdi-cart</v-icon>
           </v-btn>
 
@@ -46,9 +46,16 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col v-for="item in cartItems" :key="item.product_id" cols="6">
-                <div>Size: {{ item.product_size }}</div>
-                <div>Quantity: {{ item.quantity }}</div>
+              <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
+                <v-card class="mx-auto" max-width="344" outlined>
+      <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
+      <v-card-title>{{ item.product_name }}</v-card-title>
+      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+                  <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
+                  <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
+      
+    </v-card>
               </v-col>
             </v-row>
           </v-card-text>
