@@ -24,7 +24,7 @@ new Vue({
             this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
             this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
             this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
-            this.userData.user_id = sessionStorage.getItem('user_mail') || '';
+            this.userData.user_id = sessionStorage.getItem('user_id') || ''; // 修正: user_id の取得
             console.log('User Data:', this.userData);
         },
         togglePasswordVisibility() {
@@ -38,47 +38,50 @@ new Vue({
                 .then(select6Response => {
                     const orderList = select6Response.data.List;
                     const orderIds = orderList.map(order => order.order_id);
-        
+
                     // 各order_idに対してSELECT4を呼び出す
                     const select4Promises = orderIds.map(order_id =>
                         axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
-                            params: { order_id }
+                            params: { order_id, user_id: this.userData.user_id } // user_idを追加
                         })
                     );
-        
+
                     return Promise.all(select4Promises);
                 })
                 .then(select4Responses => {
                     const orderDetails = [];
-        
+
                     select4Responses.forEach((response, index) => {
                         const order_id = response.config.params.order_id;
                         const cartItems = response.data.List || [];  // cartItemsが存在しない場合は空配列を使用
-        
+
                         let totalQuantity = 0;
                         cartItems.forEach(item => {
                             totalQuantity += item.quantity;
                         });
-        
+
                         orderDetails.push({
                             order_id,
                             total_quantity: totalQuantity,
                             cartItems
                         });
-        
+
                         const productPromises = cartItems.map(item =>
                             axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
                                 params: { product_id: item.product_id }
                             })
                         );
-        
+
                         return Promise.all(productPromises).then(productResponses => {
                             productResponses.forEach((productResponse, i) => {
-                                cartItems[i].productInfo = productResponse.data;
+                                cartItems[i].product_image_url = productResponse.data.URL;
+                                cartItems[i].product_name = productResponse.data.product_name;
+                                cartItems[i].product_category = productResponse.data.product_category;
+                                cartItems[i].product_gender = productResponse.data.product_gender;
                             });
                         });
                     });
-        
+
                     return orderDetails;
                 })
                 .then(orderHistory => {
@@ -89,7 +92,6 @@ new Vue({
                     console.error('注文履歴の取得に失敗しました:', error);
                 });
         },
-        
         Logout() {
             window.location.href = '/index.html';
         }
