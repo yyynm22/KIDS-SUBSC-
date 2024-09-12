@@ -112,21 +112,6 @@ readData3: async function () {
 
             // dataList3に新しいデータを反映
             this.dataList3 = newData;
-
-            // product_idを元にsubsc_product_tableから情報を取得
-            const productResponses = await Promise.all(userItems.map(item =>
-                fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3?product_id=${item.product_id}`)
-            ));
-
-            const productData = await Promise.all(productResponses.map(res => res.json()));
-            console.log("Product data from subsc_product_table:", productData);
-
-            // productDataを新しいデータに結合
-            this.dataList3 = this.dataList3.map(item => {
-                const productInfo = productData.find(p => p.product_id === item.product_id);
-                return productInfo ? { ...item, productInfo } : item;
-            });
-
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
         }
