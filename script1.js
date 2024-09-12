@@ -88,16 +88,16 @@ readData3: async function () {
         if (cartitems.List && Array.isArray(cartitems.List)) {
             console.log('Cart items (List):', cartitems.List);
 
-            // user_idでカート内のユーザー情報を検索
-            const user = cartitems.List.find(user => user.user_id.toString().trim() === this.user_id.toString().trim());
-            if (user) {
-                console.log('Found user:', user);
+            // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
+            const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
+            if (userItems.length > 0) {
+                console.log('Found user items:', userItems);
             } else {
-                console.log('User not found');
+                console.log('User items not found');
             }
 
             // 新しいデータを処理
-            const newData = cartitems.List.map(item => {
+            const newData = userItems.map(item => {
                 const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
                 return existingItem ? { 
                     ...item, 
@@ -119,6 +119,7 @@ readData3: async function () {
         console.error('データの取得に失敗しました:', error);
     }
 },
+
       
       openCartDialog() {
       this.cartdialog = true;  // ダイアログを開く
