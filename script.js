@@ -11,6 +11,7 @@ const app = new Vue({
         employee_id:'',
         employee_pass:'',
         employeeerrorMessage: '',  // エラーメッセージ用のデータ
+        errorMessage: '', // 追加
     },
     methods: {
         async login1() {
@@ -87,8 +88,12 @@ const app = new Vue({
                     console.log('Employee data (List):', employees.List);
   
                     // ユーザー情報を検索
-                    const employee = employees.List.find(employee => employee.employee_id.trim() === this.employee_id.trim() && employee.employee_pass === this.employee_pass);
-  
+                    const employee = employees.List.find(employee =>
+                        employee.employee_id && this.employee_id &&
+                        employee.employee_id.trim() === this.employee_id.trim() &&
+                        employee.employee_pass === this.employee_pass
+                    );
+                    
                     if (employee) {
                         console.log('Login successful');
                         
