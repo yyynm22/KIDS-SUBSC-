@@ -194,7 +194,8 @@ readData3: async function () {
 
     const params = {
     user_id: this.user_id,
-    order_details: orderDetails
+    order_details: orderDetails,
+    order_id: this.order_id // order_id を追加
 };
 
 
