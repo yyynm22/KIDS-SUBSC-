@@ -20,11 +20,10 @@ new Vue({
         fetchUserData() {
             this.userData.user_name = sessionStorage.getItem('user_name') || '';
             this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
-            this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
             this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
             this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
             this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
-            this.userData.user_id = sessionStorage.getItem('user_mail') || '';
+            this.userData.user_id = sessionStorage.getItem('user_id') || ''; // 修正
             console.log('User Data:', this.userData);
         },
         togglePasswordVisibility() {
@@ -34,28 +33,30 @@ new Vue({
             window.location.href = '/index1.html';
         },
         fetchOrderHistory() {
+            const userId = this.userData.user_id; // ログインユーザーのIDを取得
+            
             axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6')
                 .then(select6Response => {
                     const orderList = select6Response.data.List;
                     const orderIds = orderList.map(order => order.order_id);
-        
+
                     // 各order_idに対してSELECT4を呼び出す
                     const select4Promises = orderIds.map(order_id =>
                         axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
-                            params: { order_id }
+                            params: { order_id, user_id: userId } // ユーザーIDをパラメーターとして追加
                         })
                     );
-        
+
                     return Promise.all(select4Promises).then(select4Responses => {
                         const orderDetails = select4Responses.map((response, index) => {
                             const order_id = orderIds[index];
                             const cartItems = response.data.List || []; // カートのアイテムがない場合は空配列
-        
+
                             let totalQuantity = 0;
                             cartItems.forEach(item => {
                                 totalQuantity += item.quantity;
                             });
-        
+
                             // 各カートアイテムに対応する商品情報を取得する
                             const productPromises = cartItems.map(item =>
                                 axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3', {
@@ -71,7 +72,7 @@ new Vue({
                                     };
                                 })
                             );
-        
+
                             return Promise.all(productPromises).then(itemsWithProductInfo => {
                                 return {
                                     order_id,
@@ -80,7 +81,7 @@ new Vue({
                                 };
                             });
                         });
-        
+
                         return Promise.all(orderDetails);
                     });
                 })
