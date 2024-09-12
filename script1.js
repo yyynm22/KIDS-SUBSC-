@@ -4,12 +4,12 @@ const app = new Vue({
     data: {
       dataList1: [],
       dataList2: [],
-      dataList3: [],
       Category: '',  // カテゴリー選択用のデータ
       Kidsgender: '',
       filteredList: [],  // フィルタリングされたデータのリスト
       cartdialog: false,  // カートダイアログの表示・非表示
       dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
+      cartItems: [],
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
       selectedQuantity: 1,  // 個数
@@ -18,8 +18,6 @@ const app = new Vue({
     },
   
   mounted() {
-    
-    
         // コンポーネントがマウントされたときに sessionStorage から user_id を取得
         this.user_id = sessionStorage.getItem('user_id');
         console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
@@ -59,7 +57,22 @@ filterData() {
         // ログアウトページ遷移
         window.location.href = '/index.html';
       },
-     
+      readData1: async function () {
+        if (!this.Category || !this.Kidsgender) {
+          console.log("CategoryまたはKidsgenderが入力されていません");
+          return;
+        }
+        const param = {
+          product_category: this.Category,
+          product_gender: this.Kidsgender,
+        };
+        try {
+          const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT5', param);
+          this.dataList1 = response.data.List.map(item => ({ ...item, liked: false, saved: false }));
+        } catch (error) {
+          console.error("APIリクエストエラー: ", error);
+        }
+      },
       readData2: async function () {
     try {
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
@@ -74,53 +87,6 @@ filterData() {
         console.error('データの取得に失敗しました:', error);
     }
 },
-  
-readData3: async function () {
-    try {
-        // APIからデータを取得
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
-        
-        // レスポンスデータの内容を確認
-        const cartitems = response.data;
-        console.log('API response:', cartitems);
-
-        // cartitemsがオブジェクトであり、Listプロパティを持つか確認
-        if (cartitems.List && Array.isArray(cartitems.List)) {
-            console.log('Cart items (List):', cartitems.List);
-
-            // user_idでカート内のユーザー情報を検索
-            const user = cartitems.List.find(user => user.user_id.toString().trim() === this.user_id.toString().trim());
-            if (user) {
-                console.log('Found user:', user);
-            } else {
-                console.log('User not found');
-            }
-
-            // 新しいデータを処理
-            const newData = cartitems.List.map(item => {
-                const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
-                return existingItem ? { 
-                    ...item, 
-                    liked: existingItem.liked, 
-                    saved: existingItem.saved 
-                } : { 
-                    ...item, 
-                    liked: false, 
-                    saved: false 
-                };
-            });
-
-            // dataList3に新しいデータを反映
-            this.dataList3 = newData;
-        } else {
-            console.error('Listプロパティが存在しないか、配列ではありません。');
-        }
-    } catch (error) {
-        console.error('データの取得に失敗しました:', error);
-    }
-},
-
-
 
       // 商品を選択してダイアログを開く
       openDialog(item) {
@@ -154,6 +120,9 @@ readData3: async function () {
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
+      
+      // カート情報を更新するためにloadSubscOrderCartを呼び出す
+        await this.loadSubscOrderCart();
 
         // フィールドをリセット
         this.selectedSize = '';
@@ -161,6 +130,30 @@ readData3: async function () {
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
+},
+　async loadSubscOrderCart() {
+  console.log("loadSubscOrderCart called");
+  try {
+     // user_idを使って特定のユーザーのカートを取得する
+        const cartResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
+            params: { user_id: this.user_id }
+        });
+        const cartData = cartResponse.data;
+        console.log("Cart data from API:", cartData);
+
+    // 必要に応じて cartData の List から cartItems にマッピング
+    this.cartItems = cartData.List.map(cartItem => ({
+      product_id: cartItem.product_id,
+      user_id: cartItem.user_id,
+      product_size: cartItem.product_size,
+      quantity: cartItem.quantity,
+    }));
+
+    console.log("Processed cart items:", this.cartItems); // 処理後のデバッグ用コンソール表示
+  } catch (error) {
+    // エラーハンドリング
+    console.error('Error loading subsc order cart items:', error);
+  }
 },
 
 
