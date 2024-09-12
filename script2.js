@@ -26,34 +26,22 @@ new Vue({
       this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
     },
 
+    // 注文履歴の取得
     async fetchOrderHistory() {
       try {
         const userId = this.userData.user_id;
-
-        if (!userId) {
-          console.error('User ID is not available.');
-          return;
-        }
-
-        // デバッグログで userId を確認
-        console.log('Fetching order history for user ID:', userId);
-
         const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
           params: { user_id: userId }
         });
 
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
 
-        // デバッグログを追加してレスポンスを確認
-        console.log('Order Response:', orderResponse.data);
-        console.log('Product Response:', productResponse.data);
-
         // 注文履歴データをマッピング
-        const orders = orderResponse.data.List || []; // デフォルト空の配列に修正
-        const products = productResponse.data.List || []; // デフォルト空の配列に修正
+        const orders = orderResponse.data.List;
+        const products = productResponse.data.List;
 
+        // 注文履歴の中で各注文に関連する商品情報を結びつける
         this.orderHistory = orders.map(order => {
-          // 注文に関連する商品情報を結びつける
           const items = products
             .filter(product => product.product_id === order.product_id)
             .map(product => ({
@@ -71,10 +59,6 @@ new Vue({
             items
           };
         });
-
-        // デバッグログで最終的な注文履歴を確認
-        console.log('Final Order History:', this.orderHistory);
-
       } catch (error) {
         console.error('Error fetching order history:', error);
       }
