@@ -3,13 +3,17 @@ const app = new Vue({
     vuetify: new Vuetify(),
     data: {
         // ログイン機能用のデータ
-        dialog: false,
+        dialog1: false,
+        dialog2: false,
         user_mail: '',
         user_pass: '',
-        errorMessage: '',  // エラーメッセージ用のデータ
+        usererrorMessage: '',  // エラーメッセージ用のデータ
+        employee_id:'',
+        employee_pass:'',
+        employeeerrorMessage: '',  // エラーメッセージ用のデータ
     },
     methods: {
-        async login() {
+        async login1() {
             console.log('Attempting to login with mail:', this.user_mail);
   
             try {
@@ -49,21 +53,72 @@ const app = new Vue({
                         console.log("Saved user_telenum:", sessionStorage.getItem('user_telenum'));
   
                         // ログイン成功時の処理
-                        this.dialog = false;  // ダイアログを閉じる
-                        this.errorMessage = '';  // エラーメッセージをクリア
+                        this.dialog1 = false;  // ダイアログを閉じる
+                        this.usererrorMessage = '';  // エラーメッセージをクリア
                         // 次のページにリダイレクト
                         window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
-                        this.errorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
                     }
                 } else {
                     console.error('User data is not an array:', users);
-                    this.errorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                this.errorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.usererrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+            }
+        },
+
+        async login2() {
+            console.log('Attempting to login with id:', this.employee_id);
+  
+            try {
+                // APIからユーザー情報を取得
+                const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT2');
+                
+                // レスポンスデータの内容を確認する
+                const employees = response.data;
+                console.log('API response:', employees);
+  
+                // usersがオブジェクトであり、Listプロパティを持つか確認
+                if (employees.List && Array.isArray(employees.List)) {
+                    console.log('Employee data (List):', employees.List);
+  
+                    // ユーザー情報を検索
+                    const employee = employees.List.find(employee => employee.employee_id.trim() === this.employee_id.trim() && employee.employee_pass === this.employee_pass);
+  
+                    if (employee) {
+                        console.log('Login successful');
+                        
+                        // ユーザー情報を sessionStorage に保存
+                        sessionStorage.setItem('employee_id', employee.employee_id);
+                        sessionStorage.setItem('employee_name', employee.employee_name);
+                        sessionStorage.setItem('employee_pass', employee.employee_pass);
+                        
+  
+                        // デバッグ用のログ出力
+                        console.log("Saved employee_id:", sessionStorage.getItem('employee_id'));
+                        console.log("Saved employee_name:", sessionStorage.getItem('employee_name'));
+                        console.log("Saved employee_pass:", sessionStorage.getItem('employee_pass'));
+                        
+                        // ログイン成功時の処理
+                        this.dialog2 = false;  // ダイアログを閉じる
+                        this.employeeerrorMessage = '';  // エラーメッセージをクリア
+                        // 次のページにリダイレクト
+                        window.location.href = '/index4.html';
+                    } else {
+                        console.log('Invalid employee_id or employee_pass');
+                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                    }
+                } else {
+                    console.error('User data is not an array:', employees);
+                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                }
+            } catch (error) {
+                console.error('Error fetching employee data:', error);
+                this.employeeerrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
             }
         }
     }
