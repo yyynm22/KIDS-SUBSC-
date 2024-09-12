@@ -37,7 +37,7 @@ new Vue({
             // ログイン中のユーザーIDを取得（sessionStorage等から）
             const userId = sessionStorage.getItem('userId');
 
-            axios.get(`https://sample.azurewebsites.net/api/orders/${userId}`)
+            axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/orders/${userId}`)
                 .then(response => {
                     console.log('API Response:', response.data);
                     if (Array.isArray(response.data)) {
