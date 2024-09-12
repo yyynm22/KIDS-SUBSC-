@@ -29,6 +29,15 @@ new Vue({
     async fetchOrderHistory() {
       try {
         const userId = this.userData.user_id;
+
+        if (!userId) {
+          console.error('User ID is not available.');
+          return;
+        }
+
+        // デバッグログで userId を確認
+        console.log('Fetching order history for user ID:', userId);
+
         const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
           params: { user_id: userId }
         });
@@ -62,6 +71,10 @@ new Vue({
             items
           };
         });
+
+        // デバッグログで最終的な注文履歴を確認
+        console.log('Final Order History:', this.orderHistory);
+
       } catch (error) {
         console.error('Error fetching order history:', error);
       }
