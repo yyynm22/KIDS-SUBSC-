@@ -59,6 +59,8 @@ new Vue({
                 .catch(error => {
                     console.error('注文履歴の取得に失敗しました:', error);
                 });
+
+                
         },
         Logout() {
             window.location.href = '/index.html';
