@@ -120,6 +120,7 @@ readData3: async function () {
     }
 },
 
+
       
       openCartDialog() {
       this.cartdialog = true;  // ダイアログを開く
