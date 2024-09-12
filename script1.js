@@ -92,6 +92,8 @@ readData3: async function () {
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
             if (userItems.length > 0) {
                 console.log('Found user items:', userItems);
+                // order_id を設定
+                this.order_id = userItems[0].order_id;
             } else {
                 console.log('User items not found');
             }
@@ -119,7 +121,6 @@ readData3: async function () {
         console.error('データの取得に失敗しました:', error);
     }
 },
-
 
       
       openCartDialog() {
@@ -178,6 +179,64 @@ readData3: async function () {
         console.error('APIリクエストに失敗しました:', error);
     }
 },
+      //注文確定
+  confirmOrder: async function() {
+     // selectedOrder が存在するかチェック
+ if (!this.dataList3 || this.dataList3.length === 0) {
+        console.error("カートが空です");
+        return;
+  }
+     // 注文のパラメーターを作成
+    const orderDetails = this.dataList3.map(item => ({
+        product_id: item.product_id,
+        user_id: this.user_id,
+        product_size: item.product_size,
+        quantity: item.quantity
+    }));
+
+    const params = {
+    user_id: this.user_id,
+    order_details: orderDetails,
+    order_id: this.order_id // order_id を追加
+};
+    // デバッグ用に params をコンソールに出力
+    console.log("送信するパラメーター:", params);
+
+ 
+      try {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT3', params);
+        console.log("注文が正常に送信されました:", response.data);
+
+        // APIレスポンスをコンソールに表示
+        console.log("APIレスポンス:", response.data);
+        //カートダイヤログを閉じる
+        this.detailsDialog = false; 
+        // カート情報をリセット
+        this.dataList3 = [];  // カートをクリア
+        this.cartdialog = false;
+        
+        //結果をコンソールに出力
+        console.log(response.data);
+        this.order_id = '';
+      
+      } catch (error) {
+        // エラーの詳細をコンソール表示：開発用だが残しておく
+        console.error("カート追加エラー:", error.message);
+        if (error.response) {
+          console.error("レスポンスエラー:", error.response.data);
+        } else if (error.request) {
+          console.error("リクエストエラー:", error.request);
+        } else {
+          console.error("設定エラー:", error.message);
+        }
+      }
+ 
+
+  },       
+  toggleLike: function (index, listType = 'dataList') {
+            const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
+            list[index].liked = !list[index].liked;
+        },    
 
 
 
