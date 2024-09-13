@@ -91,8 +91,9 @@ readData3: async function () {
             // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
             if (userItems.length > 0) {
-                console.log('Found user items:', userItems);
-              
+                console.log('Found user items:', userItems);// order_id を設定
+                this.order_id = userItems[0].order_id;
+                console.log('取得した order_id:', this.order_id); // デバッグログ追加
             } else {
                 console.log('User items not found');
             }
@@ -137,7 +138,7 @@ readData3: async function () {
             });
 
             console.log("Updated dataList3:", this.dataList3);
-          
+
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
         }
@@ -145,6 +146,7 @@ readData3: async function () {
         console.error('データの取得に失敗しました:', error);
     }
 },
+
 
 
 
