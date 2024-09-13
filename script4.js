@@ -86,9 +86,9 @@ new Vue({
     
     readData: async function () {
       try {
-          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
           console.log(response.data);
-          this.dataList = response.data.List.sort((a, b) => a.temperature - b.temperature);
+          this.productList = response.data.List.sort((a, b) => a.product_category - b.product_category);
       } catch (error) {
           console.error("データの取得に失敗しました:", error);
       }
@@ -99,7 +99,7 @@ new Vue({
           card.isExpanded = false;
       } else {
           // 他のカードの拡大を解除
-          this.dataList.forEach(item => {
+          this.productList.forEach(item => {
               item.isExpanded = false;
           });
           card.isExpanded = true;
