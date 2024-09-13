@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Kids Sabsc (Product)</title>
-  <link rel="stylesheet" href="./style1.css">
+  <link rel="stylesheet" href="./style4.css">
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
   <link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
@@ -20,19 +20,70 @@
         <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
       </v-app-bar>
 
-      <!-- コンテンツ -->
-      <v-container>
-        <!-- 商品追加セクション -->
-        <v-row class="product-section mb-3 mt-3">
-          <v-col cols="12" md="4">
-            <v-text-field v-model="product_name" label="商品名" outlined></v-text-field>
-            <v-text-field v-model="product_category" label="カテゴリ" outlined></v-text-field>
-            <v-text-field v-model="product_gender" label="性別" outlined></v-text-field>
-            <v-text-field v-model="product_URL" label="画像URL" outlined></v-text-field>
-            <v-btn @click="addData" color="pink" class="mt-3">商品を追加</v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+      <!--タブ-->
+      <ul class="tab-group">
+        <li class="tab tab-A is-active">Regist Your Favorite Fashions</li>
+        <li class="tab tab-B" v-on:click="readData">Check The Fashions</li>
+      </ul>
+
+      <!--タブを切り替えて表示するコンテンツ-->
+      <div class="panel-group">
+        <div class="panel tab-A is-show">
+          <v-row class="mb-3 mt-3" align="center" justify="center">
+            <v-col cols="4">
+              <select id="temp-A" v-model="product_category" class="product_category">
+                <option value="">category</option>
+                <option value="Tops">Tops</option>
+                <option value="Pants">Pants</option>
+                <option value="Skirt">Skirt</option>
+                <option value="All">All</option>
+              </select>
+              <select id="temp-B" v-model="product_gender" class="product_gender">
+                <option value="">gender</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="All">All</option>
+              </select>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product_name" placeholder="product_name" outlined></v-text-field>
+              <v-text-field class="ml-6 mr-6" v-model="URL" label="URL" placeholder="URL" outlined></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mb-3 mt-3" align="center" justify="center">
+            <v-btn v-on:click="addData" dark big color="pink">
+              <v-icon left>mdi-content-save</v-icon>
+              save
+            </v-btn>
+          </v-row>
+        </div>
+        <div class="panel tab-B">
+          <v-row class="mb-3 mt-3" justify="center">
+            <!-- Card Container for product List -->
+            <v-row class="productlist">
+              <v-col v-for="data in productList" :key="data.product_id" cols="12" sm="4" md="4">
+                <v-card class="['mx-auto', 'my-3', { 'expand': data.isExpanded }]" max-width="344" style="min-height: 450px;" v-on:click="toggleExpand(data)">
+                  <v-card-title>
+                    <span>product_category: {{ data.product_category }}</span>
+                  </v-card-title>
+                  <v-card-subtitle>
+                    <span>product_gender: {{ data.product_gender }}</span><br>
+                  </v-card-subtitle>
+                  <v-card-text>
+                    <p>{{ data.product_name }}</p>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-img :src="data.URL" height="200" contain></v-img>
+                    <v-btn v-on:click="deleteData(data)" style="position: absolute; top: 8px; right: 8px;" small rounded>
+                      <v-icon>mdi-delete-forever</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-row>
+        </div>
+      </div>
 
       <!-- フッター -->
       <v-footer app padless class="custom-font">
@@ -46,52 +97,10 @@
     </v-app>
   </div>
 
+  <!-- JavaScript -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
   <script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script>
-  <script>
-    new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-      data: {
-        product_name: '',
-        product_category: '',
-        product_gender: '',
-        product_URL: ''
-      },
-      methods: {
-        // 商品を追加するメソッド
-        addData: async function () {
-          if (!this.product_name || !this.product_category || !this.product_gender || !this.product_URL) {
-            console.log("すべての項目が入力されていません");
-            return;
-          }
-
-          const param = {
-            product_name: this.product_name,
-            product_category: this.product_category,
-            product_gender: this.product_gender,
-            URL: this.product_URL
-          };
-
-          try {
-            const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT1', param);
-            console.log(response.data);
-            
-            // フィールドのリセット
-            this.product_name = '';
-            this.product_category = '';
-            this.product_gender = '';
-            this.product_URL = '';
-          } catch (error) {
-            console.error("データの追加に失敗しました:", error);
-          }
-        },
-        Logout: function () {
-          console.log("ログアウト処理");
-        }
-      }
-    });
-  </script>
+  <script src="./script4.js"></script>
 </body>
 </html>
