@@ -47,26 +47,34 @@ new Vue({
     },
     
     async deleteData(data) {
-      if (!data.product_category||!this.product_gender || !this.product_name || !this.URL) {
-        console.log("product_categoryが存在しません");
+      if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
+        console.log("必須項目が不足しています");
         return;
       }
-      
+    
       const param = {
         product_category: data.product_category,
         product_gender: data.product_gender,
         product_name: data.product_name,
         URL: data.URL,
       };
-
+    
       try {
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE1', param);
         console.log(response.data);
-        this.productList = this.productList.filter(item => item.product_category !== data.product_category);
+    
+        // 削除が成功した場合、商品リストから削除した商品を除外
+        if (response.data.result) {
+          this.productList = this.productList.filter(item => item.product_category !== data.product_category ||
+            item.product_gender !== data.product_gender || item.product_name !== data.product_name || item.URL !== data.URL);
+        } else {
+          console.log("削除に失敗しました");
+        }
       } catch (error) {
         console.error("データの削除に失敗しました:", error);
       }
     },
+    
 
     async readData() {
       try {
@@ -87,3 +95,19 @@ new Vue({
     this.readData(); // コンポーネント作成時にデータを読み込む
   }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const tabs = document.getElementsByClassName('tab');
+  for (let i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener('click', tabSwitch, false);
+  }
+
+  function tabSwitch() {
+      document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+      this.classList.add('is-active');
+      document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+      const arrayTabs = Array.prototype.slice.call(tabs);
+      const index = arrayTabs.indexOf(this);
+      document.getElementsByClassName('panel')[index].classList.add('is-show');
+  };
+}, false);
