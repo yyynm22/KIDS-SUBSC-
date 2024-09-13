@@ -90,11 +90,9 @@ readData3: async function () {
 
             // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
-            console.log('Filtered user items:', userItems); // デバッグログ追加
-
             if (userItems.length > 0) {
                 console.log('Found user items:', userItems);
-                // order_id を設定
+               // order_id を設定
                 this.order_id = userItems[0].order_id;
                 console.log('取得した order_id:', this.order_id); // デバッグログ追加
             } else {
@@ -114,7 +112,6 @@ readData3: async function () {
                     saved: false 
                 };
             });
-            console.log('New data:', newData); // デバッグログ追加
 
             // dataList3に新しいデータを反映
             this.dataList3 = newData;
@@ -150,6 +147,7 @@ readData3: async function () {
         console.error('データの取得に失敗しました:', error);
     }
 },
+
 
 openCartDialog() {
     this.cartdialog = true;  // ダイアログを開く
