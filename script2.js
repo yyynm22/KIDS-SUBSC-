@@ -30,14 +30,12 @@ new Vue({
     async fetchOrderHistory() {
       try {
         const userId = this.userData.user_id;
-        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4', {
-          params: { user_id: userId }
-        });
+        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
 
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
 
-        // 注文履歴データをマッピング
-        const orders = orderResponse.data.List;
+        // 注文履歴データを取得してuserIdで絞り込む
+        const orders = orderResponse.data.List.filter(order => order.user_id === userId);
         const products = productResponse.data.List;
 
         // 注文履歴の中で各注文に関連する商品情報を結びつける
@@ -71,12 +69,12 @@ new Vue({
     Logout() {
       // ログアウト処理
       sessionStorage.clear();
-      window.location.href = './index.html';
+      window.location.href = './login.html';
     },
 
     addData() {
       // HOME ボタンの動作
-      window.location.href = './index1.html';
+      window.location.href = './home.html';
     }
   },
   mounted() {
