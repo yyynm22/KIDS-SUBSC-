@@ -91,7 +91,8 @@ readData3: async function () {
             // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
             if (userItems.length > 0) {
-                console.log('Found user items:', userItems);// order_id を設定
+                console.log('Found user items:', userItems);
+                // order_id を設定
                 this.order_id = userItems[0].order_id;
                 console.log('取得した order_id:', this.order_id); // デバッグログ追加
             } else {
@@ -112,33 +113,10 @@ readData3: async function () {
                 };
             });
 
+          console.log('New data:', newData); // デバッグログ追加
+          
             // dataList3に新しいデータを反映
             this.dataList3 = newData;
-
-            // userItemsからproduct_idのリストを作成
-            const productIds = userItems.map(item => item.product_id);
-
-            // product_idリストを用いてsubsc_product_tableから情報を取得
-            const productResponses = await Promise.all(productIds.map(productId =>
-                fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
-            ));
-
-            const productData = await Promise.all(productResponses.map(res => res.json()));
-            console.log("Product data from subsc_product_table:", productData);
-
-            // productDataを新しいデータに結合
-            this.dataList3 = this.dataList3.map(item => {
-                const productInfo = productData.find(p => p.List && p.List.some(prod => prod.product_id === item.product_id));
-                if (productInfo) {
-                    const productDetails = productInfo.List.find(prod => prod.product_id === item.product_id);
-                    console.log("Product info for item:", item.product_id, productDetails);
-                    return { ...item, ...productDetails };
-                }
-                return item;
-            });
-
-            console.log("Updated dataList3:", this.dataList3);
-
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
         }
@@ -146,9 +124,6 @@ readData3: async function () {
         console.error('データの取得に失敗しました:', error);
     }
 },
-
-
-
 
       
       openCartDialog() {
@@ -207,7 +182,7 @@ readData3: async function () {
         console.error('APIリクエストに失敗しました:', error);
     }
 },
- //注文確定
+      //注文確定
   confirmOrder: async function() {
      // selectedOrder が存在するかチェック
  if (!this.dataList3 || this.dataList3.length === 0) {
@@ -278,6 +253,7 @@ readData3: async function () {
             const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
             list[index].liked = !list[index].liked;
         },    
+
 
 
       toggleLike(item) {
