@@ -72,11 +72,10 @@ body {
   flex: 1;
   padding: 15px;
   list-style: none;
-  border: solid 1px #ff80ab; /* ピンク色 */
+  border: solid 1px #A52A2A; 
   text-align: center;
   cursor: pointer;
-  background-color: #f8bbd0; /* 淡いピンク */
-  color: #d81b60; /* ピンク色 */
+  color: #A52A2A; 
   font-size: 18px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
   border-radius: 15px;
@@ -86,7 +85,7 @@ body {
 
 
   .tab.is-active {
-      background-color: #d81b60; /* ピンク色 */
+      background-color:#D2B48C; 
       color: #fff;
       transform: scale(1.05); /* ホバー時に拡大 */
   }
@@ -99,15 +98,15 @@ body {
   font-size: 16px; /* 文字サイズを調整 */
   background-color: transparent; /* 背景を透明にする */
   border: none; /* ボーダーを削除 */
-  color: #c2185b; /* 文字色をピンクにする */
+  color: #A52A2A; 
 }
 
 
 .panel-group {
   font-family: 'Times New Roman', sans-serif;
-  border: solid 1px #ff80ab; /* 薄いピンク */
+  border: solid 1px #D2B48C; 
   border-top: none;
-  background: #f8bbd0; /* 淡いピンク */
+  background: #FFF8DC; 
 }
 
 .panel {
@@ -122,10 +121,10 @@ body {
 select {
   font-family: 'Times New Roman', sans-serif;
   padding: 10px;
-  border: 1px solid #ff80ab; /* ピンク色 */
+  border: 1px solid #F5DEB3; 
   border-radius: 4px;
   font-size: 16px;
-  color: #d81b60; /* ピンク色 */
+  color: #A52A2A; 
   width: 150px;
   box-sizing: border-box;
   margin: 5px;
@@ -133,7 +132,7 @@ select {
 }
 
   select:hover {
-      border-color: #d81b60; /* ホバー時にピンク色に */
+      border-color: #F5F5DC; 
   }
 
 /* テキストフィールドのスタイル */
@@ -149,20 +148,20 @@ select {
 /* v-btn1 のスタイル変更 */
 v-btn1 {
   font-family: 'Times New Roman', sans-serif;
-  color: white; /* ピンク色 */
+  color: white; 
 }
 
 /* v-btn1 の選択状態のスタイル変更 */
 .tab-B.is-active v-btn1 {
-color: white; /* 白色 */
+color: white; 
 }
 
 /* タブとv-btn1のアクティブ状態のスタイル変更 */
 .tab-group .tab.is-active + .tab-B v-btn1 {
-  color: #c2185b; /* 白色 */
+  color: #A52A2A; 
 }
   .v-btn:hover {
-  background-color: #c2185b; /* ホバー時に少し濃いピンク色 */
+  background-color: #F5DEB3; 
 }
 
 /* データリストアイテムのスタイル */
