@@ -21,7 +21,7 @@ const app = new Vue({
     
     
         // コンポーネントがマウントされたときに sessionStorage から user_id を取得
-        this.user_id = sessionStorage.getItem('user_id') || '';
+        this.user_id = sessionStorage.getItem('user_id');
         console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
     
     // ページ読み込み時に readData2 を呼び出し
@@ -36,7 +36,7 @@ filterData() {
   } else {
     this.filteredList = this.dataList2.filter(item => {
       const matchesCategory = this.Category === '' || item.product_category === this.Category;
-      const matchesGender = this.Kidsgender === '' || this.Kidsgender === 'All' || item.product_gender === this.Kidsgender;
+      const matchesGender = this.Kidsgender === 'All' || item.product_gender === this.Kidsgender;
 
       console.log("Item Category: ", item.product_category, "Matches Category: ", matchesCategory);
       console.log("Item Gender: ", item.product_gender, "Matches Gender: ", matchesGender);
@@ -127,11 +127,11 @@ readData3: async function () {
             // productDataを新しいデータに結合
             this.dataList3 = this.dataList3.map(item => {
                 const productInfo = productData.find(p => p.product_id === item.product_id);
-                return productInfo ? { ...item,  URL: productInfo.URL,
-        product_category: productInfo.product_category,
-        product_gender: productInfo.product_gender,
-        product_name: productInfo.product_name } : item;
+                console.log("Product info for item:", item.product_id, productInfo);
+                return productInfo ? { ...item, ...productInfo } : item;
             });
+
+            console.log("Updated dataList3:", this.dataList3);
 
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
@@ -149,7 +149,13 @@ readData3: async function () {
       this.readData3();        // カートのデータを取得
     },
       
-     
+      watch: {
+    cartdialog(val) {
+      if (val) {
+        this.readData3();  // ダイアログが開いたときにデータを取得
+      }
+    }
+  },
   
 
 
@@ -165,7 +171,7 @@ readData3: async function () {
       // 商品をカートに追加
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
        // 必須パラメーターが設定されているかチェック
-    if (!this.user_id || !(selectedItem && selectedItem.product_id) || !selectedSize || !selectedQuantity) {
+    if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
         if (!this.user_id) console.log("ユーザーIDが設定されていません");
         if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
@@ -202,15 +208,6 @@ readData3: async function () {
       },
       toggleSave(item) {
         item.saved = !item.saved;
-      },
-    },
-  watch: {
-    cartdialog(val) {
-      if (val) {
-        this.readData3();
       }
     }
-  }
-  
-  
 });
