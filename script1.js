@@ -92,6 +92,9 @@ readData3: async function () {
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
             if (userItems.length > 0) {
                 console.log('Found user items:', userItems);
+               // order_id を設定
+                this.order_id = userItems[0].order_id;
+                console.log('取得した order_id:', this.order_id); // デバッグログ追加
             } else {
                 console.log('User items not found');
             }
