@@ -20,7 +20,7 @@ new Vue({
 
     async addData() {
       // 必要な項目が全て入力されていることを確認
-      if (!this.product_category || !this.product_name || !this.URL) {
+      if (!this.product_category ||!this.product_gender || !this.product_name || !this.URL) {
         console.log("必要な項目が入力されていません");
         return;
       }
