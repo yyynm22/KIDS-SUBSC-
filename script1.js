@@ -92,9 +92,7 @@ readData3: async function () {
             const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
             if (userItems.length > 0) {
                 console.log('Found user items:', userItems);
-               // order_id を設定
-                this.order_id = userItems[0].order_id;
-                console.log('取得した order_id:', this.order_id); // デバッグログ追加
+              
             } else {
                 console.log('User items not found');
             }
@@ -239,15 +237,16 @@ readData3: async function () {
         console.log("APIレスポンス:", response.data);
         
          // カートの中身を削除
-        const deleteParams = {
-            order_id: this.order_id,
-            user_id: this.user_id,
-            product_size: this.dataList3[0].product_size, // すべてのアイテムが同じサイズであると仮定
-            quantity: this.dataList3[0].quantity, // すべてのアイテムが同じ数量であると仮定
-            product_ids: this.dataList3.map(item => item.product_id)
-        };
-        await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE2', deleteParams);
-
+        for (const item of this.dataList3) {
+            const deleteParams = {
+                order_id: this.order_id,
+                product_id: item.product_id,
+                user_id: this.user_id,
+                product_size: item.product_size,
+                quantity: item.quantity
+            };
+            await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE2', deleteParams);
+        }
 
         //カートダイヤログを閉じる
         this.detailsDialog = false; 
