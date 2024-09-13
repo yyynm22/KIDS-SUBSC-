@@ -79,7 +79,7 @@ new Vue({
 
     addData() {
       // HOME ボタンの動作
-      window.location.href = './home.html';
+      window.location.href = './index1.html';
     }
   },
   mounted() {
