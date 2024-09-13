@@ -57,20 +57,23 @@
             </v-btn>
           </v-row>
         </div>
+
+
         <div class="panel tab-B">
           <v-row class="mb-3 mt-3" justify="center">
+            
             <!-- Card Container for product List -->
             <v-row class="productlist">
               <v-col v-for="data in productList" :key="data.product_id" cols="12" sm="4" md="4">
                 <v-card class="['mx-auto', 'my-3', { 'expand': data.isExpanded }]" max-width="344" style="min-height: 450px;" v-on:click="toggleExpand(data)">
                   <v-card-title>
-                    <span>product_category: {{ data.product_category }}</span>
+                    <span>product_name: {{ data.product_name }}</span>
                   </v-card-title>
                   <v-card-subtitle>
-                    <span>product_gender: {{ data.product_gender }}</span><br>
+                    <span>product_category: {{ data.product_category }}</span><br>
                   </v-card-subtitle>
                   <v-card-text>
-                    <p>{{ data.product_name }}</p>
+                    <p>{{ data.product_gender }}</p>
                   </v-card-text>
                   <v-card-actions>
                     <v-img :src="data.URL" height="200" contain></v-img>
