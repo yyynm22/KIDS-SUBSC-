@@ -23,8 +23,8 @@
 
       <!--タブ-->
       <ul class="tab-group">
-        <li class="tab tab-A is-active">Regist Your Favorite Fashions</li>
-        <li class="tab tab-B" v-on:click="readData">Check The Fashions</li>
+        <li class="tab tab-A is-active">Regist Product</li>
+        <li class="tab tab-B" v-on:click="readData">All Product</li>
       </ul>
 
       <!--タブを切り替えて表示するコンテンツ-->
@@ -47,7 +47,7 @@
               </select>
             </v-col>
             <v-col cols="6">
-              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product_name" placeholder="product" outlined></v-text-field>
+              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product name" placeholder="product" outlined></v-text-field>
               <v-text-field class="ml-6 mr-6" v-model="URL" label="URL" placeholder="URL" outlined></v-text-field>
             </v-col>
           </v-row>
