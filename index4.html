@@ -1,118 +1,109 @@
-new Vue({
-  el: '#app',
-  vuetify: new Vuetify(),
-  data() {
-    return {
-      product_name: '',
-      product_category: '',
-      product_gender: '',
-      URL: '',
-      productList: [], // 商品リストを追加
-      employee_id: '',
-    };
-  },
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kids Sabsc (Product)</title>
+  <link rel="stylesheet" href="./style4.css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
+</head>
 
-  methods: {
-    Logout() {
-      // ログアウト処理
-      window.location.href = '/index.html';  // ログインページにリダイレクト
-    },
+<body>
+  <div id="app">
+    <v-app>
+      <!-- ヘッダー -->
+      <v-app-bar app class="custom-font" style="justify-content: space-between;">
+        <v-btn @click="Logout" dark rounded class="custom-font" aria-label="ログアウト" title="ログアウト">
+          <v-icon start>mdi-logout</v-icon>
+          Logout
+        </v-btn>
+        <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
+      </v-app-bar>
 
-    async addData() {
-      // 必要な項目が全て入力されていることを確認
-      if (!this.product_category ||!this.product_gender || !this.product_name || !this.URL) {
-        console.log("必要な項目が入力されていません");
-        return;
-      }
+      <!--タブ-->
+      <ul class="tab-group">
+        <li class="tab tab-A is-active">Regist Your Favorite Fashions</li>
+        <li class="tab tab-B" v-on:click="readData">Check The Fashions</li>
+      </ul>
 
-      const param = {
-        product_category: this.product_category,
-        product_gender: this.product_gender,
-        product_name: this.product_name,
-        URL: this.URL,
-      };
+      <!--タブを切り替えて表示するコンテンツ-->
+      <div class="panel-group">
+        <div class="panel tab-A is-show">
+          <v-row class="mb-3 mt-3" align="center" justify="center">
+            <v-col cols="4">
+              <select id="temp-A" v-model="product_category" class="product_category">
+                <option value="">category</option>
+                <option value="Tops">Tops</option>
+                <option value="Pants">Pants</option>
+                <option value="Skirt">Skirt</option>
+                <option value="All">All</option>
+              </select>
+              <select id="temp-B" v-model="product_gender" class="product_gender">
+                <option value="">gender</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="All">All</option>
+              </select>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product_name" placeholder="product_name" outlined></v-text-field>
+              <v-text-field class="ml-6 mr-6" v-model="URL" label="URL" placeholder="URL" outlined></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mb-3 mt-3" align="center" justify="center">
+            <v-btn v-on:click="addData" dark big color="brown">
+              <v-icon left>mdi-content-save</v-icon>
+              save
+            </v-btn>
+          </v-row>
+        </div>
 
-      try {
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT1', param);
-        console.log(response.data);
-        this.product_category = '';
-        this.product_gender = '';
-        this.product_name = '';
-        this.URL = '';
-        // データを再取得または追加する処理
-        this.readData();
-      } catch (error) {
-        console.error("データの追加に失敗しました", error);
-      }
-    },
-    
-    async deleteData(data) {
-      if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
-        console.log("必須項目が不足しています");
-        return;
-      }
-    
-      const param = {
-        product_category: data.product_category,
-        product_gender: data.product_gender,
-        product_name: data.product_name,
-        URL: data.URL,
-      };
-    
-      try {
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE1', param);
-        console.log(response.data);
-    
-        // 削除が成功した場合、商品リストから削除した商品を除外
-        if (response.data.result) {
-          this.productList = this.productList.filter(item => item.product_category !== data.product_category ||
-            item.product_gender !== data.product_gender || item.product_name !== data.product_name || item.URL !== data.URL);
-        } else {
-          console.log("削除に失敗しました");
-        }
-      } catch (error) {
-        console.error("データの削除に失敗しました:", error);
-      }
-    },
-    
-    async readData() {
-      try  {
-        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-        console.log(response.data);
-        this.productList = response.data.List.sort((a, b) => a.product_category - b.product_category);
-    } catch (error) {
-        console.error("データの取得に失敗しました:", error);
-    }
-    },
+        <div class="panel tab-B">
+          <v-row class="mb-3 mt-3" justify="center">
+            
+            <!-- Card Container for product List -->
+            <v-row class="productlist">
+              <v-col v-for="data in productList" :key="data.product_id" cols="12" sm="4" md="4">
+                <v-card class="['mx-auto', 'my-3', { 'expand': data.isExpanded }]" max-width="344" style="min-height: 450px;" v-on:click="toggleExpand(data)">
+                  <v-card-title>
+                    <span>product_name: {{ data.product_name }}</span>
+                  </v-card-title>
+                  <v-card-subtitle>
+                    <span>product_category: {{ data.product_category }}</span><br>
+                  </v-card-subtitle>
+                  <v-card-text>
+                    <p>{{ data.product_gender }}</p>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-img :src="data.URL" height="200" contain></v-img>
+                    <v-btn v-on:click="deleteData(data)" style="position: absolute; top: 8px; right: 8px;" small rounded>
+                      <v-icon>mdi-delete-forever</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-row>
+        </div>
+      </div>
 
-  toggleExpand(card) {
-      if (card.isExpanded) {
-          card.isExpanded = false;
-      } else {
-          // 他のカードの拡大を解除
-          this.productList.forEach(item => {
-              item.isExpanded = false;
-          });
-          card.isExpanded = true;
-      }
-  }
+      <!-- フッター -->
+      <v-footer app padless class="custom-font">
+        <v-col class="text-center" cols="12">
+          © 2024 TeamA
+        </v-col>
+        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199">
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
+      </v-footer>
+    </v-app>
+  </div>
 
-
-},
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-const tabs = document.getElementsByClassName('tab');
-for (let i = 0; i < tabs.length; i++) {
-  tabs[i].addEventListener('click', tabSwitch, false);
-}
-
-function tabSwitch() {
-  document.getElementsByClassName('is-active')[0].classList.remove('is-active');
-  this.classList.add('is-active');
-  document.getElementsByClassName('is-show')[0].classList.remove('is-show');
-  const arrayTabs = Array.prototype.slice.call(tabs);
-  const index = arrayTabs.indexOf(this);
-  document.getElementsByClassName('panel')[index].classList.add('is-show');
-};
-}, false);
+  <!-- JavaScript -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script>
+  <script src="./script4.js"></script>
+</body>
+</html>
