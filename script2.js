@@ -30,12 +30,17 @@ new Vue({
     async fetchOrderHistory() {
       try {
         const userId = this.userData.user_id;
-        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
+        
+        // 注文履歴の取得 (確定した注文データ)
+        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
+          params: { user_id: userId }
+        });
 
+        // 商品情報の取得
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
 
-        // 注文履歴データを取得してuserIdで絞り込む
-        const orders = orderResponse.data.List.filter(order => order.user_id === userId);
+        // 注文履歴データをマッピング
+        const orders = orderResponse.data.List;
         const products = productResponse.data.List;
 
         // 注文履歴の中で各注文に関連する商品情報を結びつける
