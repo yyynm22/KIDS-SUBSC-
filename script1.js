@@ -116,23 +116,32 @@ readData3: async function () {
             // userItemsからproduct_idのリストを作成
             const productIds = userItems.map(item => item.product_id);
 
-            // product_idリストを用いてsubsc_product_tableから情報を取得
-            const productResponses = await Promise.all(productIds.map(productId =>
-                fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
-            ));
+           // product_idリストを用いてsubsc_product_tableから情報を取得
+const productResponses = await Promise.all(productIds.map(productId =>
+    fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
+));
 
-            const productData = await Promise.all(productResponses.map(res => res.json()));
-            console.log("Product data from subsc_product_table:", productData);
-
-            // productDataを新しいデータに結合
-            this.dataList3 = this.dataList3.map(item => {
-                const productInfo = productData.find(p => p.product_id === item.product_id);
-                return productInfo ? { ...item, productInfo } : item;
-            });
-
-        } else {
-            console.error('Listプロパティが存在しないか、配列ではありません。');
+// 各レスポンスが正常かチェックし、JSONパースを試みる
+const productData = await Promise.all(productResponses.map(async res => {
+    if (res.ok) {
+        try {
+            return await res.json();
+        } catch (error) {
+            console.error("JSONパースに失敗しました:", error);
+            return null;  // パースエラー時にはnullを返す
         }
+    } else {
+        console.error(`Failed to fetch product_id: ${res.status}`);
+        return null;
+    }
+}));
+
+// productDataを新しいデータに結合
+this.dataList3 = this.dataList3.map(item => {
+    const productInfo = productData.find(p => p?.product_id === item.product_id);
+    return productInfo ? { ...item, productInfo } : item;
+});
+
     } catch (error) {
         console.error('データの取得に失敗しました:', error);
     }
