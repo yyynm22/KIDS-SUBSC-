@@ -60,7 +60,7 @@
                 <v-card-text>
                     <!-- エラーメッセージ表示 -->
                     <v-alert v-if="usererrorMessage" type="error" dismissible>
-                        {{ errorMessage }}
+                        {{ usererrorMessage }}
                     </v-alert>
                     <v-text-field v-model="user_mail" label="mailadress" outlined></v-text-field>
                     <v-text-field
@@ -159,7 +159,7 @@
                     <v-card-text>
                         <!-- エラーメッセージ表示 -->
                         <v-alert v-if="employeeerrorMessage" type="error" dismissible>
-                            {{ errorMessage }}
+                            {{ employeeerrorMessage }}
                         </v-alert>
                         <v-text-field v-model="employee_name" label="name" outlined></v-text-field>
                         <v-text-field
