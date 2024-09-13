@@ -76,23 +76,14 @@ new Vue({
     },
     
     async readData() {
-      try {
+      try  {
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-        this.productList = response.data; // データリストを更新
-      } catch (error) {
-        console.error("データの読み込みに失敗しました", error);
-      }
+        console.log(response.data);
+        this.productList = response.data.List.sort((a, b) => a.product_category - b.product_category);
+    } catch (error) {
+        console.error("データの取得に失敗しました:", error);
+    }
     },
-    
-    readData: async function () {
-      try {
-          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-          console.log(response.data);
-          this.productList = response.data.List.sort((a, b) => a.product_category - b.product_category);
-      } catch (error) {
-          console.error("データの取得に失敗しました:", error);
-      }
-  },
 
   toggleExpand(card) {
       if (card.isExpanded) {
