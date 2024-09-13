@@ -75,7 +75,6 @@ new Vue({
       }
     },
     
-
     async readData() {
       try {
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
@@ -84,30 +83,45 @@ new Vue({
         console.error("データの読み込みに失敗しました", error);
       }
     },
-
-    toggleExpand(data) {
-      // 展開/折りたたみのロジック
-      data.isExpanded = !data.isExpanded;
-    }
+    
+    readData: async function () {
+      try {
+          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+          console.log(response.data);
+          this.dataList = response.data.List.sort((a, b) => a.temperature - b.temperature);
+      } catch (error) {
+          console.error("データの取得に失敗しました:", error);
+      }
   },
 
-  created() {
-    this.readData(); // コンポーネント作成時にデータを読み込む
+  toggleExpand(card) {
+      if (card.isExpanded) {
+          card.isExpanded = false;
+      } else {
+          // 他のカードの拡大を解除
+          this.dataList.forEach(item => {
+              item.isExpanded = false;
+          });
+          card.isExpanded = true;
+      }
   }
+
+
+},
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const tabs = document.getElementsByClassName('tab');
-  for (let i = 0; i < tabs.length; i++) {
-      tabs[i].addEventListener('click', tabSwitch, false);
-  }
+const tabs = document.getElementsByClassName('tab');
+for (let i = 0; i < tabs.length; i++) {
+  tabs[i].addEventListener('click', tabSwitch, false);
+}
 
-  function tabSwitch() {
-      document.getElementsByClassName('is-active')[0].classList.remove('is-active');
-      this.classList.add('is-active');
-      document.getElementsByClassName('is-show')[0].classList.remove('is-show');
-      const arrayTabs = Array.prototype.slice.call(tabs);
-      const index = arrayTabs.indexOf(this);
-      document.getElementsByClassName('panel')[index].classList.add('is-show');
-  };
+function tabSwitch() {
+  document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+  this.classList.add('is-active');
+  document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+  const arrayTabs = Array.prototype.slice.call(tabs);
+  const index = arrayTabs.indexOf(this);
+  document.getElementsByClassName('panel')[index].classList.add('is-show');
+};
 }, false);
