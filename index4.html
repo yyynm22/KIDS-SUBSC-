@@ -41,13 +41,13 @@
               </select>
               <select id="temp-B" v-model="product_gender" class="product_gender">
                 <option value="">gender</option>
-                <option value="Men">Men</option>
-                <option value="Women">Women</option>
+                <option value="Girl">Girl</option>
+                <option value="Boy">Boy</option>
                 <option value="All">All</option>
               </select>
             </v-col>
             <v-col cols="6">
-              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product_name" placeholder="product_name" outlined></v-text-field>
+              <v-text-field class="ml-6 mr-6" v-model="product_name" label="product_name" placeholder="product" outlined></v-text-field>
               <v-text-field class="ml-6 mr-6" v-model="URL" label="URL" placeholder="URL" outlined></v-text-field>
             </v-col>
           </v-row>
@@ -67,10 +67,10 @@
               <v-col v-for="data in productList" :key="data.product_id" cols="12" sm="4" md="4">
                 <v-card class="['mx-auto', 'my-3', { 'expand': data.isExpanded }]" max-width="344" style="min-height: 450px;" v-on:click="toggleExpand(data)">
                   <v-card-title>
-                    <span>product_name: {{ data.product_name }}</span>
+                    <span> {{ data.product_name }}</span>
                   </v-card-title>
                   <v-card-subtitle>
-                    <span>product_category: {{ data.product_category }}</span><br>
+                    <span> {{ data.product_category }}</span><br>
                   </v-card-subtitle>
                   <v-card-text>
                     <p>{{ data.product_gender }}</p>
