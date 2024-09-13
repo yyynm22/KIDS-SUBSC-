@@ -277,7 +277,7 @@ readData3: async function () {
   toggleLike: function (index, listType = 'dataList') {
             const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
             list[index].liked = !list[index].liked;
-        },  
+        },    
 
 
       toggleLike(item) {
