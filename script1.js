@@ -126,13 +126,17 @@ readData3: async function () {
 
             // productDataを新しいデータに結合
             this.dataList3 = this.dataList3.map(item => {
-                const productInfo = productData.find(p => p.product_id === item.product_id);
-                console.log("Product info for item:", item.product_id, productInfo);
-                return productInfo ? { ...item, ...productInfo } : item;
+                const productInfo = productData.find(p => p.List && p.List.some(prod => prod.product_id === item.product_id));
+                if (productInfo) {
+                    const productDetails = productInfo.List.find(prod => prod.product_id === item.product_id);
+                    console.log("Product info for item:", item.product_id, productDetails);
+                    return { ...item, ...productDetails };
+                }
+                return item;
             });
 
             console.log("Updated dataList3:", this.dataList3);
-
+          
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
         }
