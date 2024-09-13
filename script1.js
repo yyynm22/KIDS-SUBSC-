@@ -75,137 +75,92 @@ filterData() {
     }
 },
   
-readData3: async function () {
-    try {
-        // APIからデータを取得
+ readData3: async function () {
+      try {
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
-        
-        // レスポンスデータの内容を確認
         const cartitems = response.data;
-        console.log('API response:', cartitems);
 
-        // cartitemsがオブジェクトであり、Listプロパティを持つか確認
         if (cartitems.List && Array.isArray(cartitems.List)) {
-            console.log('Cart items (List):', cartitems.List);
+          const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
 
-            // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
-            const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
-            if (userItems.length > 0) {
-                console.log('Found user items:', userItems);
+          const newData = userItems.map(item => {
+            const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
+            return existingItem ? { ...item, liked: existingItem.liked, saved: existingItem.saved } : { ...item, liked: false, saved: false };
+          });
+
+          this.dataList3 = newData;
+          const productIds = userItems.map(item => item.product_id);
+
+          const productResponses = await Promise.all(productIds.map(productId =>
+            fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
+          ));
+
+          const productData = await Promise.all(productResponses.map(async (res) => {
+            if (res.ok) {
+              return await res.json();
             } else {
-                console.log('User items not found');
+              console.error("Failed to fetch product_id:", res.status);
+              return null;
             }
+          }));
 
-            // 新しいデータを処理
-            const newData = userItems.map(item => {
-                const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
-                return existingItem ? { 
-                    ...item, 
-                    liked: existingItem.liked, 
-                    saved: existingItem.saved 
-                } : { 
-                    ...item, 
-                    liked: false, 
-                    saved: false 
-                };
-            });
-
-            // dataList3に新しいデータを反映
-            this.dataList3 = newData;
-
-            // userItemsからproduct_idのリストを作成
-            const productIds = userItems.map(item => item.product_id);
-
-           // product_idリストを用いてsubsc_product_tableから情報を取得
-const productResponses = await Promise.all(productIds.map(productId =>
-    fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
-));
-
-// 各レスポンスが正常かチェックし、JSONパースを試みる
-const productData = await Promise.all(productResponses.map(async res => {
-    if (res.ok) {
-        try {
-            return await res.json();
-        } catch (error) {
-            console.error("JSONパースに失敗しました:", error);
-            return null;  // パースエラー時にはnullを返す
+          this.dataList3 = this.dataList3.map(item => {
+            const productInfo = productData.find(p => p?.product_id === item.product_id);
+            return productInfo ? { ...item, productInfo } : item;
+          });
+        } else {
+          console.error('Listプロパティが存在しないか、配列ではありません。');
         }
-    } else {
-        console.error(`Failed to fetch product_id: ${res.status}`);
-        return null;
-    }
-}));
-
-// productDataを新しいデータに結合
-this.dataList3 = this.dataList3.map(item => {
-    const productInfo = productData.find(p => p?.product_id === item.product_id);
-    return productInfo ? { ...item, productInfo } : item;
-});
-
-    } catch (error) {
+      } catch (error) {
         console.error('データの取得に失敗しました:', error);
-    }
-},
-
-
-
-      
-      openCartDialog() {
-      this.cartdialog = true;  // ダイアログを開く
-      this.readData3();        // カートのデータを取得
-    },
-      
-      watch: {
-    cartdialog(val) {
-      if (val) {
-        this.readData3();  // ダイアログが開いたときにデータを取得
       }
-    }
-  },
-  
+    },
 
+    openCartDialog() {
+      this.cartdialog = true;
+      this.readData3();
+    },
 
-
-      // 商品を選択してダイアログを開く
-      openDialog(item) {
-        this.selectedItem = item;
-        this.selectedSize = '';
-        this.quantity = 1;
-        this.dialog = true;
-      },
-      
-      // 商品をカートに追加
-     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // 必須パラメーターが設定されているかチェック
-    if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
-        console.log("パラメーターが設定されてない");
-        if (!this.user_id) console.log("ユーザーIDが設定されていません");
-        if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
-        if (!selectedSize) console.log("サイズが設定されていません");
-        if (!selectedQuantity) console.log("数量が設定されていません");
+    addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+      if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
+        console.log("パラメーターが不足しています");
         return;
-    }
+      }
 
-    // 数量を数値型に変換
-    const params = {
+      const params = {
         product_id: selectedItem.product_id,
         user_id: this.user_id,
         product_size: selectedSize,
         quantity: selectedQuantity
-    };
+      };
 
-    try {
-        // パラメーターを含んだAPIリクエスト
+      try {
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
-
-        // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = 1;
-    } catch (error) {
+      } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
+      }
+    },
+
+    toggleLike(item) {
+      item.liked = !item.liked;
+    },
+
+    toggleSave(item) {
+      item.saved = !item.saved;
     }
-},
+  },
+
+  watch: {
+    cartdialog(val) {
+      if (val) {
+        this.readData3();
+      }
+    }
+    
+      },
          //注文確定
   confirmOrder: async function() {
      // selectedOrder が存在するかチェック
