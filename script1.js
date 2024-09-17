@@ -123,13 +123,16 @@ const app = new Vue({
 
             // 商品データをカートアイテムに結合
            this.dataList3 = this.dataList3.map(item => {
-    // product_id に基づいて対応する productInfo を取得
+    // productData と item.product_id の内容を確認
+    console.log("Current item.product_id:", item.product_id);
+    console.log("Product data:", productData);
+
+    // product_id で productInfo を探す
     const productInfo = productData.find(p => p.product_id === item.product_id);
     
-    // ここで productInfo の内容を確認する
+    // productInfo の内容を確認
     console.log("Product info for each item:", productInfo);
     
-    // productInfo が存在する場合はデータを結合
     return productInfo ? { 
         ...item, 
         product_name: productInfo.product_name,
@@ -138,6 +141,7 @@ const app = new Vue({
         URL: productInfo.URL
     } : item;
 });
+
 
 
         } else {
