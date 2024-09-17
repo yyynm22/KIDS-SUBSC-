@@ -217,13 +217,16 @@ readData3: async function () {
         return;
   }
       // 注文詳細を作成（order_idを追加）
-    const orderDetails = this.dataList3.map(item => ({
-      order_id: this.order_id,  // 自動生成または取得された order_id を使用
-      product_id: item.product_id,
-      user_id: this.user_id,
-      product_size: item.product_size,
-      quantity: item.quantity
+  const orderDetails = this.dataList3.map(item => ({
+    order_id: this.order_id,  // 自動生成または取得された order_id を使用
+    product_id: item.product_id,
+    user_id: this.user_id,
+    product_size: item.product_size,
+    quantity: item.quantity
   }));
+
+    // デバッグログを追加
+    console.log("注文詳細:", orderDetails);
 
   try {
     // 各注文詳細をAPIに送信
@@ -235,15 +238,20 @@ readData3: async function () {
     // カートの内容を削除 (DELETE2)
 for (const item of this.dataList3) {
   const deleteParams = {
-      order_id: this.order_id,  // このorder_idを使って削除
-      product_id: item.product_id,
-      user_id: this.user_id,
-      product_size: item.product_size,
-      quantity: item.quantity
+    order_id: this.order_id,  // このorder_idを使って削除
+    product_id: item.product_id,
+    user_id: this.user_id,
+    product_size: item.product_size,
+    quantity: item.quantity
   };
+
+  // デバッグログを追加
+  console.log("削除パラメーター:", deleteParams);
+
   await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE2', deleteParams);
   console.log(`商品ID: ${item.product_id} のカート内容が削除されました`);
-}
+  }
+
 
 
     // カートをクリア
