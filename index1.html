@@ -24,7 +24,7 @@
         <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
 
         <div style="display: flex; margin-left: auto;">
-          <v-btn v-on:click="openCartDialog" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート">
+          <v-btn v-on:click="openCartDialog" dark rounded class="custom-font" style="margin-right: 16px;" aria-label="カート" title="カート" color="#90c8f0">
   <v-icon start>mdi-cart</v-icon>
 </v-btn>
 
@@ -46,7 +46,10 @@
     </v-card-title>
 
     <v-card-text>
-      <v-row>
+      <div v-if="dataList3.length === 0" class="empty-cart-message">
+      現在カートに商品がありません。
+      </div>
+      <v-row v-else>
         <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
@@ -68,8 +71,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="red" text @click="confirmOrder">注文確定</v-btn>
-      <v-btn color="primary" text @click="cartdialog = false">閉じる</v-btn>
+       <v-btn rounded color="#f09199"  @click="confirmOrder" dark>注文確定</v-btn>
+       <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark>閉じる</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
@@ -186,7 +189,7 @@
       <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>-->
 
       <v-card-actions>
-        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+         <v-btn :color="item.liked ? '#f09199' : '#c0c0c0'" @click="toggleLike(item)" dark>
           <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
         </v-btn>
         <!--<v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
