@@ -46,10 +46,7 @@
     </v-card-title>
 
     <v-card-text>
-      <div v-if="dataList3.length === 0" class="empty-cart-message">
-      現在カートに商品がありません。
-      </div>
-      <v-row v-else>
+      <v-row>
         <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
@@ -58,6 +55,9 @@
             <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
             <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
+            <v-btn icon v-on:click="deleteData" style="margin-left: 20px;">
+                                                <v-icon>mdi-trash-can</v-icon>
+                                            </v-btn>
           </v-card>
         </v-col>
       </v-row>
