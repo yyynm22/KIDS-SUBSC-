@@ -46,9 +46,8 @@
     </v-card-title>
 
     <v-card-text>
-      <div v-if="dataList3.length === 0" color="red"
-      font-weight="bold"></div>
-        現在カートに商品がありません。
+      <div v-if="dataList3.length === 0" class="empty-cart-message">
+      現在カートに商品がありません。
       </div>
       <v-row v-else>
         <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
