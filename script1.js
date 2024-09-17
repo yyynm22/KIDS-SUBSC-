@@ -15,6 +15,7 @@ const app = new Vue({
       selectedQuantity: 1,  // 個数
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
+     order_id: null,
     },
   
   mounted() {
@@ -90,6 +91,8 @@ readData3: async function () {
           const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
           if (userItems.length > 0) {
               console.log('Found user items:', userItems);
+              // 最初のアイテムのorder_idを保存
+              this.order_id = userItems[0].order_id;
           } else {
               console.log('User items not found');
           }
@@ -217,17 +220,15 @@ readData3: async function () {
         return;
   }
 
-  // order_idを生成または取得
-  const order_id = await this.generateOrderId(); // 例: generateOrderId関数でorder_idを生成または取得
 
     // 注文詳細を作成（order_idを追加）
     const orderDetails = this.dataList3.map(item => ({
-        order_id: order_id,  // 生成または取得された order_id を使用
-        product_id: item.product_id,
-        user_id: this.user_id,
-        product_size: item.product_size,
-        quantity: item.quantity
-    }));
+      order_id: this.order_id,  // 保存された order_id を使用
+      product_id: item.product_id,
+      user_id: this.user_id,
+      product_size: item.product_size,
+      quantity: item.quantity
+  }));
 
     // デバッグログを追加
     console.log("注文詳細:", orderDetails);
