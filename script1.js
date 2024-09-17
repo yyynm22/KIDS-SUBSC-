@@ -20,7 +20,6 @@ const app = new Vue({
   
   mounted() {
     
-    
         // コンポーネントがマウントされたときに sessionStorage から user_id を取得
         this.user_id = sessionStorage.getItem('user_id');
         console.log("ユーザーIDが sessionStorage から取得されました:", this.user_id);
@@ -50,8 +49,6 @@ filterData() {
 },
 
 
-
-      
       mypage() {
         // マイページ遷移
         window.location.href = '/index2.html';
@@ -137,10 +134,6 @@ readData3: async function () {
       URL: productInfo.URL
   } : item;
 });
-
-
-
-
       } else {
           console.error('Listプロパティが存在しないか、配列ではありません。');
       }
@@ -149,10 +142,7 @@ readData3: async function () {
   }
 },
 
-
-
-
-      
+     
       openCartDialog() {
       this.cartdialog = true;  // ダイアログを開く
       this.readData3();        // カートのデータを取得
@@ -166,8 +156,6 @@ readData3: async function () {
     }
   },
   
-
-
 
       // 商品を選択してダイアログを開く
       openDialog(item) {
