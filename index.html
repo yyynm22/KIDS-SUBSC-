@@ -45,6 +45,14 @@
                 <v-spacer></v-spacer>
                 <v-toolbar-title class="centered-title">Kids Sabsc</v-toolbar-title>
                 <v-spacer></v-spacer>
+
+                <v-btn v-on:click="dialog3 = true" dark color="#f09199" rounded class="custom-font">
+                    Sign up
+                    <v-icon start>
+                        mdi-account-plus
+                    </v-icon>
+                </v-btn>
+                
                 <v-btn v-on:click="dialog1 = true" dark color="#f09199" rounded class="custom-font">
                     Login
                     <v-icon start>
@@ -52,7 +60,33 @@
                     </v-icon>
                 </v-btn>
             </v-app-bar>
+　　　　　　　
 
+            <!-- ユーザー登録ダイアログ -->
+            <v-dialog v-model="dialog3" max-width="400">
+                <v-card>
+                    <v-card-title class="headline1">Sign Up</v-card-title>
+                    <v-card-text>
+                        <!-- エラーメッセージ表示 -->
+                        <v-alert v-if="registerErrorMessage" type="error" dismissible>
+                            {{ registerErrorMessage }}
+                        </v-alert>
+                        <v-text-field v-model="register_name" label="Name" outlined></v-text-field>
+                        <v-text-field v-model="register_mail" label="Email" outlined></v-text-field>
+                        <v-text-field v-model="register_pass" label="Password" type="password" outlined></v-text-field>
+                        <v-text-field v-model="register_postcode" label="Postcode" outlined></v-text-field>
+                        <v-text-field v-model="register_adress" label="Address" outlined></v-text-field>
+                        <v-text-field v-model="register_telenum" label="Phone Number" outlined></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" @click="register">Sign Up</v-btn>
+                        <v-btn @click="dialog3 = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            
             <!-- ログインダイアログ -->
             <v-dialog v-model="dialog1" max-width="400">
             <v-card>
