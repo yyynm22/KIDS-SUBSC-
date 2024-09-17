@@ -91,27 +91,23 @@ readData3: async function () {
           const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
           if (userItems.length > 0) {
               console.log('Found user items:', userItems);
-              // 最初のアイテムのorder_idを保存
-              this.order_id = userItems[0].order_id;
           } else {
               console.log('User items not found');
           }
 
           // 新しいデータにマッピング
           const newData = userItems.map(item => {
-    const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
-    return existingItem ? { 
-        ...item, 
-        liked: existingItem.liked, 
-        saved: existingItem.saved, 
-        order_id: item.order_id  // order_idを追加
-    } : { 
-        ...item, 
-        liked: false, 
-        saved: false, 
-        order_id: item.order_id  // order_idを追加
-    };
-});
+              const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
+              return existingItem ? { 
+                  ...item, 
+                  liked: existingItem.liked, 
+                  saved: existingItem.saved 
+              } : { 
+                  ...item, 
+                  liked: false, 
+                  saved: false 
+              };
+          });
 
           this.dataList3 = newData;
 
@@ -128,20 +124,19 @@ readData3: async function () {
 
           // 商品データをカートアイテムに結合
          this.dataList3 = this.dataList3.map(item => {
-    const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
+  // productData の構造に合わせて、List の中から productInfo を探す
+  const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
 
-    console.log("Product info for each item with order_id:", productInfo);
-
-    return productInfo ? { 
-        ...item, 
-        product_name: productInfo.product_name,
-        product_category: productInfo.product_category,
-        product_gender: productInfo.product_gender,
-        URL: productInfo.URL,
-        order_id: item.order_id  // order_idを保持
-    } : item;
+  console.log("Product info for each item:", productInfo);
+  
+  return productInfo ? { 
+      ...item, 
+      product_name: productInfo.product_name,
+      product_category: productInfo.product_category,
+      product_gender: productInfo.product_gender,
+      URL: productInfo.URL
+  } : item;
 });
-
 
 
 
@@ -226,7 +221,7 @@ readData3: async function () {
 
     // 注文詳細を作成（order_idを追加）
     const orderDetails = this.dataList3.map(item => ({
-      order_id: this.order_id,  // 保存された order_id を使用
+      order_id: item.order_id,  // 各アイテムの元の order_id を使用
       product_id: item.product_id,
       user_id: this.user_id,
       product_size: item.product_size,
