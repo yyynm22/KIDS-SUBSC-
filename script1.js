@@ -122,16 +122,23 @@ const app = new Vue({
             console.log("Product data from subsc_product_table:", productData);
 
             // 商品データをカートアイテムに結合
-            this.dataList3 = this.dataList3.map(item => {
-                const productInfo = productData.find(p => p.product_id === item.product_id);
-                return productInfo ? { 
-                    ...item, 
-                    product_name: productInfo.product_name,
-                    product_category: productInfo.product_category,
-                    product_gender: productInfo.product_gender,
-                    URL: productInfo.URL
-                } : item;
-            });
+           this.dataList3 = this.dataList3.map(item => {
+    // product_id に基づいて対応する productInfo を取得
+    const productInfo = productData.find(p => p.product_id === item.product_id);
+    
+    // ここで productInfo の内容を確認する
+    console.log("Product info for each item:", productInfo);
+    
+    // productInfo が存在する場合はデータを結合
+    return productInfo ? { 
+        ...item, 
+        product_name: productInfo.product_name,
+        product_category: productInfo.product_category,
+        product_gender: productInfo.product_gender,
+        URL: productInfo.URL
+    } : item;
+});
+
 
         } else {
             console.error('Listプロパティが存在しないか、配列ではありません。');
