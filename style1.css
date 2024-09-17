@@ -3,9 +3,8 @@
   font-family: 'Times New Roman', sans-serif
 !important;
 }
-<style scoped>
+
 .empty-cart-message {
   color: red;
   font-weight: bold;
 }
-</style>
