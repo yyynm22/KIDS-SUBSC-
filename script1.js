@@ -238,6 +238,22 @@ readData3: async function () {
         console.log("注文詳細が送信されました:", response.data);
     }
 
+    // カートから商品を削除
+  for (const item of orderDetails) {
+    const deleteParams = {
+        order_id: item.order_id,
+        product_id: item.product_id,
+        user_id: item.user_id,
+        product_size: item.product_size,
+        quantity: item.quantity
+    };
+
+  // デバッグログを追加
+  console.log("削除パラメーター:", deleteParams);
+
+  const deleteResponse = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE2', deleteParams);
+  console.log(`商品ID: ${item.product_id} のカート内容が削除されました:`, deleteResponse.data);
+}
 
     // カートをクリア
         this.dataList3 = [];
