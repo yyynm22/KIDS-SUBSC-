@@ -284,8 +284,8 @@ generateOrderId: async function() {
   }
 },
       
-deleteData: async function () {
-    if (!item) {  // itemが削除対象だと仮定
+deleteData: async function (item) {
+    if (!item) {  // itemが削除対象であるか確認
         console.log("削除対象が見つかりません");
         return;
     }
@@ -303,13 +303,13 @@ deleteData: async function () {
         console.log("削除成功:", response.data);
 
         // 成功したらUI上でも削除を反映する処理を追加
-        // this.items = this.items.filter(i => i.order_id !== item.order_id); など
+        this.dataList3 = this.dataList3.filter(i => i.order_id !== item.order_id);  // 削除したアイテムをリストから削除
 
     } catch (error) {
         console.error("削除に失敗しました:", error);
-        // エラーメッセージをフロントエンドに表示する処理を追加しても良い
     }
 },
+
 
 
       
