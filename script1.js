@@ -76,67 +76,77 @@ const app = new Vue({
   },
     
   readData3: async function () {
-      try {
-          // APIからデータを取得
-          const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
-          
-          // レスポンスデータの内容を確認
-          const cartitems = response.data;
-          console.log('API response:', cartitems);
-  
-          // cartitemsがオブジェクトであり、Listプロパティを持つか確認
-          if (cartitems.List && Array.isArray(cartitems.List)) {
-              console.log('Cart items (List):', cartitems.List);
-  
-              // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
-              const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
-              if (userItems.length > 0) {
-                  console.log('Found user items:', userItems);
-              } else {
-                  console.log('User items not found');
-              }
-  
-              // 新しいデータを処理
-              const newData = userItems.map(item => {
-                  const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
-                  return existingItem ? { 
-                      ...item, 
-                      liked: existingItem.liked, 
-                      saved: existingItem.saved 
-                  } : { 
-                      ...item, 
-                      liked: false, 
-                      saved: false 
-                  };
-              });
-  
-              // dataList3に新しいデータを反映
-              this.dataList3 = newData;
-  
-              // userItemsからproduct_idのリストを作成
-              const productIds = userItems.map(item => item.product_id);
-  
-              // product_idリストを用いてsubsc_product_tableから情報を取得
-              const productResponses = await Promise.all(productIds.map(productId =>
-                  fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
-              ));
-  
-              const productData = await Promise.all(productResponses.map(res => res.json()));
-              console.log("Product data from subsc_product_table:", productData);
-  
-              // productDataを新しいデータに結合
-              this.dataList3 = this.dataList3.map(item => {
-                  const productInfo = productData.find(p => p.product_id === item.product_id);
-                  return productInfo ? { ...item, productInfo } : item;
-              });
-  
-          } else {
-              console.error('Listプロパティが存在しないか、配列ではありません。');
-          }
-      } catch (error) {
-          console.error('データの取得に失敗しました:', error);
-      }
-  },
+    try {
+        // APIからデータを取得
+        const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
+        
+        // レスポンスデータの内容を確認
+        const cartitems = response.data;
+        console.log('API response:', cartitems);
+
+        // cartitemsがオブジェクトであり、Listプロパティを持つか確認
+        if (cartitems.List && Array.isArray(cartitems.List)) {
+            console.log('Cart items (List):', cartitems.List);
+
+            // user_idでカート内のユーザー情報を検索 (複数のアイテムを取得)
+            const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
+            if (userItems.length > 0) {
+                console.log('Found user items:', userItems);
+            } else {
+                console.log('User items not found');
+            }
+
+            // 新しいデータを処理
+            const newData = userItems.map(item => {
+                const existingItem = this.dataList3.find(oldItem => oldItem.product_id === item.product_id);
+                return existingItem ? { 
+                    ...item, 
+                    liked: existingItem.liked, 
+                    saved: existingItem.saved 
+                } : { 
+                    ...item, 
+                    liked: false, 
+                    saved: false 
+                };
+            });
+
+            // dataList3に新しいデータを反映
+            this.dataList3 = newData;
+
+            // userItemsからproduct_idのリストを作成
+            const productIds = userItems.map(item => item.product_id);
+
+            // product_idリストを用いてsubsc_product_tableから情報を取得
+            const productResponses = await Promise.all(productIds.map(productId =>
+                fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT7?product_id=${productId}`)
+            ));
+
+            const productData = await Promise.all(productResponses.map(res => res.json()));
+            console.log("Product data from subsc_product_table:", productData);
+
+            // productDataを新しいデータに結合
+            this.dataList3 = this.dataList3.map(item => {
+                const productInfo = productData.find(p => p.product_id === item.product_id);
+                // productInfo から必要なデータを item に追加
+                return productInfo ? { 
+                    ...item, 
+                    product_name: productInfo.product_name,
+                    product_category: productInfo.product_category,
+                    product_gender: productInfo.product_gender,
+                    product_size: item.product_size,  // すでに item にあるサイズ情報をそのまま使う
+                    quantity: item.quantity,          // 同様に数量も
+                    URL: productInfo.URL             // 商品画像のURLを追加
+                } : item;
+            });
+
+        } else {
+            console.error('Listプロパティが存在しないか、配列ではありません。');
+        }
+    } catch (error) {
+        console.error('データの取得に失敗しました:', error);
+    }
+},
+
   
   
   
