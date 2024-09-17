@@ -216,14 +216,18 @@ readData3: async function () {
         console.error("カートが空です");
         return;
   }
-      // 注文詳細を作成（order_idを追加）
-  const orderDetails = this.dataList3.map(item => ({
-    order_id: this.order_id,  // 自動生成または取得された order_id を使用
-    product_id: item.product_id,
-    user_id: this.user_id,
-    product_size: item.product_size,
-    quantity: item.quantity
-  }));
+
+  // order_idを生成または取得
+  const order_id = await this.generateOrderId(); // 例: generateOrderId関数でorder_idを生成または取得
+
+    // 注文詳細を作成（order_idを追加）
+    const orderDetails = this.dataList3.map(item => ({
+        order_id: order_id,  // 生成または取得された order_id を使用
+        product_id: item.product_id,
+        user_id: this.user_id,
+        product_size: item.product_size,
+        quantity: item.quantity
+    }));
 
     // デバッグログを追加
     console.log("注文詳細:", orderDetails);
@@ -252,8 +256,18 @@ readData3: async function () {
     } else {
         console.error("設定エラー:", error.message);
     }
-}
+  }
 },      
+// order_idを生成または取得する関数の例
+generateOrderId: async function() {
+  try {
+      const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/GENERATE_ORDER_ID');
+      return response.data.order_id; // APIから取得したorder_idを返す
+  } catch (error) {
+      console.error("order_idの生成に失敗しました:", error);
+      throw error;
+  }
+},
   
   toggleLike: function (index, listType = 'dataList') {
             const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
