@@ -283,6 +283,36 @@ generateOrderId: async function() {
       throw error;
   }
 },
+      
+deleteData: async function () {
+    if (!item) {  // itemが削除対象だと仮定
+        console.log("削除対象が見つかりません");
+        return;
+    }
+    
+    const deleteParams = {
+        order_id: item.order_id,
+        product_id: item.product_id,
+        user_id: item.user_id,
+        product_size: item.product_size,
+        quantity: item.quantity
+    };
+    
+    try {
+        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE2', deleteParams);
+        console.log("削除成功:", response.data);
+
+        // 成功したらUI上でも削除を反映する処理を追加
+        // this.items = this.items.filter(i => i.order_id !== item.order_id); など
+
+    } catch (error) {
+        console.error("削除に失敗しました:", error);
+        // エラーメッセージをフロントエンドに表示する処理を追加しても良い
+    }
+},
+
+
+      
   
   toggleLike: function (index, listType = 'dataList') {
             const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
