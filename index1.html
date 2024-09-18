@@ -61,6 +61,9 @@
             <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
             <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
+            <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
+        <v-icon>mdi-trash-can</v-icon>
+    </v-btn>
           </v-card>
         </v-col>
       </v-row>
