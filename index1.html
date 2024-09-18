@@ -83,7 +83,7 @@
       <!-- CategoryとKids genderの選択 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
         <v-col cols="12" sm="6" md="3">
-          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Pants', 'Skirt']"></v-select>
+          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Bottoms', 'All']"></v-select>
           <v-select v-model="Kidsgender" label="Kids gender" solo :items="['Boy', 'Girl', 'All']"></v-select>
         </v-col>
       </v-row>
@@ -93,7 +93,9 @@
         <v-col cols="auto">
           <v-btn v-on:click="filterData" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="検索">SEARCH</v-btn>
         </v-col>
-        
+        <v-col cols="auto">
+          <v-btn v-on:click="filterData" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="更新">Update</v-btn>
+        </v-col>
       </v-row>
 
       <!-- dataList1の内容を表示 -->
