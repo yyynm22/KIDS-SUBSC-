@@ -161,10 +161,10 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <!-- カートに追加 -->
-      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)"　class="custom-font" rounded style="margin-right: 16px;">
+      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)"　class="custom-font" rounded color="#f09199" dark>
         追加</v-btn>
       <!-- ダイアログを閉じる -->
-      <v-btn @click="dialog = false"　class="custom-font" rounded>
+      <v-btn @click="dialog = false"　class="custom-font" rounded color="#90c8f0" dark>
         閉じる</v-btn>
     </v-card-actions>
   </v-card>
@@ -209,7 +209,7 @@
           © 2024 TeamA
         </v-col>
 
-        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199">
+        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
       </v-footer>
