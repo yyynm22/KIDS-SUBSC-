@@ -41,11 +41,18 @@ filterData() {
     this.filteredList = this.dataList2;
   } else {
     this.filteredList = this.dataList2.filter(item => {
-      const matchesCategory = this.Category === '' || item.product_category === this.Category;
-      const matchesGender = this.Kidsgender === 'All' || item.product_gender === this.Kidsgender;
+       // Categoryが 'All' の場合、'All' として登録されているアイテムのみ表示
+    // Categoryが特定のカテゴリー（Tops, Bottomsなど）の場合、そのカテゴリーでフィルタリング
+    const matchesCategory = (this.Category === 'All')
+      ? item.product_category === 'All'
+      : (this.Category === '' || item.product_category === this.Category);
 
-      console.log("Item Category: ", item.product_category, "Matches Category: ", matchesCategory);
-      console.log("Item Gender: ", item.product_gender, "Matches Gender: ", matchesGender);
+    // Kidsgenderが 'All' の場合は性別フィルタを無視、特定の性別でフィルタリング
+    const matchesGender = this.Kidsgender === 'All' || this.Kidsgender === '' || item.product_gender === this.Kidsgender;
+
+    // デバッグ用のログ
+    console.log("Item Category: ", item.product_category, "Matches Category: ", matchesCategory);
+    console.log("Item Gender: ", item.product_gender, "Matches Gender: ", matchesGender);
 
       return matchesCategory && matchesGender;
     });
