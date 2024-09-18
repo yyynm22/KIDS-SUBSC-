@@ -1,92 +1,86 @@
-/* フッター、ヘッダーのフォント設定 */
-.custom-font {
-    font-family: 'M PLUS 1', sans-serif !important;
-}
+new Vue({
+  el: '#app',
+  vuetify: new Vuetify(),
+  data() {
+    return {
+      tab: 0,  // タブの状態
+      orderHistory: [],  // 注文履歴のデータ
+      userData: {  // ユーザーデータを保持するオブジェクト
+        user_id: '',
+        user_name: '',
+        user_mail: '',
+        user_pass: '',
+        user_postcode: '',
+        user_adress: '',
+        user_telenum: ''
+      }
+    };
+  },
+  methods: {
+    async fetchOrderHistory() {
+      try {
+        // 注文履歴の取得 (確定した注文データ)
+        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
 
-/* ヘッダーのタイトルを中央に配置 */
-.centered-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        // 顧客情報の取得
+        const userResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT1');
 
-/* ログアウトボタンにスタイルを追加 */
-.logout-btn {
-    margin-right: 5mm; /* HOMEボタンとのスペースを確保 */
-}
+        // 商品情報の取得
+        const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
 
-/* タブのコンテナを中央に配置 */
-.custom-tabs {
-    display: flex;
-    justify-content: center; /* 横方向に中央揃え */
-    padding: 0;
-    margin: 0;
-}
+        // 注文履歴データをマッピング
+        const orders = orderResponse.data.List;
+        const users = userResponse.data.List;
+        const products = productResponse.data.List;
 
-/* タブ内のコンテンツを中央に配置 */
-.centered-content {
-    text-align: center; /* 文章の中央揃え */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+        // 注文履歴に関連する商品情報とユーザー情報を結びつける
+        this.orderHistory = orders.map(order => {
+          // 注文に関連するユーザー情報を取得
+          const user = users.find(user => user.user_id === order.user_id);
 
-/* タブの文字色を指定カラーに設定 */
-.v-tab {
-    color: #000000; /* デフォルトの文字色 */
-}
+          // 注文に関連する商品情報を取得
+          const items = products
+            .filter(product => product.product_id === order.product_id)
+            .map(product => ({
+              product_id: product.product_id,
+              product_name: product.product_name,
+              product_image_url: product.URL,
+              product_size: order.product_size,
+              quantity: order.quantity
+            }));
 
-/* 選択されたタブの文字色とアンダーラインの色 */
-.v-tab--active {
-    color: #f09199; /* 選択されたタブの文字色 */
-}
+          return {
+            order_id: order.order_id,
+            total_quantity: order.quantity,
+            user: {
+              user_id: user.user_id,
+              user_name: user.user_name,
+              user_mail: user.user_mail,
+              user_postcode: user.user_postcode,
+              user_adress: user.user_adress,
+              user_telenum: user.user_telenum
+            },
+            items
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching order history:', error);
+      }
+    },
 
-/* タブのアンダーラインの色 */
-.v-tabs .v-tab--active {
-    color: #f09199 !important; /* タブが選択されたときの文字色 */
-    border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
-}
+    
+    Logout() {
+      // ログアウト処理
+      sessionStorage.clear();
+      window.location.href = './index.html';
+    },
 
-/* カーソルを当てたときのアンダーラインの色 */
-.v-tabs .v-tab:hover {
-    border-bottom: 2px solid transparent; /* カーソルを当てたときのアンダーラインを透明に */
-}
-
-/* アクティブなタブ以外のカーソルを当てたときのアンダーラインの色 */
-.v-tabs .v-tab--active:hover {
-    border-bottom: 2px solid #f09199 !important; /* アクティブタブのカーソルを当てたときのアンダーライン色 */
-}
-
-/* パスワードフィールドにカスタムスタイルを適用 */
-.custom-password .v-input__control .v-input__append-inner .v-icon {
-    color: #f09199; /* 目のアイコンの色 */
-}
-
-/* パスワードフィールドのクリック時のアンダーライン色を変更 */
-.custom-password .v-input__control::after {
-    border-bottom: 2px solid #f09199 !important;
-}
-
-/* フォントの設定 */
-body {
-    font-family: 'M PLUS 1', sans-serif;
-}
-
-/* カードデザインの改善 */
-.custom-card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
-    border-radius: 8px; /* 角を少し丸める */
-    padding: 16px;
-}
-
-/* 注文履歴のリストスタイル */
-.order-list .v-list-item {
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.order-list .v-img {
-    border-radius: 4px;
-}
+    addData() {
+      // HOME ボタンの動作
+      window.location.href = './index4.html';
+    }
+  },
+  mounted() {
+    this.fetchOrderHistory();
+  }
+});
