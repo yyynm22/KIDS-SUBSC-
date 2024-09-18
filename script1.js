@@ -31,6 +31,10 @@ const app = new Vue({
     },
   
     methods: {
+      resetFilters() {
+    this.Category = '';  // カテゴリをリセット
+    this.Kidsgender = '';  // 性別フィルタをリセット
+  },
       
 filterData() {
   if (this.Category === '' && this.Kidsgender === '') {
@@ -46,9 +50,11 @@ filterData() {
       return matchesCategory && matchesGender;
     });
   }
-
-  console.log("Filtered List after search: ", this.filteredList);
 },
+      updateData() {
+    this.resetFilters();  // 検索条件をリセット
+    this.filterData();    // すべてのデータを再度表示
+  },
 
 
       mypage() {
