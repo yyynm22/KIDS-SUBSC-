@@ -76,7 +76,7 @@ new Vue({
       Logout() {
         // ログアウト処理
         sessionStorage.clear();
-        window.location.href = './login.html';
+        window.location.href = './index.html';
       },
   
       addData() {
