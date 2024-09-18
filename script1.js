@@ -338,11 +338,13 @@ deleteData: async function (item) {
   toggleLike: function (index, listType = 'dataList') {
             const list = listType === 'dataList' ? this.dataList1 : this.dataList2;
             list[index].liked = !list[index].liked;
-        },    
-
-
-
-
+        }, 
+      scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // スムーズにスクロール
+    });
+  },   
       toggleLike(item) {
         item.liked = !item.liked;
       },
