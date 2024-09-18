@@ -8,6 +8,9 @@
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
   <link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
+ <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1&display=swap" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -58,12 +61,6 @@
             <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
             <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
-            <div style="text-align: right;">
-    <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
-        <v-icon>mdi-trash-can</v-icon>
-    </v-btn>
-</div>
-
           </v-card>
         </v-col>
       </v-row>
@@ -71,8 +68,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-       <v-btn rounded color="#f09199"  @click="confirmOrder" dark>注文確定</v-btn>
-       <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark>閉じる</v-btn>
+      <v-btn rounded color="#f09199"  @click="confirmOrder" dark>注文確定</v-btn>
+      <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark>閉じる</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
@@ -83,7 +80,7 @@
       <!-- CategoryとKids genderの選択 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
         <v-col cols="12" sm="6" md="3">
-          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Bottoms', 'All']"></v-select>
+          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Pants', 'Skirt']"></v-select>
           <v-select v-model="Kidsgender" label="Kids gender" solo :items="['Boy', 'Girl', 'All']"></v-select>
         </v-col>
       </v-row>
@@ -93,10 +90,7 @@
         <v-col cols="auto">
           <v-btn v-on:click="filterData" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="検索">SEARCH</v-btn>
         </v-col>
-        <v-col cols="auto">
-          <v-btn v-on:click="updateData" dark color="#f09199" rounded class="custom-font" title="更新" aria-label="更新">Update</v-btn>
-
-        </v-col>
+        
       </v-row>
 
       <!-- dataList1の内容を表示 -->
@@ -192,7 +186,7 @@
       <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>-->
 
       <v-card-actions>
-         <v-btn :color="item.liked ? '#f09199' : '#c0c0c0'" @click="toggleLike(item)" dark>
+        <v-btn :color="item.liked ? '#f09199' : '#c0c0c0'" @click="toggleLike(item)" dark>
           <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
         </v-btn>
         <!--<v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
