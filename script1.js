@@ -26,6 +26,8 @@ const app = new Vue({
     
     // ページ読み込み時に readData2 を呼び出し
     this.readData2();
+    
+    this.filterData(); // 初期表示時にもフィルタリング
     },
   
     methods: {
