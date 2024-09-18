@@ -62,7 +62,6 @@
             </v-app-bar>
 　　　　　　　
 
-            <!-- ユーザー登録ダイアログ -->
             <v-dialog v-model="dialog3" max-width="400">
                 <v-card>
                     <v-card-title class="headline1">Sign Up</v-card-title>
@@ -73,7 +72,31 @@
                         </v-alert>
                         <v-text-field v-model="register_name" label="Name" outlined></v-text-field>
                         <v-text-field v-model="register_mail" label="Email" outlined></v-text-field>
-                        <v-text-field v-model="register_pass" label="Password" type="password" outlined></v-text-field>
+            
+                        <!-- パスワード入力フィールド -->
+                        <v-text-field 
+                            v-model="register_pass" 
+                            :type="showPassword ? 'text' : 'password'" 
+                            label="Password" 
+                            outlined
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
+                        ></v-text-field>
+
+                        <v-alert type="info" border="left" dense text>
+                            パスワードは8文字以上で、英字と数字を含めてください。
+                        </v-alert>
+            
+                        <!-- パスワード確認用フィールド -->
+                        <v-text-field 
+                            v-model="register_confirm_pass" 
+                            :type="showPassword ? 'text' : 'password'" 
+                            label="Confirm Password" 
+                            outlined
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
+                        ></v-text-field>
+            
                         <v-text-field v-model="register_postcode" label="Postcode" outlined></v-text-field>
                         <v-text-field v-model="register_adress" label="Address" outlined></v-text-field>
                         <v-text-field v-model="register_telenum" label="Phone Number" outlined></v-text-field>
@@ -84,7 +107,7 @@
                         <v-btn @click="dialog3 = false">Cancel</v-btn>
                     </v-card-actions>
                 </v-card>
-            </v-dialog>
+            </v-dialog>            
 
             
             <!-- ログインダイアログ -->
