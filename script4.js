@@ -17,6 +17,11 @@ new Vue({
       // ログアウト処理
       window.location.href = '/index.html';  // ログインページにリダイレクト
     },
+    
+     orderdetail() {
+        // 注文詳細遷移
+        window.location.href = '/index5.html';
+     },
 
     async addData() {
       // 必要な項目が全て入力されていることを確認
