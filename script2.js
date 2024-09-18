@@ -21,7 +21,7 @@ new Vue({
       fetchUserData() {
         this.userData.user_id = sessionStorage.getItem('user_id') || '';
         this.userData.user_name = sessionStorage.getItem('user_name') || '';
-        this.userData.user_name = sessionStorage.getItem('user_mail') || '';
+        this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
         this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
         this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
         this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
