@@ -1,6 +1,6 @@
 /* フッター、ヘッダーのフォント設定 */
 .custom-font {
-    font-family: 'Times New Roman', sans-serif !important;
+    font-family: 'M PLUS 1', sans-serif !important;
 }
 
 /* ヘッダーのタイトルを中央に配置 */
@@ -70,7 +70,7 @@
 
 /* フォントの設定 */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'M PLUS 1', sans-serif;
 }
 
 /* カードデザインの改善 */
