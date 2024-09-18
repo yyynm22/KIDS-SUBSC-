@@ -45,6 +45,12 @@ new Vue({
         console.error("データの追加に失敗しました", error);
       }
     },
+    scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // スムーズにスクロール
+    });
+  },  
     
     async deleteData(data) {
       if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
