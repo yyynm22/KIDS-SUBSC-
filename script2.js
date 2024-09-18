@@ -28,11 +28,11 @@ new Vue({
       this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
     },
 
-    // 注文履歴の取得
-    async fetchOrderHistory() {
+methods: {
+  async fetchOrderHistory() {
     try {
       const userId = this.userData.user_id;
-      
+
       // 注文履歴の取得 (確定した注文データ)
       const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
         params: { user_id: userId }
@@ -45,10 +45,9 @@ new Vue({
       const orders = orderResponse.data.List;
       const products = productResponse.data.List;
 
-      // 注文履歴を集約するためのマップ
+      // 注文番号ごとに商品情報を集約
       const orderMap = {};
 
-      // 注文データを集約
       orders.forEach(order => {
         if (!orderMap[order.order_id]) {
           orderMap[order.order_id] = {
