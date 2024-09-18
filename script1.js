@@ -110,20 +110,11 @@ readData3: async function () {
   try {
       // APIからカートデータを取得
       const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
-      
       const cartitems = response.data;
-      console.log('API response:', cartitems);
 
       if (cartitems.List && Array.isArray(cartitems.List)) {
-          console.log('Cart items (List):', cartitems.List);
-
           // user_idでカート内のユーザー情報をフィルター
           const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
-          if (userItems.length > 0) {
-              console.log('Found user items:', userItems);
-          } else {
-              console.log('User items not found');
-          }
 
           // 新しいデータにマッピング
           const newData = userItems.map(item => {
@@ -150,23 +141,18 @@ readData3: async function () {
           ));
 
           const productData = productResponses.map(res => res.data);
-          console.log("Product data from subsc_product_table:", productData);
 
           // 商品データをカートアイテムに結合
-         this.dataList3 = this.dataList3.map(item => {
-  // productData の構造に合わせて、List の中から productInfo を探す
-  const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
-
-  console.log("Product info for each item:", productInfo);
-  
-  return productInfo ? { 
-      ...item, 
-      product_name: productInfo.product_name,
-      product_category: productInfo.product_category,
-      product_gender: productInfo.product_gender,
-      URL: productInfo.URL
-  } : item;
-});
+          this.dataList3 = this.dataList3.map(item => {
+              const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
+              return productInfo ? { 
+                  ...item, 
+                  product_name: productInfo.product_name,
+                  product_category: productInfo.product_category,
+                  product_gender: productInfo.product_gender,
+                  URL: productInfo.URL
+              } : item;
+          });
       } else {
           console.error('Listプロパティが存在しないか、配列ではありません。');
       }
@@ -174,6 +160,7 @@ readData3: async function () {
       console.error('データの取得に失敗しました:', error);
   }
 },
+
 
      
       openCartDialog() {
