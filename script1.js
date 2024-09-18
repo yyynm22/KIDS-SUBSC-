@@ -28,7 +28,15 @@ const app = new Vue({
     this.readData2();
     
     this.filterData(); // 初期表示時にもフィルタリング
+    
+     // スクロールイベントを追加
+    window.addEventListener('scroll', this.handleScroll);
     },
+  
+  beforeDestroy() {
+    // スクロールイベントを削除
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   
     methods: {
       resetFilters() {
@@ -62,6 +70,16 @@ filterData() {
     this.resetFilters();  // 検索条件をリセット
     this.filterData();    // すべてのデータを再度表示
   },
+      // スクロールイベントのハンドラ
+    handleScroll() {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const bottomPosition = document.documentElement.scrollHeight;
+
+      // ページの下にスクロールしたら更新処理を呼び出し
+      if (scrollPosition >= bottomPosition) {
+        this.updateData();
+      }
+    },
 
 
       mypage() {
