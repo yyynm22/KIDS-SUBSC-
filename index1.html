@@ -57,8 +57,7 @@
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
             <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
-            <v-card-subtitle class="custom-font">カテゴリー: {{ item.product_category }}</v-card-subtitle>
-            <v-card-subtitle class="custom-font">性別タイプ: {{ item.product_gender }}</v-card-subtitle>
+            
             <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
@@ -107,14 +106,13 @@
     <!-- 商品カード -->
     <v-card class="mx-auto" max-width="344" outlined>
       <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-      <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
-      <v-card-subtitle class="custom-font">カテゴリー: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>性別タイプ: {{ item.product_gender }}</v-card-subtitle>
+      <v-card-title class="custom-font" class="custom-font">{{ item.product_name }}</v-card-title>
+     
       <v-card-actions>
-        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
+        <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)" class="custom-font">
           <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
         </v-btn>
-        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+        <v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)" class="custom-font">
           <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
         </v-btn>
       </v-card-actions>
@@ -125,54 +123,50 @@
 <v-dialog v-model="dialog" max-width="600px">
   <v-card>
     <v-card-title>
-      <span class="headline">{{ selectedItem.product_name }}</span>
+      <span class="headline">商品詳細</span>
       <v-spacer></v-spacer>
       <v-btn icon @click="dialog = false">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-card-title>
     
-    <v-card-text>
-      <v-container>
-        <!-- 商品画像 -->
-        <v-row>
-          <v-col cols="12">
-            <v-img :src="selectedItem.URL" aspect-ratio="1.5"></v-img>
-          </v-col>
-        </v-row>
-        <!-- 商品情報 -->
-        <v-row>
-          <v-col cols="12">
-            <div　class="custom-font">カテゴリー: {{ selectedItem.product_category }}</div>
-            <div　class="custom-font">性別タイプ: {{ selectedItem.product_gender }}</div>
-          </v-col>
-        </v-row>
+   <v-card-text>
+<v-container>
+<v-row>
+<!-- 商品画像 -->
+<v-col cols="8"> <!-- 画像が左側に -->
+<v-img :src="selectedItem.URL" aspect-ratio="1.5"></v-img>
+</v-col>
+<!-- 商品情報と選択フィールド -->
+<v-col cols="4" class="custom-font"> <!-- 商品情報が右側に -->
+<div>{{ selectedItem.product_name }}</div>
+ 
         <!-- サイズ選択 -->
-        <v-row>
-          <v-col cols="12">
-            <v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font"></v-select>
-          </v-col>
-        </v-row>
-        <!-- 個数入力 -->
-        <v-row>
-          <v-col cols="12">
-            <v-text-field v-model="selectedQuantity" label="Quantity" type="number" class="custom-font"></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card-text>
+<v-row>
+<v-col cols="12">
+<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font"></v-select>
+</v-col>
+</v-row>
+<!-- 個数入力 -->
+<v-row>
+<v-col cols="12">
+<v-text-field v-model="selectedQuantity" label="Quantity" type="number" class="custom-font"></v-text-field>
+</v-col>
+</v-row>
+</v-col>
+</v-row>
+</v-container>
+</v-card-text>
     
-    <v-card-action　>
+    <v-card-actions>
       <v-spacer></v-spacer>
       <!-- カートに追加 -->
-      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)"　class="custom-font" rounded style="margin-right: 20px;">
-        追加
-      </v-btn>
+      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)"　class="custom-font" rounded style="margin-right: 16px;">
+        追加</v-btn>
       <!-- ダイアログを閉じる -->
-      <v-btn @click="dialog = false"　class="custom-font" rounded　style="margin-right: 20px;">
-        閉じる
-      </v-btn>
-    </v-card-action>
+      <v-btn @click="dialog = false"　class="custom-font" rounded>
+        閉じる</v-btn>
+    </v-card-actions>
   </v-card>
 </v-dialog>
 
