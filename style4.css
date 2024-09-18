@@ -229,3 +229,7 @@ img {
 .v-card {
   cursor: pointer; /* カーソルをポインターに */
 }
+
+.orderdetail-btn {
+  float: right;
+}
