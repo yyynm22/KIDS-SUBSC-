@@ -32,17 +32,24 @@ new Vue({
       try {
         const userId = this.userData.user_id;
 
+        console.log('Fetching order history for user:', userId);
+
         // 注文履歴の取得 (確定した注文データ)
         const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
           params: { user_id: userId }
         });
+        console.log('Order response:', orderResponse.data);
 
         // 商品情報の取得
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
+        console.log('Product response:', productResponse.data);
 
         // 注文履歴データをマッピング
         const orders = orderResponse.data.List;
         const products = productResponse.data.List;
+
+        console.log('Orders:', orders);
+        console.log('Products:', products);
 
         // 注文番号ごとに商品情報を集約
         const orderMap = {};
@@ -75,12 +82,16 @@ new Vue({
           }
         });
 
+        console.log('Order map:', orderMap);
+
         // 集約したデータをorderHistoryにセット
         this.orderHistory = Object.values(orderMap).map(order => ({
           order_id: order.order_id,
           total_quantity: order.items.reduce((total, item) => total + item.quantity, 0),
           items: order.items
         }));
+
+        console.log('Order history:', this.orderHistory);
       } catch (error) {
         console.error('Error fetching order history:', error);
       }
