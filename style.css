@@ -213,3 +213,97 @@
       justify-content: center;
       text-align: center;
   }
+
+/*フロー部*/
+* {
+  box-sizing: border-box;
+}
+
+ul.flow {
+  flex-direction: column;
+  margin-top: 10px;
+  padding: 0;
+  
+  height: 500px; 
+}
+
+li {
+  list-style-type: none;
+}
+dd {
+  margin-left: 0;
+}
+
+.flow > li {
+  position: relative;
+}
+.flow > li:not(:last-child) {
+  margin-bottom: 40px;
+}
+.flow > li:not(:first-child)::before {
+  content: "";
+  height: 60px;
+  display: block;
+  border-left: 4px dotted #e5e5e5;
+  position: absolute;
+  top: -40px;
+  left: -webkit-calc(10% + 30px - 2px);
+  left: calc(10% + 30px - 2px);
+  z-index: 10;
+}
+.flow > li dl {
+  width: 100%;
+  padding: 20px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 2px solid rgb(107,144,219);
+  border-radius: 10px;
+  position: relative;
+}
+.flow > li:not(:last-child) dl::before,
+.flow > li:not(:last-child) dl::after {
+  content: "";
+  border: solid transparent;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.flow > li:not(:last-child) dl::before {
+  border-width: 22px;
+  border-top-color: rgb(107,144,219);
+}
+.flow > li:not(:last-child) dl::after {
+  border-width: 20px;
+  border-top-color: #fff;
+}
+.flow > li dl dt {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(107,144,219);
+  -ms-flex-preferred-size: 20%;
+  flex-basis: 20%;
+  margin-right: 2vw;
+  text-align: center;
+}
+.flow > li dl dt .icon {
+  font-size: 12px;
+  color: #fff;
+  background: rgb(107,144,219);
+  background: -moz-linear-gradient(left, rgba(107,144,219,1) 0%, rgba(102,213,233,1) 100%);
+  background: -webkit-linear-gradient(left, rgba(107,144,219,1) 0%,rgba(102,213,233,1) 100%);
+  background: linear-gradient(to right, rgba(107,144,219,1) 0%,rgba(102,213,233,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6b90db', endColorstr='#66d5e9',GradientType=1 );
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  display: block;
+  border-radius: 20px;
+  position: relative;
+  z-index: 100;
+}
+
