@@ -40,7 +40,7 @@
 
       <v-dialog v-model="cartdialog" max-width="600px">
   <v-card>
-    <v-card-title class="subheading font-weight-bold">
+    <v-card-title class="custom-font" class="subheading font-weight-bold">
       カート
       <v-spacer></v-spacer>
       <v-btn icon @click="cartdialog = false">
@@ -56,11 +56,11 @@
         <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-            <v-card-title>{{ item.product_name }}</v-card-title>
-            <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-            <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
-            <v-card-subtitle>サイズ: {{ item.product_size }}</v-card-subtitle>
-            <v-card-subtitle>数量: {{ item.quantity }}</v-card-subtitle>
+            <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
+            <v-card-subtitle class="custom-font">カテゴリー: {{ item.product_category }}</v-card-subtitle>
+            <v-card-subtitle class="custom-font">性別タイプ: {{ item.product_gender }}</v-card-subtitle>
+            <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
+            <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
     <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
         <v-icon>mdi-trash-can</v-icon>
@@ -74,8 +74,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn rounded color="#f09199"  @click="confirmOrder" dark>注文確定</v-btn>
-      <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark>閉じる</v-btn>
+      <v-btn rounded color="#f09199"  @click="confirmOrder" dark class="custom-font">注文確定</v-btn>
+      <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark class="custom-font">閉じる</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
@@ -86,8 +86,8 @@
       <!-- CategoryとKids genderの選択 -->
       <v-row class="d-flex justify-center align-center" style="width: 100%;">
         <v-col cols="12" sm="6" md="3">
-          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Bottoms', 'All']"></v-select>
-          <v-select v-model="Kidsgender" label="Kids gender" solo :items="['Boy', 'Girl', 'All']"></v-select>
+          <v-select v-model="Category" label="Category" solo :items="['Tops', 'Bottoms', 'All']" class="custom-font"></v-select>
+          <v-select v-model="Kidsgender" label="Kids gender" solo :items="['Boy', 'Girl', 'All']" class="custom-font"></v-select>
         </v-col>
       </v-row>
 
@@ -107,9 +107,9 @@
     <!-- 商品カード -->
     <v-card class="mx-auto" max-width="344" outlined>
       <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-      <v-card-title>{{ item.product_name }}</v-card-title>
-      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>
+      <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
+      <v-card-subtitle class="custom-font">カテゴリー: {{ item.product_category }}</v-card-subtitle>
+      <v-card-subtitle>性別タイプ: {{ item.product_gender }}</v-card-subtitle>
       <v-card-actions>
         <v-btn :color="item.liked ? 'red' : 'grey'" @click="toggleLike(item)">
           <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
@@ -143,34 +143,34 @@
         <!-- 商品情報 -->
         <v-row>
           <v-col cols="12">
-            <div>Category: {{ selectedItem.product_category }}</div>
-            <div>Gender: {{ selectedItem.product_gender }}</div>
+            <div　class="custom-font">カテゴリー: {{ selectedItem.product_category }}</div>
+            <div　class="custom-font">性別タイプ: {{ selectedItem.product_gender }}</div>
           </v-col>
         </v-row>
         <!-- サイズ選択 -->
         <v-row>
           <v-col cols="12">
-            <v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size"></v-select>
+            <v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font"></v-select>
           </v-col>
         </v-row>
         <!-- 個数入力 -->
         <v-row>
           <v-col cols="12">
-            <v-text-field v-model="selectedQuantity" label="Quantity" type="number"></v-text-field>
+            <v-text-field v-model="selectedQuantity" label="Quantity" type="number" class="custom-font"></v-text-field>
           </v-col>
         </v-row>
       </v-container>
     </v-card-text>
     
-    <v-card-action>
+    <v-card-action　>
       <v-spacer></v-spacer>
       <!-- カートに追加 -->
-      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)">
-        Add to Cart
+      <v-btn @click="addToCart(selectedItem, selectedSize, selectedQuantity)"　class="custom-font" rounded style="margin-right: 20px;">
+        追加
       </v-btn>
       <!-- ダイアログを閉じる -->
-      <v-btn @click="dialog = false">
-        Close
+      <v-btn @click="dialog = false"　class="custom-font" rounded　style="margin-right: 20px;">
+        閉じる
       </v-btn>
     </v-card-action>
   </v-card>
