@@ -82,10 +82,6 @@
                             append-icon="mdi-eye"
                             @click:append="togglePasswordVisibility"
                         ></v-text-field>
-
-                        <v-alert type="info" border="left" dense text>
-                            パスワードは8文字以上で、英字と数字を含めてください。
-                        </v-alert>
             
                         <!-- パスワード確認用フィールド -->
                         <v-text-field 
@@ -96,6 +92,10 @@
                             append-icon="mdi-eye"
                             @click:append="togglePasswordVisibility"
                         ></v-text-field>
+
+                        <v-alert type="info" border="left" dense text>
+                            パスワードは8文字以上で、英字と数字を含めてください。
+                        </v-alert>
             
                         <v-text-field v-model="register_postcode" label="Postcode" outlined></v-text-field>
                         <v-text-field v-model="register_adress" label="Address" outlined></v-text-field>
