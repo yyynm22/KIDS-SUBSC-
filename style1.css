@@ -1,10 +1,11 @@
 /* フッター、ヘッダーのフォント設定 */
 .custom-font {
-  font-family: 'Times New Roman', sans-serif
-!important;
-}
+     font-family: 'M PLUS 1', sans-serif
+  !important;
+  }
+  .empty-cart-message {
+    color: red;
+    font-weight: bold;
+    font-family: 'M PLUS 1', sans-serif;
+  }
 
-.empty-cart-message {
-  color: red;
-  font-weight: bold;
-}
