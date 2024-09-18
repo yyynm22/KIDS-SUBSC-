@@ -18,18 +18,38 @@ const app = new Vue({
         register_name: '',
         register_mail: '',
         register_pass: '',
+        register_confirm_pass: '',  // パスワード確認用
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessage: ''
+        registerErrorMessage: '',
+        showPassword: false,  // パスワード表示切り替え用
     },
     methods: {
-        // ユーザー登録処理
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
+        validatePassword() {
+            const pass = this.register_pass;
+            const confirmPass = this.register_confirm_pass;
+            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;  // 8文字以上、アルファベットと数字を含むパスワード
+            if (!regex.test(pass)) {
+                this.registerErrorMessage = 'パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。';
+                return false;
+            }
+            if (pass !== confirmPass) {
+                this.registerErrorMessage = 'パスワードが一致しません。';
+                return false;
+            }
+            this.registerErrorMessage = '';  // エラーメッセージをクリア
+            return true;
+        },
         async register() {
+            if (!this.validatePassword()) {
+                return;
+            }
             console.log('Attempting to register new user:', this.register_mail);
-
             try {
-                // 登録データをAPIに送信
                 const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT', {
                     user_name: this.register_name,
                     user_pass: this.register_pass,
@@ -38,15 +58,12 @@ const app = new Vue({
                     user_adress: this.register_adress,
                     user_telenum: this.register_telenum
                 });
-
-                // 成功した場合
                 console.log('Registration successful:', response.data);
-                this.dialog3 = false;  // ダイアログを閉じる
-                this.registerErrorMessage = '';  // エラーメッセージをクリア
+                this.dialog3 = false;
                 alert('User registration successful!');
             } catch (error) {
                 console.error('Error during registration:', error);
-                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';
             }
         },
 
