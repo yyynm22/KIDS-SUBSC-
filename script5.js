@@ -1,72 +1,92 @@
-(() => {
-  const container = document.getElementById("container");
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+    font-family: 'M PLUS 1', sans-serif !important;
+}
 
-  const hexagons = container.querySelectorAll(".hexagon");
-  const hexagonElements = new Array(...hexagons);
+/* ヘッダーのタイトルを中央に配置 */
+.centered-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-  const ripple = (target) => {
-    if (container.classList.contains("show-ripple")) {
-      return;
-    }
-    const targetRect = target.getBoundingClientRect();
-    const data = hexagonElements
-      .map((element) => {
-        const rect = element.getBoundingClientRect();
-        const centerX = rect.x + rect.width / 2;
-        const centerY = rect.y + rect.height / 2;
-        const distance = Math.round(
-          Math.sqrt(
-            Math.pow(rect.x - targetRect.x, 2) +
-              Math.pow(rect.y - targetRect.y, 2)
-          )
-        );
-        return { element, rect, centerX, centerY, distance };
-      })
-      .sort((a, b) =>
-        a.distance > b.distance ? 1 : a.distance < b.distance ? -1 : 0
-      );
+/* ログアウトボタンにスタイルを追加 */
+.logout-btn {
+    margin-right: 5mm; /* HOMEボタンとのスペースを確保 */
+}
 
-    const [max] = data.slice(-1);
-    data.forEach((item) =>
-      item.element.style.setProperty(
-        "--ripple-factor",
-        `${(item.distance * 100) / max.distance}`
-      )
-    );
-    container.classList.toggle("show-ripple");
-    const cleanUp = () => {
-      requestAnimationFrame(() => {
-        container.classList.remove("show-ripple");
-        data.forEach((item) =>
-          item.element.style.removeProperty("--ripple-factor")
-        );
-        max.element.removeEventListener("animationend", cleanUp);
-      });
-    };
-    max.element.addEventListener("animationend", cleanUp);
-  };
+/* タブのコンテナを中央に配置 */
+.custom-tabs {
+    display: flex;
+    justify-content: center; /* 横方向に中央揃え */
+    padding: 0;
+    margin: 0;
+}
 
-  hexagons.forEach((hexagon) => {
-    hexagon.addEventListener("click", () => {
-      ripple(hexagon, hexagons);
-    });
-  });
+/* タブ内のコンテンツを中央に配置 */
+.centered-content {
+    text-align: center; /* 文章の中央揃え */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-   const switchButton = document.getElementById('switch');
-    const toggleTheme = () => {
-        switchButton.classList.toggle('checked');
-        document.documentElement.classList.toggle('vision-ui');
-    };
-    switchButton.addEventListener('click', toggleTheme);
+/* タブの文字色を指定カラーに設定 */
+.v-tab {
+    color: #000000; /* デフォルトの文字色 */
+}
 
-    // demo
-    setTimeout(() => {
-    ripple(hexagonElements[0], hexagons);
-    setTimeout(() => {
-      toggleTheme();
-      setTimeout(() => {
-        ripple(hexagonElements[0], hexagons);
-      }, 600);
-    }, 900);
-  }, 300);
-})();
+/* 選択されたタブの文字色とアンダーラインの色 */
+.v-tab--active {
+    color: #f09199; /* 選択されたタブの文字色 */
+}
+
+/* タブのアンダーラインの色 */
+.v-tabs .v-tab--active {
+    color: #f09199 !important; /* タブが選択されたときの文字色 */
+    border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
+}
+
+/* カーソルを当てたときのアンダーラインの色 */
+.v-tabs .v-tab:hover {
+    border-bottom: 2px solid transparent; /* カーソルを当てたときのアンダーラインを透明に */
+}
+
+/* アクティブなタブ以外のカーソルを当てたときのアンダーラインの色 */
+.v-tabs .v-tab--active:hover {
+    border-bottom: 2px solid #f09199 !important; /* アクティブタブのカーソルを当てたときのアンダーライン色 */
+}
+
+/* パスワードフィールドにカスタムスタイルを適用 */
+.custom-password .v-input__control .v-input__append-inner .v-icon {
+    color: #f09199; /* 目のアイコンの色 */
+}
+
+/* パスワードフィールドのクリック時のアンダーライン色を変更 */
+.custom-password .v-input__control::after {
+    border-bottom: 2px solid #f09199 !important;
+}
+
+/* フォントの設定 */
+body {
+    font-family: 'M PLUS 1', sans-serif;
+}
+
+/* カードデザインの改善 */
+.custom-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
+    border-radius: 8px; /* 角を少し丸める */
+    padding: 16px;
+}
+
+/* 注文履歴のリストスタイル */
+.order-list .v-list-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.order-list .v-img {
+    border-radius: 4px;
+}
