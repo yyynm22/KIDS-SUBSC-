@@ -95,7 +95,7 @@ new Vue({
     user_telenum: user ? user.user_telenum : '',
     product_name: product ? product.product_name : '',
     product_id: product ? product.product_id : '',
-    product_size: product ? product.product_size : '',  // ここを確認
+    product_size: product ? orders.product_size : '',  // ここを確認
     quantity: product ? order.quantity : '',  // 注文数量がある場合は追加
     URL: product ? product.URL : ''
   };
