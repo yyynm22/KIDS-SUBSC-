@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="./style5.css">
 </head>
-
 <body>
     <div id="app">
         <v-app>
@@ -55,7 +53,6 @@
                                     <v-col cols="12">
                                         <v-list dense class="order-list">
                                             <v-list-item v-for="order in orderHistory" :key="order.order_id">
-                                                <v-checkbox label="Checkbox"></v-checkbox>
                                                 <v-list-item-content>
                                                     <v-list-item-title>注文番号: {{ order.order_id }}</v-list-item-title>
                                                     <v-list-item-subtitle>注文者名: {{ order.user_name }}</v-list-item-subtitle>
@@ -72,7 +69,7 @@
                                                                 <v-list-item-title>商品名: {{ order.product_name }}</v-list-item-title>
                                                                 <v-list-item-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
                                                                 <v-list-item-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
-                                                              <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
                                                             </v-list-item-content>
                                                         </v-list-item>
                                                     </v-list>
@@ -109,5 +106,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
     <script src="./script5.js"></script>
 </body>
-
 </html>
