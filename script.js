@@ -22,7 +22,7 @@ const app = new Vue({
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessage: '',
+        registerErrorMessages: [],  // エラーメッセージの配列
         showPassword: false,  // パスワード表示切り替え用
     },
     methods: {
@@ -32,7 +32,7 @@ const app = new Vue({
         validateEmail() {
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
             if (!regex.test(this.register_mail)) {
-                this.registerErrorMessage = 'メールアドレスの形式が正しくありません。';
+                this.registerErrorMessages.push('メールアドレスの形式が正しくありません。');
                 return false;
             }
             return true;
@@ -40,7 +40,7 @@ const app = new Vue({
         validatePostcode() {
             const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
             if (!regex.test(this.register_postcode)) {
-                this.registerErrorMessage = '郵便番号は7桁の数字で入力してください。';
+                this.registerErrorMessages.push('郵便番号は7桁の数字で入力してください。');
                 return false;
             }
             return true;
@@ -48,7 +48,7 @@ const app = new Vue({
         validateTelenum() {
             const regex = /^[0-9]{10,11}$/; // 電話番号は10～11桁の数字
             if (!regex.test(this.register_telenum)) {
-                this.registerErrorMessage = '電話番号は10～11桁の数字で入力してください。';
+                this.registerErrorMessages.push('電話番号は10～11桁の数字で入力してください。');
                 return false;
             }
             return true;
@@ -58,23 +58,23 @@ const app = new Vue({
             const confirmPass = this.register_confirm_pass;
             const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;  // 8文字以上、アルファベットと数字を含むパスワード
             if (!regex.test(pass)) {
-                this.registerErrorMessage = 'パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。';
+                this.registerErrorMessages.push('パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。');
                 return false;
             }
             if (pass !== confirmPass) {
-                this.registerErrorMessage = 'パスワードが一致しません。';
+                this.registerErrorMessages.push('パスワードが一致しません。');
                 return false;
             }
-            this.registerErrorMessage = '';  // エラーメッセージをクリア
             return true;
         },
         validateForm() {
-            if (!this.validateEmail()) return false;
-            if (!this.validatePassword()) return false;
-            if (!this.validatePostcode()) return false;
-            if (!this.validateTelenum()) return false;
-            this.registerErrorMessage = '';  // 全てのバリデーションに成功した場合はエラーメッセージをクリア
-            return true;
+            this.registerErrorMessages = [];  // エラーメッセージをリセット
+            let isValid = true;
+            if (!this.validateEmail()) isValid = false;
+            if (!this.validatePassword()) isValid = false;
+            if (!this.validatePostcode()) isValid = false;
+            if (!this.validateTelenum()) isValid = false;
+            return isValid;
         },
         async register() {
             if (!this.validateForm()) {
@@ -93,10 +93,10 @@ const app = new Vue({
                 });
                 console.log('Registration successful:', response.data);
                 this.dialog3 = false;
-                alert('登録が完了しました！');  // 登録成功のメッセージを明確に表示
+                alert('登録が完了しました！');
             } catch (error) {
                 console.error('Error during registration:', error);
-                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';
+                this.registerErrorMessages.push('登録に失敗しました。サーバーエラーが発生しました。');
             }
         },
 
@@ -104,10 +104,7 @@ const app = new Vue({
             console.log('Attempting to login with mail:', this.user_mail);
 
             try {
-                // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
-
-                // レスポンスデータの内容を確認する
                 const users = response.data;
                 console.log('API response:', users);
 
@@ -132,15 +129,15 @@ const app = new Vue({
                         window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
-                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
                     }
                 } else {
                     console.error('User data is not an array:', users);
-                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                this.usererrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.usererrorMessage = 'サーバーエラーが発生しました。';
             }
         },
 
@@ -169,15 +166,15 @@ const app = new Vue({
                         window.location.href = '/index4.html';
                     } else {
                         console.log('Invalid employee_name or employee_pass');
-                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
                     }
                 } else {
                     console.error('User data is not an array:', employees);
-                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';
                 }
             } catch (error) {
                 console.error('Error fetching employee data:', error);
-                this.employeeerrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.employeeerrorMessage = 'サーバーエラーが発生しました。';
             }
         }
     }
@@ -229,7 +226,9 @@ function showNext() {
     }
     slide.children[count].classList.add('show');
     indicatorLi[count].classList.add('active');
-    isChanging = false;
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
 }
 
 function showPrev() {
@@ -243,26 +242,30 @@ function showPrev() {
     }
     slide.children[count].classList.add('show');
     indicatorLi[count].classList.add('active');
-    isChanging = false;
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
 }
 
-next.addEventListener('click', showNext);
-prev.addEventListener('click', showPrev);
+next.addEventListener('click', showNext, false);
+prev.addEventListener('click', showPrev, false);
 
 indicator.addEventListener('click', function (e) {
     if (isChanging) return;
     isChanging = true;
-    const index = Array.prototype.indexOf.call(indicatorLi, e.target);
-    indicatorLi[count].classList.remove('active');
     slide.children[count].classList.remove('show');
-    count = index;
+    indicatorLi[count].classList.remove('active');
+
+    const indicators = Array.prototype.slice.call(indicatorLi);
+    count = indicators.indexOf(e.target);
     slide.children[count].classList.add('show');
     indicatorLi[count].classList.add('active');
-    isChanging = false;
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
 });
 
-slide.addEventListener('mouseenter', stopSlider);
-slide.addEventListener('mouseleave', playSlider);
+slide.addEventListener('mouseenter', stopSlider, false);
+slide.addEventListener('mouseleave', playSlider, false);
 
 playSlider();
-
