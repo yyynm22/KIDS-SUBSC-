@@ -15,7 +15,12 @@ new Vue({
     // 注文履歴の取得 (確定した注文データ)
     const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
     const orders = orderResponse.data;
-    console.log("取得した注文履歴:", orders);
+console.log("取得した注文履歴:", orders);
+
+if (!Array.isArray(orders)) {
+  throw new TypeError('Orders data is not an array');
+}
+
 
     // user_id リストを作成
     const userIds = [...new Set(orders.map(order => order.user_id))]; // 重複排除
