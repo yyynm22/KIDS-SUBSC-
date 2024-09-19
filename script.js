@@ -1,3 +1,4 @@
+
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
@@ -22,10 +23,10 @@ const app = new Vue({
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessages: [],  // エラーメッセージの配列
+        registerErrorMessage: '',
         showPassword: false,  // パスワード表示切り替え用
     },
-    methods: {
+        methods: {
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
@@ -99,12 +100,14 @@ const app = new Vue({
                 this.registerErrorMessages.push('登録に失敗しました。サーバーエラーが発生しました。');
             }
         },
-
         async login1() {
             console.log('Attempting to login with mail:', this.user_mail);
 
             try {
+                // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+
+                // レスポンスデータの内容を確認する
                 const users = response.data;
                 console.log('API response:', users);
 
@@ -129,15 +132,15 @@ const app = new Vue({
                         window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
-                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
+                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
                     }
                 } else {
                     console.error('User data is not an array:', users);
-                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';
+                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                this.usererrorMessage = 'サーバーエラーが発生しました。';
+                this.usererrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
             }
         },
 
@@ -166,15 +169,15 @@ const app = new Vue({
                         window.location.href = '/index4.html';
                     } else {
                         console.log('Invalid employee_name or employee_pass');
-                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
+                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
                     }
                 } else {
                     console.error('User data is not an array:', employees);
-                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';
+                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
                 }
             } catch (error) {
                 console.error('Error fetching employee data:', error);
-                this.employeeerrorMessage = 'サーバーエラーが発生しました。';
+                this.employeeerrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
             }
         }
     }
@@ -200,72 +203,60 @@ const slide = document.getElementById('slide');
 const prev = document.getElementById('prev');
 const next = document.getElementById('next');
 const indicator = document.getElementById('indicator');
-const indicatorLi = indicator.getElementsByTagName('li');
-
+const lists = document.querySelectorAll('.list');
+const totalSlides = lists.length;
 let count = 0;
-const imageLength = slide.children.length - 1;
-let isChanging = false;
-let slideTimer;
+let autoPlayInterval;
 
-function playSlider() {
-    slideTimer = setInterval(showNext, 5000);
+function updateListBackground() {
+    for (let i = 0; i < lists.length; i++) {
+        lists[i].style.backgroundColor = i === count % totalSlides ? '#000' : '#fff';
+    }
 }
 
-function stopSlider() {
-    clearInterval(slideTimer);
-}
-
-function showNext() {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
+function nextClick() {
+    slide.classList.remove(`slide${count % totalSlides + 1}`);
     count++;
-    if (count > imageLength) {
-        count = 0;
-    }
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
+    slide.classList.add(`slide${count % totalSlides + 1}`);
+    updateListBackground();
 }
 
-function showPrev() {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
+function prevClick() {
+    slide.classList.remove(`slide${count % totalSlides + 1}`);
     count--;
-    if (count < 0) {
-        count = imageLength;
-    }
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
+    if (count < 0) count = totalSlides - 1;
+    slide.classList.add(`slide${count % totalSlides + 1}`);
+    updateListBackground();
 }
 
-next.addEventListener('click', showNext, false);
-prev.addEventListener('click', showPrev, false);
+function startAutoPlay() {
+    autoPlayInterval = setInterval(nextClick, 3000);
+}
 
-indicator.addEventListener('click', function (e) {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
+function resetAutoPlayInterval() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+}
 
-    const indicators = Array.prototype.slice.call(indicatorLi);
-    count = indicators.indexOf(e.target);
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
+next.addEventListener('click', () => {
+    nextClick();
+    resetAutoPlayInterval();
 });
 
-slide.addEventListener('mouseenter', stopSlider, false);
-slide.addEventListener('mouseleave', playSlider, false);
+prev.addEventListener('click', () => {
+    prevClick();
+    resetAutoPlayInterval();
+});
 
-playSlider();
+indicator.addEventListener('click', (event) => {
+    if (event.target.classList.contains('list')) {
+        const index = Array.from(lists).indexOf(event.target);
+        slide.classList.remove(`slide${count % totalSlides + 1}`);
+        count = index;
+        slide.classList.add(`slide${count % totalSlides + 1}`);
+        updateListBackground();
+        resetAutoPlayInterval();
+    }
+});
+
+startAutoPlay();
