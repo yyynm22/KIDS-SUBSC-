@@ -120,6 +120,7 @@
   </v-col>
 
   <!-- 商品詳細ダイアログ -->
+<template>
 <v-dialog v-model="dialog" max-width="600px">
   <v-card>
     <v-card-title>
@@ -130,7 +131,7 @@
       </v-btn>
     </v-card-title>
     
-   <v-card-text>
+<v-card-text>
 <v-container>
 <v-row>
 <!-- 商品画像 -->
@@ -150,7 +151,7 @@
 <!-- 個数入力 -->
 <v-row>
 <v-col cols="12">
-<v-text-field v-model="selectedQuantity" label="Quantity" type="number" class="custom-font"></v-text-field>
+<v-text-field v-model="selectedQuantity" label="Quantity" type="number" min="1"　class="custom-font"></v-text-field>
 </v-col>
 </v-row>
 </v-col>
@@ -169,9 +170,14 @@
     </v-card-actions>
   </v-card>
 </v-dialog>
-
-</v-row>
-
+  
+ <!-- カート追加後のポップアップ通知 -->
+  <v-snackbar v-model="snackbar" :timeout="3000" top>
+    カートに追加しました！
+    <v-btn @click="dialog = false"　class="custom-font" rounded color="#90c8f0" dark>
+        閉じる</v-btn>
+  </v-snackbar>
+</template>
 
 
 
