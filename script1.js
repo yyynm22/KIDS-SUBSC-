@@ -190,14 +190,21 @@ readData3: async function () {
       
       // 商品をカートに追加
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+       // エラーフラグを初期化
+       this.sizeError = false;
+ 
        // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
         if (!this.user_id) console.log("ユーザーIDが設定されていません");
         if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
-        if (!selectedSize) console.log("サイズが設定されていません");
+        if (!selectedSize)  {
+            console.log("サイズが設定されていません");
+            this.sizeError = true; // エラーフラグを設定
+      }
         if (!selectedQuantity) console.log("数量が設定されていません");
         return;
+
     }
        
   
