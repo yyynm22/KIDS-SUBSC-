@@ -70,7 +70,7 @@
             <!-- エラーメッセージ表示 (配列ベースのエラーメッセージ) -->
             <v-alert v-if="registerErrorMessages.length" type="error" dismissible class="custom-font">
                 <ul>
-                    <li v-for="(message, index) in registerErrorMessages" :key="index">{{ message }}</li>
+                    <li v-for="(message, index) in registerErrorMessages" :key="index">{{ registerErrorMessage }}</li>
                 </ul>
             </v-alert>
 
