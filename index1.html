@@ -37,7 +37,16 @@
           </v-btn>
         </div>
       </v-app-bar>
-
+      <template>
+  <v-container>
+  <v-alert
+      v-if="showAlert"
+      type="success"
+      dismissible
+      @input="showAlert = false"
+    >
+      ご注文ありがとうございます！
+    </v-alert>
       <v-dialog v-model="cartdialog" max-width="600px">
   <v-card>
     <v-card-title class="custom-font" class="subheading font-weight-bold">
@@ -68,20 +77,19 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- 注文完了メッセージ表示用の要素 -->
-      <div v-if="orderCompleteMessage" class="order-complete-message">
-        {{ orderCompleteMessage }}
-      </div>
     </v-card-text>
 
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn rounded color="#f09199"  @click="confirmOrder" dark class="custom-font">注文確定</v-btn>
+     
+  
       <v-btn rounded color="#90c8f0"  @click="cartdialog = false" dark class="custom-font">閉じる</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
-
+ </v-container>
+</template>
       <template>
   <v-main>
     <v-container>
