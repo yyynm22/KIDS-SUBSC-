@@ -307,21 +307,4 @@ dd {
   z-index: 100;
 }
 
-/* 9/19追加 */
-.slide div {
-    display: none;
-}
-
-.slide div.show {
-    display: block;
-}
-
-.indicator li {
-    background-color: #ccc;
-}
-
-.indicator li.active {
-    background-color: #333;
-}
-
 
