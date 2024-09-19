@@ -8,10 +8,10 @@ const app = new Vue({
         dialog3: false,  // 新規登録ダイアログ
         user_mail: '',
         user_pass: '',
-        usererrorMessage: '',  // エラーメッセージ用のデータ
+        usererrorMessage: '',
         employee_name: '',
         employee_pass: '',
-        employeeerrorMessage: '',  // エラーメッセージ用のデータ
+        employeeerrorMessage: '',
         errorMessage: '',
 
         // 登録用のデータ
@@ -22,15 +22,15 @@ const app = new Vue({
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessages: [],  // エラーメッセージの配列
-        showPassword: false,  // パスワード表示切り替え用
+        registerErrorMessages: [],
+        showPassword: false,
     },
     methods: {
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
         validateEmail() {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!regex.test(this.register_mail)) {
                 this.registerErrorMessages.push('メールアドレスの形式が正しくありません。');
                 return false;
@@ -38,7 +38,7 @@ const app = new Vue({
             return true;
         },
         validatePostcode() {
-            const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
+            const regex = /^[0-9]{7}$/;
             if (!regex.test(this.register_postcode)) {
                 this.registerErrorMessages.push('郵便番号は7桁の数字で入力してください。');
                 return false;
@@ -46,7 +46,7 @@ const app = new Vue({
             return true;
         },
         validateTelenum() {
-            const regex = /^[0-9]{10,11}$/; // 電話番号は10～11桁の数字
+            const regex = /^[0-9]{10,11}$/;
             if (!regex.test(this.register_telenum)) {
                 this.registerErrorMessages.push('電話番号は10～11桁の数字で入力してください。');
                 return false;
@@ -56,7 +56,7 @@ const app = new Vue({
         validatePassword() {
             const pass = this.register_pass;
             const confirmPass = this.register_confirm_pass;
-            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;  // 8文字以上、アルファベットと数字を含むパスワード
+            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
             if (!regex.test(pass)) {
                 this.registerErrorMessages.push('パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。');
                 return false;
@@ -68,7 +68,7 @@ const app = new Vue({
             return true;
         },
         validateForm() {
-            this.registerErrorMessages = [];  // エラーメッセージをリセット
+            this.registerErrorMessages = [];
             let isValid = true;
             if (!this.validateEmail()) isValid = false;
             if (!this.validatePassword()) isValid = false;
@@ -124,8 +124,8 @@ const app = new Vue({
                         sessionStorage.setItem('user_adress', user.user_adress);
                         sessionStorage.setItem('user_telenum', user.user_telenum);
 
-                        this.dialog1 = false;  // ダイアログを閉じる
-                        this.usererrorMessage = '';  // エラーメッセージをクリア
+                        this.dialog1 = false;
+                        this.usererrorMessage = '';
                         window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
@@ -161,8 +161,8 @@ const app = new Vue({
                         sessionStorage.setItem('employee_name', employee.employee_name);
                         sessionStorage.setItem('employee_pass', employee.employee_pass);
 
-                        this.dialog2 = false;  // ダイアログを閉じる
-                        this.employeeerrorMessage = '';  // エラーメッセージをクリア
+                        this.dialog2 = false;
+                        this.employeeerrorMessage = '';
                         window.location.href = '/index4.html';
                     } else {
                         console.log('Invalid employee_name or employee_pass');
@@ -176,96 +176,56 @@ const app = new Vue({
                 console.error('Error fetching employee data:', error);
                 this.employeeerrorMessage = 'サーバーエラーが発生しました。';
             }
-        }
+        },
+
+        // スライド関連のメソッド
+        showSlide(index) {
+            const slide = document.getElementById('slide');
+            const slides = slide.getElementsByTagName('div');
+            const indicators = document.querySelectorAll('#indicator .list');
+            let currentIndex = index;
+
+            if (index >= slides.length) {
+                currentIndex = 0;
+            } else if (index < 0) {
+                currentIndex = slides.length - 1;
+            } else {
+                currentIndex = index;
+            }
+
+            slide.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === currentIndex);
+            });
+        },
+
+        playSlider() {
+            this.slideTimer = setInterval(this.showNext, 5000);
+        },
+
+        stopSlider() {
+            clearInterval(this.slideTimer);
+        },
+
+        showNext() {
+            if (this.isChanging) return;
+            this.isChanging = true;
+            this.showSlide(this.currentIndex + 1);
+            setTimeout(() => { this.isChanging = false; }, 500);
+        },
+
+        showPrevious() {
+            if (this.isChanging) return;
+            this.isChanging = true;
+            this.showSlide(this.currentIndex - 1);
+            setTimeout(() => { this.isChanging = false; }, 500);
+        },
+    },
+    mounted() {
+        this.playSlider();  // スライド機能を開始
+    },
+    beforeDestroy() {
+        this.stopSlider();  // スライド機能を停止
     }
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    const tabs = document.getElementsByClassName('tab');
-    for (let i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('click', tabSwitch, false);
-    }
-
-    function tabSwitch() {
-        document.getElementsByClassName('is-active')[0].classList.remove('is-active');
-        this.classList.add('is-active');
-        document.getElementsByClassName('is-show')[0].classList.remove('is-show');
-        const arrayTabs = Array.prototype.slice.call(tabs);
-        const index = arrayTabs.indexOf(this);
-        document.getElementsByClassName('panel')[index].classList.add('is-show');
-    };
-}, false);
-
-const slide = document.getElementById('slide');
-const prev = document.getElementById('prev');
-const next = document.getElementById('next');
-const indicator = document.getElementById('indicator');
-const indicatorLi = indicator.getElementsByTagName('li');
-
-let count = 0;
-const imageLength = slide.children.length - 1;
-let isChanging = false;
-let slideTimer;
-
-function playSlider() {
-    slideTimer = setInterval(showNext, 5000);
-}
-
-function stopSlider() {
-    clearInterval(slideTimer);
-}
-
-function showNext() {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
-    count++;
-    if (count > imageLength) {
-        count = 0;
-    }
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
-}
-
-function showPrev() {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
-    count--;
-    if (count < 0) {
-        count = imageLength;
-    }
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
-}
-
-next.addEventListener('click', showNext, false);
-prev.addEventListener('click', showPrev, false);
-
-indicator.addEventListener('click', function (e) {
-    if (isChanging) return;
-    isChanging = true;
-    slide.children[count].classList.remove('show');
-    indicatorLi[count].classList.remove('active');
-
-    const indicators = Array.prototype.slice.call(indicatorLi);
-    count = indicators.indexOf(e.target);
-    slide.children[count].classList.add('show');
-    indicatorLi[count].classList.add('active');
-    setTimeout(function () {
-        isChanging = false;
-    }, 600);
-});
-
-slide.addEventListener('mouseenter', stopSlider, false);
-slide.addEventListener('mouseleave', playSlider, false);
-
-playSlider();
