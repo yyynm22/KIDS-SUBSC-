@@ -18,7 +18,7 @@ const app = new Vue({
      order_id: null,
      snackbar: false, // ポップアップの表示状態を管理する
      sizeError: false, // エラーフラグ
-     orderCompleteMessage: '' // 注文完了メッセージ用のプロパティ
+     showAlert: false, // ポップアップの表示状態を管理
     },
   
   mounted() {
@@ -285,10 +285,13 @@ readData3: async function () {
         this.cartdialog = false;
         console.log("カートがリセットされました");
     
- // 注文完了メッセージを設定
-        this.orderCompleteMessage = "ご注文ありがとうございます！";
-
-
+   // 成功した場合にポップアップを表示
+      this.showAlert = true;
+// 必要に応じてポップアップを一定時間後に消す
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000); // 3秒後に非表示
+    
 } catch (error) {
     // エラーハンドリング
     console.error("注文送信エラー:", error.message);
