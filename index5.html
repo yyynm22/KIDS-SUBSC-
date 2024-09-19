@@ -61,6 +61,8 @@
                                     <v-col cols="12">
                                         <v-list dense class="order-list">
                                             <v-list-item v-for="order in orderHistory" :key="order.order_id">
+                                              <!-- コンソールでデータが正しくバインドされているか確認 -->
+    <pre>{{ order }}</pre>
                                                 <v-list-item-content>
                                                     <v-list-item-title>注文番号: {{ order.order_id }}</v-list-item-title>
                                                     <v-list-item-subtitle>注文者名: {{ order.user_name }}</v-list-item-subtitle>
