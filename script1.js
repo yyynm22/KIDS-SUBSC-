@@ -17,7 +17,8 @@ const app = new Vue({
      user_id: '',  // ログインしているユーザーIDを保存
      order_id: null,
      snackbar: false, // ポップアップの表示状態を管理する
-     sizeError: false // エラーフラグ
+     sizeError: false, // エラーフラグ
+     orderCompleteMessage: '' // 注文完了メッセージ用のプロパティ
     },
   
   mounted() {
@@ -283,6 +284,9 @@ readData3: async function () {
         this.dataList3 = [];
         this.cartdialog = false;
         console.log("カートがリセットされました");
+    
+ // 注文完了メッセージを設定
+        this.orderCompleteMessage = "ご注文ありがとうございます！";
 
 
 } catch (error) {
