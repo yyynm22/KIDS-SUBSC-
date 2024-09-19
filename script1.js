@@ -16,6 +16,7 @@ const app = new Vue({
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
      order_id: null,
+     snackbar: false, // ポップアップの表示状態を管理する
     },
   
   mounted() {
@@ -197,6 +198,12 @@ readData3: async function () {
         if (!selectedQuantity) console.log("数量が設定されていません");
         return;
     }
+       
+    // 個数が0以下の場合にエラーメッセージを表示
+    if (selectedQuantity <= 0) {
+       console.log("数量は1以上である必要があります");
+       return;
+      }
 
     // 数量を数値型に変換
     const params = {
@@ -210,10 +217,16 @@ readData3: async function () {
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
+      
+      // カートに追加した旨のポップアップを表示
+        this.snackbar = true;
 
         // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = 1;
+      
+      // ダイアログを閉じる
+        this.dialog = false;
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
