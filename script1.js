@@ -16,7 +16,6 @@ const app = new Vue({
       sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
      order_id: null,
-     snackbar: false, // ポップアップの表示状態を管理する
     },
   
   mounted() {
@@ -111,11 +110,20 @@ readData3: async function () {
   try {
       // APIからカートデータを取得
       const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT4');
+      
       const cartitems = response.data;
+      console.log('API response:', cartitems);
 
       if (cartitems.List && Array.isArray(cartitems.List)) {
+          console.log('Cart items (List):', cartitems.List);
+
           // user_idでカート内のユーザー情報をフィルター
           const userItems = cartitems.List.filter(item => item.user_id.toString().trim() === this.user_id.toString().trim());
+          if (userItems.length > 0) {
+              console.log('Found user items:', userItems);
+          } else {
+              console.log('User items not found');
+          }
 
           // 新しいデータにマッピング
           const newData = userItems.map(item => {
@@ -142,18 +150,23 @@ readData3: async function () {
           ));
 
           const productData = productResponses.map(res => res.data);
+          console.log("Product data from subsc_product_table:", productData);
 
           // 商品データをカートアイテムに結合
-          this.dataList3 = this.dataList3.map(item => {
-              const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
-              return productInfo ? { 
-                  ...item, 
-                  product_name: productInfo.product_name,
-                  product_category: productInfo.product_category,
-                  product_gender: productInfo.product_gender,
-                  URL: productInfo.URL
-              } : item;
-          });
+         this.dataList3 = this.dataList3.map(item => {
+  // productData の構造に合わせて、List の中から productInfo を探す
+  const productInfo = productData.flatMap(data => data.List).find(p => p.product_id === item.product_id);
+
+  console.log("Product info for each item:", productInfo);
+  
+  return productInfo ? { 
+      ...item, 
+      product_name: productInfo.product_name,
+      product_category: productInfo.product_category,
+      product_gender: productInfo.product_gender,
+      URL: productInfo.URL
+  } : item;
+});
       } else {
           console.error('Listプロパティが存在しないか、配列ではありません。');
       }
@@ -161,7 +174,6 @@ readData3: async function () {
       console.error('データの取得に失敗しました:', error);
   }
 },
-
 
      
       openCartDialog() {
@@ -198,12 +210,6 @@ readData3: async function () {
         if (!selectedQuantity) console.log("数量が設定されていません");
         return;
     }
-       
-    // 個数が0以下の場合にエラーメッセージを表示
-    if (selectedQuantity <= 0) {
-       console.log("数量は1以上である必要があります");
-       return;
-      }
 
     // 数量を数値型に変換
     const params = {
@@ -217,16 +223,10 @@ readData3: async function () {
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
-      
-      // カートに追加した旨のポップアップを表示
-        this.snackbar = true;
 
         // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = 1;
-      
-      // ダイアログを閉じる
-        this.dialog = false;
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
