@@ -39,7 +39,7 @@ new Vue({
     // 商品情報の取得
     console.log("商品情報の取得を開始します。");
     const productPromises = productIds.map(productId =>
-      axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3?product_id=${productId}`)
+      axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT10?product_id=${productId}`)
     );
 
     // 全ての商品情報を取得
