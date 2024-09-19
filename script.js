@@ -22,37 +22,65 @@ const app = new Vue({
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessage: '',
+        registerErrorMessages: [],  // エラーメッセージの配列
         showPassword: false,  // パスワード表示切り替え用
     },
     methods: {
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
+        validateEmail() {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
+            if (!regex.test(this.register_mail)) {
+                this.registerErrorMessages.push('メールアドレスの形式が正しくありません。');
+                return false;
+            }
+            return true;
+        },
+        validatePostcode() {
+            const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
+            if (!regex.test(this.register_postcode)) {
+                this.registerErrorMessages.push('郵便番号は7桁の数字で入力してください。');
+                return false;
+            }
+            return true;
+        },
+        validateTelenum() {
+            const regex = /^[0-9]{10,11}$/; // 電話番号は10～11桁の数字
+            if (!regex.test(this.register_telenum)) {
+                this.registerErrorMessages.push('電話番号は10～11桁の数字で入力してください。');
+                return false;
+            }
+            return true;
+        },
         validatePassword() {
             const pass = this.register_pass;
             const confirmPass = this.register_confirm_pass;
-            const EmployeePass = this.employee_pass;
             const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;  // 8文字以上、アルファベットと数字を含むパスワード
             if (!regex.test(pass)) {
-                this.registerErrorMessage = 'パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。';
+                this.registerErrorMessages.push('パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。');
                 return false;
             }
             if (pass !== confirmPass) {
-                this.registerErrorMessage = 'パスワードが一致しません。';
+                this.registerErrorMessages.push('パスワードが一致しません。');
                 return false;
             }
-            if (EmployeePass !== EmployeePass) {
-                this.registerErrorMessage = 'パスワードが一致しません。';
-                return false;
-            }
-            this.registerErrorMessage = '';  // エラーメッセージをクリア
             return true;
         },
+        validateForm() {
+            this.registerErrorMessages = [];  // エラーメッセージをリセット
+            let isValid = true;
+            if (!this.validateEmail()) isValid = false;
+            if (!this.validatePassword()) isValid = false;
+            if (!this.validatePostcode()) isValid = false;
+            if (!this.validateTelenum()) isValid = false;
+            return isValid;
+        },
         async register() {
-            if (!this.validatePassword()) {
+            if (!this.validateForm()) {
                 return;
             }
+
             console.log('Attempting to register new user:', this.register_mail);
             try {
                 const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT', {
@@ -65,10 +93,10 @@ const app = new Vue({
                 });
                 console.log('Registration successful:', response.data);
                 this.dialog3 = false;
-                alert('User registration successful!');
+                alert('登録が完了しました！');
             } catch (error) {
                 console.error('Error during registration:', error);
-                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';
+                this.registerErrorMessages.push('登録に失敗しました。サーバーエラーが発生しました。');
             }
         },
 
@@ -76,10 +104,7 @@ const app = new Vue({
             console.log('Attempting to login with mail:', this.user_mail);
 
             try {
-                // APIからユーザー情報を取得
                 const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
-
-                // レスポンスデータの内容を確認する
                 const users = response.data;
                 console.log('API response:', users);
 
@@ -104,15 +129,15 @@ const app = new Vue({
                         window.location.href = '/index1.html';
                     } else {
                         console.log('Invalid user_mail or user_pass');
-                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
                     }
                 } else {
                     console.error('User data is not an array:', users);
-                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                this.usererrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.usererrorMessage = 'サーバーエラーが発生しました。';
             }
         },
 
@@ -141,15 +166,15 @@ const app = new Vue({
                         window.location.href = '/index4.html';
                     } else {
                         console.log('Invalid employee_name or employee_pass');
-                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';
                     }
                 } else {
                     console.error('User data is not an array:', employees);
-                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';
                 }
             } catch (error) {
                 console.error('Error fetching employee data:', error);
-                this.employeeerrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+                this.employeeerrorMessage = 'サーバーエラーが発生しました。';
             }
         }
     }
@@ -175,60 +200,72 @@ const slide = document.getElementById('slide');
 const prev = document.getElementById('prev');
 const next = document.getElementById('next');
 const indicator = document.getElementById('indicator');
-const lists = document.querySelectorAll('.list');
-const totalSlides = lists.length;
+const indicatorLi = indicator.getElementsByTagName('li');
+
 let count = 0;
-let autoPlayInterval;
+const imageLength = slide.children.length - 1;
+let isChanging = false;
+let slideTimer;
 
-function updateListBackground() {
-    for (let i = 0; i < lists.length; i++) {
-        lists[i].style.backgroundColor = i === count % totalSlides ? '#000' : '#fff';
-    }
+function playSlider() {
+    slideTimer = setInterval(showNext, 5000);
 }
 
-function nextClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
+function stopSlider() {
+    clearInterval(slideTimer);
+}
+
+function showNext() {
+    if (isChanging) return;
+    isChanging = true;
+    slide.children[count].classList.remove('show');
+    indicatorLi[count].classList.remove('active');
     count++;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
-    updateListBackground();
-}
-
-function prevClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
-    count--;
-    if (count < 0) count = totalSlides - 1;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
-    updateListBackground();
-}
-
-function startAutoPlay() {
-    autoPlayInterval = setInterval(nextClick, 3000);
-}
-
-function resetAutoPlayInterval() {
-    clearInterval(autoPlayInterval);
-    startAutoPlay();
-}
-
-next.addEventListener('click', () => {
-    nextClick();
-    resetAutoPlayInterval();
-});
-
-prev.addEventListener('click', () => {
-    prevClick();
-    resetAutoPlayInterval();
-});
-
-indicator.addEventListener('click', (event) => {
-    if (event.target.classList.contains('list')) {
-        const index = Array.from(lists).indexOf(event.target);
-        slide.classList.remove(`slide${count % totalSlides + 1}`);
-        count = index;
-        slide.classList.add(`slide${count % totalSlides + 1}`);
-        updateListBackground();
-        resetAutoPlayInterval();
+    if (count > imageLength) {
+        count = 0;
     }
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
+}
+
+function showPrev() {
+    if (isChanging) return;
+    isChanging = true;
+    slide.children[count].classList.remove('show');
+    indicatorLi[count].classList.remove('active');
+    count--;
+    if (count < 0) {
+        count = imageLength;
+    }
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
+}
+
+next.addEventListener('click', showNext, false);
+prev.addEventListener('click', showPrev, false);
+
+indicator.addEventListener('click', function (e) {
+    if (isChanging) return;
+    isChanging = true;
+    slide.children[count].classList.remove('show');
+    indicatorLi[count].classList.remove('active');
+
+    const indicators = Array.prototype.slice.call(indicatorLi);
+    count = indicators.indexOf(e.target);
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    setTimeout(function () {
+        isChanging = false;
+    }, 600);
 });
 
-startAutoPlay();
+slide.addEventListener('mouseenter', stopSlider, false);
+slide.addEventListener('mouseleave', playSlider, false);
+
+playSlider();
