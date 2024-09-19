@@ -29,6 +29,30 @@ const app = new Vue({
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
+        validateEmail() {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
+            if (!regex.test(this.register_mail)) {
+                this.registerErrorMessage = 'メールアドレスの形式が正しくありません。';
+                return false;
+            }
+            return true;
+        },
+        validatePostcode() {
+            const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
+            if (!regex.test(this.register_postcode)) {
+                this.registerErrorMessage = '郵便番号は7桁の数字で入力してください。';
+                return false;
+            }
+            return true;
+        },
+        validateTelenum() {
+            const regex = /^[0-9]{10,11}$/; // 電話番号は10～11桁の数字
+            if (!regex.test(this.register_telenum)) {
+                this.registerErrorMessage = '電話番号は10～11桁の数字で入力してください。';
+                return false;
+            }
+            return true;
+        },
         validatePassword() {
             const pass = this.register_pass;
             const confirmPass = this.register_confirm_pass;
@@ -44,10 +68,19 @@ const app = new Vue({
             this.registerErrorMessage = '';  // エラーメッセージをクリア
             return true;
         },
+        validateForm() {
+            if (!this.validateEmail()) return false;
+            if (!this.validatePassword()) return false;
+            if (!this.validatePostcode()) return false;
+            if (!this.validateTelenum()) return false;
+            this.registerErrorMessage = '';  // 全てのバリデーションに成功した場合はエラーメッセージをクリア
+            return true;
+        },
         async register() {
-            if (!this.validatePassword()) {
+            if (!this.validateForm()) {
                 return;
             }
+
             console.log('Attempting to register new user:', this.register_mail);
             try {
                 const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT', {
@@ -60,10 +93,10 @@ const app = new Vue({
                 });
                 console.log('Registration successful:', response.data);
                 this.dialog3 = false;
-                alert('User registration successful!');
+                alert('登録が完了しました！');  // 登録成功のメッセージを明確に表示
             } catch (error) {
                 console.error('Error during registration:', error);
-                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';
+                this.registerErrorMessage = '登録に失敗しました。入力形式などを見直してください';
             }
         },
 
@@ -170,60 +203,65 @@ const slide = document.getElementById('slide');
 const prev = document.getElementById('prev');
 const next = document.getElementById('next');
 const indicator = document.getElementById('indicator');
-const lists = document.querySelectorAll('.list');
-const totalSlides = lists.length;
+const indicatorLi = indicator.getElementsByTagName('li');
+
 let count = 0;
-let autoPlayInterval;
+const imageLength = slide.children.length - 1;
+let isChanging = false;
+let slideTimer;
 
-function updateListBackground() {
-    for (let i = 0; i < lists.length; i++) {
-        lists[i].style.backgroundColor = i === count % totalSlides ? '#000' : '#fff';
-    }
+function playSlider() {
+    slideTimer = setInterval(showNext, 5000);
 }
 
-function nextClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
+function stopSlider() {
+    clearInterval(slideTimer);
+}
+
+function showNext() {
+    if (isChanging) return;
+    isChanging = true;
+    slide.children[count].classList.remove('show');
+    indicatorLi[count].classList.remove('active');
     count++;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
-    updateListBackground();
-}
-
-function prevClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
-    count--;
-    if (count < 0) count = totalSlides - 1;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
-    updateListBackground();
-}
-
-function startAutoPlay() {
-    autoPlayInterval = setInterval(nextClick, 3000);
-}
-
-function resetAutoPlayInterval() {
-    clearInterval(autoPlayInterval);
-    startAutoPlay();
-}
-
-next.addEventListener('click', () => {
-    nextClick();
-    resetAutoPlayInterval();
-});
-
-prev.addEventListener('click', () => {
-    prevClick();
-    resetAutoPlayInterval();
-});
-
-indicator.addEventListener('click', (event) => {
-    if (event.target.classList.contains('list')) {
-        const index = Array.from(lists).indexOf(event.target);
-        slide.classList.remove(`slide${count % totalSlides + 1}`);
-        count = index;
-        slide.classList.add(`slide${count % totalSlides + 1}`);
-        updateListBackground();
-        resetAutoPlayInterval();
+    if (count > imageLength) {
+        count = 0;
     }
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    isChanging = false;
+}
+
+function showPrev() {
+    if (isChanging) return;
+    isChanging = true;
+    slide.children[count].classList.remove('show');
+    indicatorLi[count].classList.remove('active');
+    count--;
+    if (count < 0) {
+        count = imageLength;
+    }
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    isChanging = false;
+}
+
+next.addEventListener('click', showNext);
+prev.addEventListener('click', showPrev);
+
+indicator.addEventListener('click', function (e) {
+    if (isChanging) return;
+    isChanging = true;
+    const index = Array.prototype.indexOf.call(indicatorLi, e.target);
+    indicatorLi[count].classList.remove('active');
+    slide.children[count].classList.remove('show');
+    count = index;
+    slide.children[count].classList.add('show');
+    indicatorLi[count].classList.add('active');
+    isChanging = false;
 });
 
-startAutoPlay();
+slide.addEventListener('mouseenter', stopSlider);
+slide.addEventListener('mouseleave', playSlider);
+
+playSlider();
