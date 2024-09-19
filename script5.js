@@ -50,11 +50,18 @@ new Vue({
     const productResponses = await Promise.all(productPromises);
     const products = productResponses.map(response => response.data);
     console.log("取得した商品情報:", products);
+    
+    console.log("取得した注文履歴:", orders);
+console.log("取得した顧客情報:", users);
+console.log("取得した商品情報:", products);
+
 
     // 取得したデータを統合する（例: orders にユーザー情報と商品情報を追加する）
     const ordersWithDetails = orders.map(order => {
       const user = users.find(user => user.user_id === order.user_id);
+      console.log("見つけたユーザー情報:", user);
       const product = products.find(product => product.product_id === order.product_id);
+      console.log("見つけた商品情報:", product);
       const orderWithDetails = {
         ...order,
         user_name: user ? user.user_name : '',
