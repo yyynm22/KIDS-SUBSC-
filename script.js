@@ -22,7 +22,7 @@ const app = new Vue({
         register_postcode: '',
         register_adress: '',
         register_telenum: '',
-        registerErrorMessage: '',
+        registerErrorMessages: [],  // エラーメッセージの配列
         showPassword: false,  // パスワード表示切り替え用
     },
         methods: {
