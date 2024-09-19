@@ -71,7 +71,7 @@
                             {{ registerErrorMessage }}
                         </v-alert>
                         <v-text-field v-model="register_name" label="Name" outlined class="custom-font"></v-text-field>
-                        <v-text-field v-model="register_mail" label="Email address（@を入れて入力してください）" outlined class="custom-font"></v-text-field>
+                        <v-text-field v-model="register_mail" label="Email address" outlined class="custom-font"></v-text-field>
             
                         <!-- パスワード入力フィールド -->
                         <v-text-field 
@@ -99,9 +99,15 @@
                             パスワードは8文字以上で、英字と数字を含めてください。
                         </v-alert>
             
-                        <v-text-field v-model="register_postcode" label="Postcode（ハイフン[-]は要りません）" outlined class="custom-font"></v-text-field>
+                        <v-text-field v-model="register_postcode" label="Postcode" outlined class="custom-font"></v-text-field>
+                        <v-alert type="info" border="left" dense text class="custom-font">
+                            ハイフンなしでご入力ください。
+                        </v-alert>
                         <v-text-field v-model="register_adress" label="Address" outlined> class="custom-font"</v-text-field>
-                        <v-text-field v-model="register_telenum" label="Phone Number（ハイフン[-]は要りません）" outlined class="custom-font"></v-text-field>
+                        <v-text-field v-model="register_telenum" label="Phone Number" outlined class="custom-font"></v-text-field>
+                        <v-alert type="info" border="left" dense text class="custom-font">
+                            ハイフンなしでご入力ください。
+                        </v-alert>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -110,6 +116,8 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>            
+
+
 
             
             <!-- ログインダイアログ -->
