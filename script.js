@@ -265,3 +265,4 @@ slide.addEventListener('mouseenter', stopSlider);
 slide.addEventListener('mouseleave', playSlider);
 
 playSlider();
+
