@@ -39,14 +39,10 @@
       </v-app-bar>
       <template>
   <v-container>
-  <v-alert
-      v-if="showAlert"
-      type="success"
-      dismissible
-      @input="showAlert = false"
-    >
-      ご注文ありがとうございます！
-    </v-alert>
+ 
+ <v-snackbar v-model="showAlert" :timeout="5000" top>
+    ご注文ありがとうございます！
+  </v-snackbar>
       <v-dialog v-model="cartdialog" max-width="600px">
   <v-card>
     <v-card-title class="custom-font" class="subheading font-weight-bold">
