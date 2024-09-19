@@ -42,7 +42,7 @@ const app = new Vue({
                 this.registerErrorMessage = 'パスワードが一致しません。';
                 return false;
             }
-            if (pass !== EmployeePass) {
+            if (EmployeePass !== EmployeePass) {
                 this.registerErrorMessage = 'パスワードが一致しません。';
                 return false;
             }
