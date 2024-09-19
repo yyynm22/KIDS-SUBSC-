@@ -62,15 +62,18 @@
             </v-app-bar>
 　　　　　　　
 <!-- 新規登録-->
+<!-- 新規登録-->
 <v-dialog v-model="dialog3" max-width="400" class="custom-font">
     <v-card>
         <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
         <v-card-text>
-            <!-- エラーメッセージ表示 -->
-            <v-alert v-if="registerErrorMessage" type="error" dismissible class="custom-font">
-                {{ registerErrorMessage }}
+            <!-- エラーメッセージ表示 (配列ベースのエラーメッセージ) -->
+            <v-alert v-if="registerErrorMessages.length" type="error" dismissible class="custom-font">
+                <ul>
+                    <li v-for="(message, index) in registerErrorMessages" :key="index">{{ message }}</li>
+                </ul>
             </v-alert>
-            
+
             <!-- Name入力フィールド -->
             <v-text-field v-model="register_name" label="Name" outlined class="custom-font"></v-text-field>
 
@@ -128,6 +131,7 @@
         </v-card-actions>
     </v-card>
 </v-dialog>
+
             
             <!-- ログインダイアログ -->
             <v-dialog v-model="dialog1" max-width="400">
