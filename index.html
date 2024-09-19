@@ -37,7 +37,6 @@
     </style>
 </head>
 <body>
-    
     <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
     <div id="app">
         <v-app>
@@ -62,8 +61,8 @@
                 </v-btn>
             </v-app-bar>
 　　　　　　　
-
-   <!-- 新規登録-->
+<!-- 新規登録-->
+<!-- 新規登録-->
 <v-dialog v-model="dialog3" max-width="400" class="custom-font">
     <v-card>
         <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
@@ -132,7 +131,7 @@
         </v-card-actions>
     </v-card>
 </v-dialog>
-
+           
             <!-- ログインダイアログ -->
             <v-dialog v-model="dialog1" max-width="400">
             <v-card>
@@ -143,15 +142,13 @@
                         {{ usererrorMessage }}
                     </v-alert>
                     <v-text-field v-model="user_mail" label="Email　address" outlined class="custom-font"></v-text-field>
-                    <v-text-field 
-                    v-model="register_pass" 
-                    :type="showPassword ? 'text' : 'password'" 
-                    label="Password" 
-                    outlined
-                    append-icon="mdi-eye"
-                    @click:append="togglePasswordVisibility"
-                    class="custom-font"
-                ></v-text-field>
+                    <v-text-field
+                        v-model="user_pass"
+                        label="Password"
+                        type="password"
+                        outlined
+                        class="custom-font"
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -265,15 +262,13 @@
                             {{ employeeerrorMessage }}
                         </v-alert>
                         <v-text-field v-model="employee_name" label="name" outlined class="custom-font"></v-text-field>
-                        <v-text-field 
-                            v-model="employee_pass" 
-                            :type="showPassword ? 'text' : 'password'" 
-                            label="Password" 
+                        <v-text-field
+                            v-model="employee_pass"
+                            label="Password"
+                            type="password"
                             outlined
-                            append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                            @click:append="togglePasswordVisibility"
+                            class="custom-font"
                         ></v-text-field>
-
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
