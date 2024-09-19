@@ -12,17 +12,14 @@ new Vue({
   try {
     console.log("注文履歴の取得を開始します。");
 
-    // 注文履歴の取得 (確定した注文データ)
+    // 注文履歴の取得
     const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
-    console.log("注文履歴のレスポンスデータ:", orderResponse.data);
-    
-    const orders = orderResponse.data;
-console.log("取得した注文履歴:", orders);
+    const orders = orderResponse.data.List; // `List` プロパティから配列を取得
+    console.log("取得した注文履歴:", orders);
 
-if (!Array.isArray(orders)) {
-  throw new TypeError('Orders data is not an array');
-}
-
+    if (!Array.isArray(orders)) {
+      throw new TypeError('Orders data is not an array');
+    }
 
     // user_id リストを作成
     const userIds = [...new Set(orders.map(order => order.user_id))]; // 重複排除
@@ -30,7 +27,7 @@ if (!Array.isArray(orders)) {
 
     // 顧客情報の取得 (user_passを除外)
     console.log("顧客情報の取得を開始します。");
-    const userPromises = userIds.map(userId => 
+    const userPromises = userIds.map(userId =>
       axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT9?user_id=${userId}`)
     );
 
@@ -83,6 +80,7 @@ if (!Array.isArray(orders)) {
     console.error('Error fetching order history:', error);
   }
 },
+
 
 
 
