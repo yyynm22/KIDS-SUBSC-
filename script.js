@@ -1,292 +1,261 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>kidssubsc</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="./style.css">
-    <style>
-        .slide-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
+const app = new Vue({
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+        // ログイン機能用のデータ
+        dialog1: false,
+        dialog2: false,
+        dialog3: false,  // 新規登録ダイアログ
+        user_mail: '',
+        user_pass: '',
+        usererrorMessage: '',  // エラーメッセージ用のデータ
+        employee_name: '',
+        employee_pass: '',
+        employeeerrorMessage: '',  // エラーメッセージ用のデータ
+        errorMessage: '',
+
+        // 登録用のデータ
+        register_name: '',
+        register_mail: '',
+        register_pass: '',
+        register_confirm_pass: '',  // パスワード確認用
+        register_postcode: '',
+        register_adress: '',
+        register_telenum: '',
+        registerErrorMessage: '',
+        showPassword: false,  // パスワード表示切り替え用
+    },
+        methods: {
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
+        validateEmail() {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
+            if (!regex.test(this.register_mail)) {
+                this.registerErrorMessages.push('メールアドレスの形式が正しくありません。');
+                return false;
+            }
+            return true;
+        },
+        validatePostcode() {
+            const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
+            if (!regex.test(this.register_postcode)) {
+                this.registerErrorMessages.push('郵便番号は7桁の数字で入力してください。');
+                return false;
+            }
+            return true;
+        },
+        validateTelenum() {
+            const regex = /^[0-9]{10,11}$/; // 電話番号は10～11桁の数字
+            if (!regex.test(this.register_telenum)) {
+                this.registerErrorMessages.push('電話番号は10～11桁の数字で入力してください。');
+                return false;
+            }
+            return true;
+        },
+        validatePassword() {
+            const pass = this.register_pass;
+            const confirmPass = this.register_confirm_pass;
+            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;  // 8文字以上、アルファベットと数字を含むパスワード
+            if (!regex.test(pass)) {
+                this.registerErrorMessages.push('パスワードは8文字以上で、アルファベットと数字の両方を含める必要があります。');
+                return false;
+            }
+            if (pass !== confirmPass) {
+                this.registerErrorMessages.push('パスワードが一致しません。');
+                return false;
+            }
+            return true;
+        },
+        validateForm() {
+            this.registerErrorMessages = [];  // エラーメッセージをリセット
+            let isValid = true;
+            if (!this.validateEmail()) isValid = false;
+            if (!this.validatePassword()) isValid = false;
+            if (!this.validatePostcode()) isValid = false;
+            if (!this.validateTelenum()) isValid = false;
+            return isValid;
+        },
+        async register() {
+            if (!this.validateForm()) {
+                return;
+            }
+
+            console.log('Attempting to register new user:', this.register_mail);
+            try {
+                const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT', {
+                    user_name: this.register_name,
+                    user_pass: this.register_pass,
+                    user_mail: this.register_mail,
+                    user_postcode: this.register_postcode,
+                    user_adress: this.register_adress,
+                    user_telenum: this.register_telenum
+                });
+                console.log('Registration successful:', response.data);
+                this.dialog3 = false;
+                alert('登録が完了しました！');
+            } catch (error) {
+                console.error('Error during registration:', error);
+                this.registerErrorMessages.push('登録に失敗しました。サーバーエラーが発生しました。');
+            }
+        },
+        async login1() {
+            console.log('Attempting to login with mail:', this.user_mail);
+
+            try {
+                // APIからユーザー情報を取得
+                const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+
+                // レスポンスデータの内容を確認する
+                const users = response.data;
+                console.log('API response:', users);
+
+                if (users.List && Array.isArray(users.List)) {
+                    console.log('User data (List):', users.List);
+
+                    const user = users.List.find(user => user.user_mail.trim() === this.user_mail.trim() && user.user_pass === this.user_pass);
+
+                    if (user) {
+                        console.log('Login successful');
+
+                        sessionStorage.setItem('user_id', user.user_id);
+                        sessionStorage.setItem('user_name', user.user_name);
+                        sessionStorage.setItem('user_pass', user.user_pass);
+                        sessionStorage.setItem('user_mail', user.user_mail);
+                        sessionStorage.setItem('user_postcode', user.user_postcode);
+                        sessionStorage.setItem('user_adress', user.user_adress);
+                        sessionStorage.setItem('user_telenum', user.user_telenum);
+
+                        this.dialog1 = false;  // ダイアログを閉じる
+                        this.usererrorMessage = '';  // エラーメッセージをクリア
+                        window.location.href = '/index1.html';
+                    } else {
+                        console.log('Invalid user_mail or user_pass');
+                        this.usererrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                    }
+                } else {
+                    console.error('User data is not an array:', users);
+                    this.usererrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                this.usererrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+            }
+        },
+
+        async login2() {
+            console.log('Attempting to login with name:', this.employee_name);
+
+            try {
+                const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT2');
+                const employees = response.data;
+                console.log('API response:', employees);
+
+                if (employees.List && Array.isArray(employees.List)) {
+                    console.log('Employee data (List):', employees.List);
+
+                    const employee = employees.List.find(employee => employee.employee_name.trim() === this.employee_name.trim() && employee.employee_pass === this.employee_pass);
+
+                    if (employee) {
+                        console.log('Login successful');
+
+                        sessionStorage.setItem('employee_id', employee.employee_id);
+                        sessionStorage.setItem('employee_name', employee.employee_name);
+                        sessionStorage.setItem('employee_pass', employee.employee_pass);
+
+                        this.dialog2 = false;  // ダイアログを閉じる
+                        this.employeeerrorMessage = '';  // エラーメッセージをクリア
+                        window.location.href = '/index4.html';
+                    } else {
+                        console.log('Invalid employee_name or employee_pass');
+                        this.employeeerrorMessage = 'ユーザーIDまたはパスワードが間違っています。';  // エラーメッセージを設定
+                    }
+                } else {
+                    console.error('User data is not an array:', employees);
+                    this.employeeerrorMessage = 'ユーザー情報の取得に失敗しました。';  // エラーメッセージを設定
+                }
+            } catch (error) {
+                console.error('Error fetching employee data:', error);
+                this.employeeerrorMessage = 'サーバーエラーが発生しました。';  // エラーメッセージを設定
+            }
         }
-        .slide {
-            display: flex;
-            overflow: hidden;
-            scroll-behavior: smooth;
-        }
-        .slide img {
-            width: 100%;
-            height: auto;
-        }
-        .new-sections {
-            padding: 20px;
-            background: #f4f4f4;
-            border-top: 1px solid #ddd;
-        }
-        .new-sections h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .new-sections p {
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
-    <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
-    <div id="app">
-        <v-app>
-            <!-- ヘッダー -->
-            <v-app-bar app class="custom-font" color="#FFF8DC">
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="centered-title">Kids Sabsc</v-toolbar-title>
-                <v-spacer></v-spacer>
+    }
+});
 
-                <v-btn v-on:click="dialog3 = true" dark color="#90c8f0" rounded class="custom-font" style="margin-right: 5mm;">
-                    Sign up
-                    <v-icon start>
-                        mdi-account-plus
-                    </v-icon>
-                </v-btn>
-                
-                <v-btn v-on:click="dialog1 = true" dark color="#f09199" rounded class="custom-font">
-                    Login
-                    <v-icon start>
-                        mdi-pencil
-                    </v-icon>
-                </v-btn>
-            </v-app-bar>
-　　　　　　　
-<!-- 新規登録-->
-<!-- 新規登録-->
-<v-dialog v-model="dialog3" max-width="400" class="custom-font">
-    <v-card>
-        <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
-        <v-card-text>
-            <!-- エラーメッセージ表示 (配列ベースのエラーメッセージ) -->
-            <v-alert v-if="registerErrorMessages.length" type="error" dismissible class="custom-font">
-                <ul>
-                    <li v-for="(message, index) in registerErrorMessages" :key="index">{{ message }}</li>
-                </ul>
-            </v-alert>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.getElementsByClassName('tab');
+    for (let i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener('click', tabSwitch, false);
+    }
 
-            <!-- Name入力フィールド -->
-            <v-text-field v-model="register_name" label="Name" outlined class="custom-font"></v-text-field>
+    function tabSwitch() {
+        document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+        this.classList.add('is-active');
+        document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+        const arrayTabs = Array.prototype.slice.call(tabs);
+        const index = arrayTabs.indexOf(this);
+        document.getElementsByClassName('panel')[index].classList.add('is-show');
+    };
+}, false);
 
-            <!-- メールアドレス入力フィールド -->
-            <v-text-field v-model="register_mail" label="Email address" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                正しいメールアドレスの形式でご入力ください。
-            </v-alert>
-            
-            <!-- パスワード入力フィールド -->
-            <v-text-field 
-                v-model="register_pass" 
-                :type="showPassword ? 'text' : 'password'" 
-                label="Password" 
-                outlined
-                append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                class="custom-font"
-            ></v-text-field>
+const slide = document.getElementById('slide');
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const indicator = document.getElementById('indicator');
+const lists = document.querySelectorAll('.list');
+const totalSlides = lists.length;
+let count = 0;
+let autoPlayInterval;
 
-            <!-- パスワード確認用フィールド -->
-            <v-text-field 
-                v-model="register_confirm_pass" 
-                :type="showPassword ? 'text' : 'password'" 
-                label="Confirm Password" 
-                outlined
-                append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                class="custom-font"
-            ></v-text-field>
+function updateListBackground() {
+    for (let i = 0; i < lists.length; i++) {
+        lists[i].style.backgroundColor = i === count % totalSlides ? '#000' : '#fff';
+    }
+}
 
-            <v-alert type="info" border="left" dense text class="custom-font">
-                パスワードは8文字以上で、英字と数字を含めてください。
-            </v-alert>
+function nextClick() {
+    slide.classList.remove(`slide${count % totalSlides + 1}`);
+    count++;
+    slide.classList.add(`slide${count % totalSlides + 1}`);
+    updateListBackground();
+}
 
-            <!-- 郵便番号入力フィールド -->
-            <v-text-field v-model="register_postcode" label="Postcode" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                ハイフンなしで7桁の数字をご入力ください。
-            </v-alert>
+function prevClick() {
+    slide.classList.remove(`slide${count % totalSlides + 1}`);
+    count--;
+    if (count < 0) count = totalSlides - 1;
+    slide.classList.add(`slide${count % totalSlides + 1}`);
+    updateListBackground();
+}
 
-            <!-- 住所入力フィールド -->
-            <v-text-field v-model="register_adress" label="Address" outlined class="custom-font"></v-text-field>
+function startAutoPlay() {
+    autoPlayInterval = setInterval(nextClick, 3000);
+}
 
-            <!-- 電話番号入力フィールド -->
-            <v-text-field v-model="register_telenum" label="Phone Number" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                ハイフンなしで10～11桁の数字をご入力ください。
-            </v-alert>
-        </v-card-text>
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="register" class="custom-font" dark color="#f09199" rounded>Sign Up</v-btn>
-            <v-btn @click="dialog3 = false" class="custom-font" color="#90c8f0" rounded dark>Cancel</v-btn>
-        </v-card-actions>
-    </v-card>
-</v-dialog>
-           
-            <!-- ログインダイアログ -->
-            <v-dialog v-model="dialog1" max-width="400">
-            <v-card>
-                <v-card-title class="headline1" class="custom-font">Login</v-card-title>
-                <v-card-text>
-                    <!-- エラーメッセージ表示 -->
-                    <v-alert v-if="usererrorMessage" type="error" dismissible class="custom-font">
-                        {{ usererrorMessage }}
-                    </v-alert>
-                    <v-text-field v-model="user_mail" label="Email　address" outlined class="custom-font"></v-text-field>
-                    <v-text-field
-                        v-model="user_pass"
-                        label="Password"
-                        type="password"
-                        outlined
-append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                        class="custom-font"
-                    ></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="login1" class="custom-font" dark color="#f09199" rounded>Login</v-btn>
-                    <v-btn @click="dialog1 = false" class="custom-font" color="#90c8f0" rounded dark>Cancel</v-btn>
-                </v-card-actions>
-            </v-card>
-            </v-dialog>
+function resetAutoPlayInterval() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+}
 
+next.addEventListener('click', () => {
+    nextClick();
+    resetAutoPlayInterval();
+});
 
-            <!-- スライドの外枠 -->
-            <div class="slide-wrapper">
-                <!-- スライド（コンテンツ） -->
-                <div id="slide" class="slide">
-                  <div>
-                        <img src="https://i.gyazo.com/a1ddf4148c23793c1d808bc0cdd4c44d.png">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/5d7c20184878cde19b60220038b72003.png">  
-                  </div>
-                  <div>
-                       <img src="https://i.gyazo.com/ebd7cebf83b85c1718ce7ae671532fe6.jpg">  
-                  </div>
-                </div>
-                <!-- 左右のボタン -->
-                <span id="prev" class="prev"></span>
-                <span id="next" class="next"></span>
-                <!-- インジケーター -->
-                <ul class="indicator" id="indicator">
-                  <li class="list"></li>
-                  <li class="list"></li>
-                  <li class="list"></li>
-                </ul>
-            </div>
+prev.addEventListener('click', () => {
+    prevClick();
+    resetAutoPlayInterval();
+});
 
-            <!-- 新しいセクション -->
-            <div class="explanation" class="custom-font">
-                <h2>「毎日がもっと楽しく、もっと便利に。お子様の成長をサポートするサブスクリプションサービス」</h2>
-                <p>私たちのサブスクリプションサービスは、<br>
-                    お子様の成長に合わせた高品質な用品を毎月お届けします。<br>
-                    忙しいパパママにも安心してご利用いただけるよう、厳選された商品をお手元にお届け。<br>
-                    お子様にぴったりのアイテムが、自動で届く便利さを是非体験してください。
-                </p>
-            </div>
-            
-            <!--利用フロー-->
-             <ul class="flow" class="custom-font">
-                <li>
-                  <dl>
-                    <dt><span class="icon">STEP.01</span>借りたい服を注文</dt>
-                    <dd>各種ボタン押下によりログインが必要！新規会員登録もできるよ！</dd>
-                  </dl>
-                </li>
-              
-                <li>
-                  <dl>
-                    <dt><span class="icon">STEP.02</span>好きなだけ着る</dt>
-                    <dd>返却期限はないので飽きるまで着てください！</dd>
-                  </dl>
-                </li>
-              
-                <li>
-                  <dl>
-                    <dt><span class="icon">STEP.03</span>返却し、新しい洋服を借りる</dt>
-                    <dd>新しいお洋服を着て、たくさんお出かけしてね！</dd>
-                  </dl>
-                </li>
-              
-              </ul>
-            
-            <div class="plan" class="custom-font">
-                <h2>借りられる商品数: 1回のご利用で最大5点まで<br>
-                    配送: 月に1回、お手元にお届けします<br>
-                    交換: ご希望の商品を新しいものと交換することができます
-                </h2>
-                <p>
-                    注意事項<br>
-                    商品は返却後、次のお客様に再利用されます。清潔で良好な状態でご返却ください。<br>
-                    借りられる商品数は、1回のご利用で最大5点までです。<br>
-                    返却期限を守ってください。遅延が発生した場合、追加料金が発生することがあります。<br>
-                    商品の破損や紛失にはご注意ください。補償が必要な場合は別途費用が発生することがあります。<br>
-                    シンプルなプランで、お子様の成長に合わせたアイテムを手軽にお試しください。<br>
-                    ご不明な点がございましたら、お気軽にお問い合わせください。
-                </p>
-            </div>
+indicator.addEventListener('click', (event) => {
+    if (event.target.classList.contains('list')) {
+        const index = Array.from(lists).indexOf(event.target);
+        slide.classList.remove(`slide${count % totalSlides + 1}`);
+        count = index;
+        slide.classList.add(`slide${count % totalSlides + 1}`);
+        updateListBackground();
+        resetAutoPlayInterval();
+    }
+});
 
-            <!-- フッター -->
-            <v-footer app padless class="custom-font" color="#FFF8DC">
-                <v-row class="d-flex align-center justify-space-between" cols="12">
-                    <v-col>
-                        <v-btn v-on:click="dialog2 = true" class="empllogin" color="#FFF8DC">
-                            employee login
-                            <v-icon start>
-                                mdi-pencil
-                            </v-icon>  
-                    </v-col>
-
-                    <v-col class="text-center"  style="position: absolute; left: 50%; transform: translateX(-50%);">
-                        © 2024 TeamA
-                    </v-col>
-                </v-row>
-            </v-footer>
-
-            <!-- ログインダイアログ -->
-            <v-dialog v-model="dialog2" max-width="400">
-                <v-card>
-                    <v-card-title class="headline1"class="custom-font">Login<br>こちらは従業員のログインページです</v-card-title>
-                    <v-card-text>
-                        <!-- エラーメッセージ表示 -->
-                        <v-alert v-if="employeeerrorMessage" type="error" dismissible class="custom-font">
-                            {{ employeeerrorMessage }}
-                        </v-alert>
-                        <v-text-field v-model="employee_name" label="name" outlined class="custom-font"></v-text-field>
-                        <v-text-field
-                            v-model="employee_pass"
-                            label="Password"
-                            type="password"
-                            outlined
-                            class="custom-font"
-                        ></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn @click="login2" class="custom-font" dark color="#f09199" rounded>Login</v-btn>
-                        <v-btn @click="dialog2 = false" class="custom-font" color="#90c8f0" rounded dark>Cancel</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-
-        </v-app>
-    </div>
-
-    <!-- Vue.js、Vuetify、Axiosのスクリプトを読み込む -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
-    <script src="./script.js"></script>
-</body>
-</html>
+startAutoPlay();
