@@ -96,7 +96,7 @@ const app = new Vue({
                 alert('登録が完了しました！');  // 登録成功のメッセージを明確に表示
             } catch (error) {
                 console.error('Error during registration:', error);
-                this.registerErrorMessage = '登録に失敗しました。入力形式などを見直してください';
+                this.registerErrorMessage = '登録に失敗しました。サーバーエラーが発生しました。';
             }
         },
 
