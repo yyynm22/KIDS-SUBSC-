@@ -24,7 +24,7 @@ new Vue({
     // 顧客情報の取得 (user_passを除外)
     console.log("顧客情報の取得を開始します。");
     const userPromises = userIds.map(userId => 
-      axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT?user_id=${userId}`)
+      axios.get(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT9?user_id=${userId}`)
     );
 
     // 全ての顧客情報を取得
