@@ -37,6 +37,7 @@
     </style>
 </head>
 <body>
+    
     <!-- Vueで指定された"app"要素、この中でのみVueが有効 -->
     <div id="app">
         <v-app>
@@ -61,77 +62,65 @@
                 </v-btn>
             </v-app-bar>
 　　　　　　　
-<!-- 新規登録-->
-<!-- 新規登録-->
-<v-dialog v-model="dialog3" max-width="400" class="custom-font">
-    <v-card>
-        <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
-        <v-card-text>
-            <!-- エラーメッセージ表示 (配列ベースのエラーメッセージ) -->
-            <v-alert v-if="registerErrorMessages.length" type="error" dismissible class="custom-font">
-                <ul>
-                    <li v-for="(message, index) in registerErrorMessages" :key="index">{{ message }}</li>
-                </ul>
-            </v-alert>
 
-            <!-- Name入力フィールド -->
-            <v-text-field v-model="register_name" label="Name" outlined class="custom-font"></v-text-field>
-
-            <!-- メールアドレス入力フィールド -->
-            <v-text-field v-model="register_mail" label="Email address" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                正しいメールアドレスの形式でご入力ください。
-            </v-alert>
+            <v-dialog v-model="dialog3" max-width="400" class="custom-font">
+                <v-card>
+                    <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
+                    <v-card-text>
+                        <!-- エラーメッセージ表示 -->
+                        <v-alert v-if="registerErrorMessage" type="error" dismissible class="custom-font">
+                            {{ registerErrorMessage }}
+                        </v-alert>
+                        <v-text-field v-model="register_name" label="Name" outlined class="custom-font"></v-text-field>
+                        <v-text-field v-model="register_mail" label="Email address" outlined class="custom-font"></v-text-field>
             
-            <!-- パスワード入力フィールド -->
-            <v-text-field 
-                v-model="register_pass" 
-                :type="showPassword ? 'text' : 'password'" 
-                label="Password" 
-                outlined
-                append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                class="custom-font"
-            ></v-text-field>
+                        <!-- パスワード入力フィールド -->
+                        <v-text-field 
+                            v-model="register_pass" 
+                            :type="showPassword ? 'text' : 'password'" 
+                            label="Password" 
+                            outlined
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
+                            class="custom-font"
+                        ></v-text-field>
+            
+                        <!-- パスワード確認用フィールド -->
+                        <v-text-field 
+                            v-model="register_confirm_pass" 
+                            :type="showPassword ? 'text' : 'password'" 
+                            label="Confirm Password" 
+                            outlined
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
+                            class="custom-font"
+                        ></v-text-field>
 
-            <!-- パスワード確認用フィールド -->
-            <v-text-field 
-                v-model="register_confirm_pass" 
-                :type="showPassword ? 'text' : 'password'" 
-                label="Confirm Password" 
-                outlined
-                append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                class="custom-font"
-            ></v-text-field>
+                        <v-alert type="info" border="left" dense text class="custom-font">
+                            パスワードは8文字以上で、英字と数字を含めてください。
+                        </v-alert>
+            
+                        <v-text-field v-model="register_postcode" label="Postcode" outlined class="custom-font"></v-text-field>
+                        <v-alert type="info" border="left" dense text class="custom-font">
+                            ハイフンなしでご入力ください。
+                        </v-alert>
+                        <v-text-field v-model="register_adress" label="Address" outlined> class="custom-font"</v-text-field>
+                        <v-text-field v-model="register_telenum" label="Phone Number" outlined class="custom-font"></v-text-field>
+                        <v-alert type="info" border="left" dense text class="custom-font">
+                            ハイフンなしでご入力ください。
+                        </v-alert>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="register" class="custom-font" dark color="#f09199" rounded>Sign Up</v-btn>
+                        <v-btn @click="dialog3 = false" class="custom-font" color="#90c8f0" rounded dark>Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>            
 
-            <v-alert type="info" border="left" dense text class="custom-font">
-                パスワードは8文字以上で、英字と数字を含めてください。
-            </v-alert>
 
-            <!-- 郵便番号入力フィールド -->
-            <v-text-field v-model="register_postcode" label="Postcode" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                ハイフンなしで7桁の数字をご入力ください。
-            </v-alert>
 
-            <!-- 住所入力フィールド -->
-            <v-text-field v-model="register_adress" label="Address" outlined class="custom-font"></v-text-field>
-
-            <!-- 電話番号入力フィールド -->
-            <v-text-field v-model="register_telenum" label="Phone Number" outlined class="custom-font"></v-text-field>
-            <v-alert type="info" border="left" dense text class="custom-font">
-                ハイフンなしで10～11桁の数字をご入力ください。
-            </v-alert>
-        </v-card-text>
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="register" class="custom-font" dark color="#f09199" rounded>Sign Up</v-btn>
-            <v-btn @click="dialog3 = false" class="custom-font" color="#90c8f0" rounded dark>Cancel</v-btn>
-        </v-card-actions>
-    </v-card>
-</v-dialog>
-           
+            
             <!-- ログインダイアログ -->
             <v-dialog v-model="dialog1" max-width="400">
             <v-card>
@@ -142,15 +131,15 @@
                         {{ usererrorMessage }}
                     </v-alert>
                     <v-text-field v-model="user_mail" label="Email　address" outlined class="custom-font"></v-text-field>
-                    <v-text-field
-                        v-model="user_pass"
-                        label="Password"
-                        type="password"
-                        outlined
-append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
-                        class="custom-font"
-                    ></v-text-field>
+                    <v-text-field 
+                    v-model="register_pass" 
+                    :type="showPassword ? 'text' : 'password'" 
+                    label="Password" 
+                    outlined
+                    append-icon="mdi-eye"
+                    @click:append="togglePasswordVisibility"
+                    class="custom-font"
+                ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -265,12 +254,15 @@ append-icon="mdi-eye"
                         </v-alert>
                         <v-text-field v-model="employee_name" label="name" outlined class="custom-font"></v-text-field>
                         <v-text-field
-                            v-model="employee_pass"
+                            v-model="user_pass"
+                            :type="showPassword ? 'text' : 'password'"
                             label="Password"
-                            type="password"
                             outlined
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
                             class="custom-font"
                         ></v-text-field>
+
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
