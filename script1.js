@@ -201,6 +201,7 @@ readData3: async function () {
         if (!selectedSize)  {
             console.log("サイズが設定されていません");
             this.sizeError = true; // エラーフラグを設定
+            return; // 処理を終了
       }
         if (!selectedQuantity) console.log("数量が設定されていません");
         return;
@@ -208,7 +209,6 @@ readData3: async function () {
     }
        
   
-
     // 数量を数値型に変換
     const params = {
         product_id: selectedItem.product_id,
