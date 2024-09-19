@@ -146,7 +146,7 @@
         <!-- サイズ選択 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font" ></v-select>
+<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font"></v-select>
   <v-alert v-if="sizeError" type="error" dismissible>サイズを選択していません</v-alert>
 </v-col>
 </v-row>
@@ -158,8 +158,7 @@
 </v-row>
 </v-col>
 </v-row>
-</v-container>
-  
+</v-container> 
 </v-card-text>
     
     <v-card-actions>
@@ -175,7 +174,7 @@
 </v-dialog>
   
  <!-- カート追加後のポップアップ通知 -->
-  <v-snackbar v-model="snackbar" :timeout="5000" center>
+  <v-snackbar v-model="snackbar" :timeout="5000" top>
     カートに追加しました！
   </v-snackbar>
 </template>
