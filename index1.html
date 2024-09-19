@@ -96,7 +96,8 @@
           <v-btn v-on:click="filterData" dark color="#f09199" rounded class="custom-font" title="検索" aria-label="検索">SEARCH</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn v-on:click="updateData" dark color="#f09199" rounded class="custom-font" title="更新" aria-label="更新">Update</v-btn>
+          <v-btn v-on:click="updateData" dark color="#90f0b8" rounded class="custom-font" title="更新" aria-label="更新"><v-icon>mdi mdi-sync</v-icon></v-btn>
+         
         </v-col>
       </v-row>
 
@@ -145,7 +146,8 @@
         <!-- サイズ選択 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font"></v-select>
+<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font" ></v-select>
+  
 </v-col>
 </v-row>
 <!-- 個数入力 -->
@@ -174,8 +176,8 @@
  <!-- カート追加後のポップアップ通知 -->
   <v-snackbar v-model="snackbar" :timeout="3000" top>
     カートに追加しました！
-    <v-btn @click="dialog = false"　class="custom-font" rounded color="#90c8f0" dark>
-        閉じる</v-btn>
+     <template v-slot:action="{ attrs }">
+     </template>
   </v-snackbar>
 </template>
 
