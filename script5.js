@@ -77,30 +77,23 @@ new Vue({
         
         // 取得した注文履歴、顧客情報、商品情報を統合
         const ordersWithDetails = orders.map(order => {
-  // ユーザー情報を取得
-  const user = users.find(user => user.user_id === order.user_id);
-  console.log("見つけたユーザー情報:", user);
-
-  // 商品情報を取得
   const product = products.find(product => product.product_id === order.product_id);
-  console.log("見つけた商品情報:", product);
+  const user = users.find(user => user.user_id === order.user_id);
 
-  // 統合した注文データ
   const orderWithDetails = {
     ...order,
     user_name: user ? user.user_name : '',
     user_mail: user ? user.user_mail : '',
     user_postcode: user ? user.user_postcode : '',
-    user_adress: user ? user.user_adress : '',  // 注意: フィールド名のスペルミスがないか確認
+    user_adress: user ? user.user_adress : '',
     user_telenum: user ? user.user_telenum : '',
     product_name: product ? product.product_name : '',
     product_id: product ? product.product_id : '',
-    product_size: product ? orders.product_size : '',  // ここを確認
-    quantity: product ? order.quantity : '',  // 注文数量がある場合は追加
+    product_size: order.product_size,  // ここで注文データからサイズを直接取得
+    quantity: order.quantity,
     URL: product ? product.URL : ''
   };
 
-  console.log("統合した注文データ:", orderWithDetails);
   return orderWithDetails;
 });
 
