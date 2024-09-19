@@ -14,6 +14,8 @@ new Vue({
 
     // 注文履歴の取得 (確定した注文データ)
     const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
+    console.log("注文履歴のレスポンスデータ:", orderResponse.data);
+    
     const orders = orderResponse.data;
 console.log("取得した注文履歴:", orders);
 
