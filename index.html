@@ -263,13 +263,17 @@
                             {{ employeeerrorMessage }}
                         </v-alert>
                         <v-text-field v-model="employee_name" label="name" outlined class="custom-font"></v-text-field>
-                        <v-text-field
-                            v-model="employee_pass"
-                            label="Password"
-                            type="password"
-                            outlined
-                            class="custom-font"
-                        ></v-text-field>
+                        
+                        <v-text-field 
+                    v-model="employee_pass" 
+                    :type="showPassword ? 'text' : 'password'" 
+                    label="Password" 
+                    outlined
+                    append-icon="mdi-eye"
+                    @click:append="togglePasswordVisibility"
+                    class="custom-font"
+                ></v-text-field>
+                        
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
