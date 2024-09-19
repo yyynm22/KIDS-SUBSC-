@@ -3,8 +3,9 @@ new Vue({
   vuetify: new Vuetify(),
   data() {
     return {
-      tab: 0,  // タブの状態
-      orderHistory: [],  // 注文履歴のデータ
+      tab: null,
+                orderHistory: null,
+                loading: true // データ読み込み中を示すフラグ
     };
   },
   methods: {
