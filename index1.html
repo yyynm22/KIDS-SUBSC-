@@ -65,10 +65,13 @@
         <v-icon>mdi-trash-can</v-icon>
     </v-btn>
 </div>
-
           </v-card>
         </v-col>
       </v-row>
+      <!-- 注文完了メッセージ表示用の要素 -->
+      <div v-if="orderCompleteMessage" class="order-complete-message">
+        {{ orderCompleteMessage }}
+      </div>
     </v-card-text>
 
     <v-card-actions>
