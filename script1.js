@@ -188,30 +188,30 @@ readData3: async function () {
         this.dialog = true;
       },
       
-      
-      // 商品をカートに追加
-     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // エラーフラグを初期化
-       this.sizeError = false;
- 
-       // 必須パラメーターが設定されているかチェック
+       // 商品をカートに追加
+addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+    // エラーフラグを初期化
+    this.sizeError = false; // ここで毎回リセット
+
+    // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
         if (!this.user_id) console.log("ユーザーIDが設定されていません");
         if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
-    // サイズが未選択の場合のエラーフラグ設定 
-    if (!selectedSize) {
-      console.log("サイズが設定されていません");
-      this.sizeError = true;
-      return;  // サイズが設定されていない場合、処理をここで終了
-    }
-    if (!selectedQuantity) {
-      console.log("数量が設定されていません");
-    }
+        
+        // サイズが未選択の場合のエラーフラグ設定
+        if (!selectedSize) {
+            console.log("サイズが設定されていません");
+            this.sizeError = true; // サイズ未選択フラグを立てる
+            return;  // サイズが設定されていない場合、処理をここで終了
+        }
+        
+        if (!selectedQuantity) {
+            console.log("数量が設定されていません");
+        }
 
-    return;
-  }
-       
+        return;
+    }
   
     // 数量を数値型に変換
     const params = {
