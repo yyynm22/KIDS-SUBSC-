@@ -107,7 +107,13 @@ new Vue({
       // ログアウト処理
       sessionStorage.clear();
       window.location.href = './index.html';
-    },
+    },  
+    scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // スムーズにスクロール
+    });
+  },   
 
     addData() {
       // HOME ボタンの動作
@@ -117,5 +123,6 @@ new Vue({
   mounted() {
     this.fetchUserData();
     this.fetchOrderHistory();
-  }
+  },
+  
 });
