@@ -17,6 +17,10 @@ new Vue({
         const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
         const userResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
         
+        console.log("Orders:", orderResponse.data);
+    console.log("Products:", productResponse.data);
+    console.log("Users:", userResponse.data);
+        
         const orders = orderResponse.data.List;
         const products = productResponse.data.List;
         const users = userResponse.data.List;
