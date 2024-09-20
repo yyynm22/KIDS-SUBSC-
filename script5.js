@@ -81,5 +81,9 @@ this.orderHistory = Object.values(orderMap).map(order => ({
   },
   mounted() {
     this.fetchOrderHistory();
+    
+  console.log("Order History Data:", this.orderHistory);
+
+
   }
 });
