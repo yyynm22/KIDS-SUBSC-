@@ -33,67 +33,55 @@
 
             <v-main>
                 <v-container>
-                    <!-- タブ -->
-                    <v-tabs
-                        v-model="tab"
-                        background-color="white"
-                        color="#f09199"
-                        align-tabs="center"
-                        class="custom-tabs"
-                    >
-                        <v-tab>注文詳細</v-tab>
-                    
+                    <!-- 注文詳細 -->
+                    <v-card flat>
+                        <v-card-text class="centered-content">
+                            <h2>注文詳細</h2> <!-- 注文詳細のタイトルを追加 -->
+                            <!-- データ取得中 -->
+                            <v-row justify="center" v-if="loading">
+                                <v-col cols="12">
+                                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                    <p>データを取得中...</p>
+                                </v-col>
+                            </v-row>
 
-                    <!-- 注文履歴タブ -->
-                    <v-tab-item>
-                        <v-card flat>
-                            <v-card-text class="centered-content">
-                                <!-- データ取得中 -->
-                                <v-row justify="center" v-if="loading">
-                                    <v-col cols="12">
-                                        <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                                        <p>データを取得中...</p>
-                                    </v-col>
-                                </v-row>
- <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
-        <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm="6" md="4">
-            <v-card class="custom-card">
-                <v-card-title>
-                    注文番号: {{ order.order_id }}
-                    <v-checkbox v-model="order.checked" class="ml-auto" @change="sortOrders"></v-checkbox>
-                </v-card-title>
-                <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
-                <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
-                <v-card-subtitle>郵便番号: {{ order.user_postcode }}</v-card-subtitle>
-                <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
-                <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
+                            <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
+                                <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm="6" md="4">
+                                    <v-card class="custom-card">
+                                        <v-card-title>
+                                            注文番号: {{ order.detail_id }}
+                                            <v-checkbox v-model="order.checked" class="ml-auto" @change="sortOrders"></v-checkbox>
+                                        </v-card-title>
+                                        <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
+                                        <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
+                                        <v-card-subtitle>郵便番号: {{ order.user_postcode }}</v-card-subtitle>
+                                        <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
+                                        <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
 
-                <v-list dense>
-                    <!-- 商品情報 -->
-                    <v-list-item>
-                        <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
-                        <v-list-item-content>
-                            <v-list-item-title>商品名: {{ order.product_name }}</v-list-item-title>
-                            <v-list-item-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
-                            <v-list-item-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
-                            <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-card>
-        </v-col>
-    </v-row>
+                                        <v-list dense>
+                                            <!-- 商品情報 -->
+                                            <v-list-item>
+                                                <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>商品名: {{ order.product_name }}</v-list-item-title>
+                                                    <v-list-item-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
 
-                                <!-- 注文履歴がない場合 -->
-                                <v-row justify="center" v-else-if="!loading && orderHistory && !orderHistory.length">
-                                    <v-col cols="12">
-                                        <p>注文履歴がありません。</p>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                  </v-tabs>
+                            <!-- 注文履歴がない場合 -->
+                            <v-row justify="center" v-else-if="!loading && orderHistory && !orderHistory.length">
+                                <v-col cols="12">
+                                    <p>注文履歴がありません。</p>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                    </v-card>
                 </v-container>
             </v-main>
 
@@ -102,9 +90,9 @@
                 <v-col class="text-center" cols="12">
                     © 2024 TeamA
                 </v-col>
-               <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
-          <v-icon>mdi-chevron-up</v-icon>
-        </v-btn>
+                <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
+                    <v-icon>mdi-chevron-up</v-icon>
+                </v-btn>
             </v-footer>
         </v-app>
     </div>
