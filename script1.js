@@ -18,7 +18,8 @@ const app = new Vue({
      order_id: null,
      snackbar: false, // ポップアップの表示状態を管理する
      sizeError: false, // エラーフラグ
-     showAlert: false, // ポップアップの表示状態を管理
+     showAlert: false,// ポップアップの表示状態を管理
+     quantityError: false, 
     },
   
   mounted() {
@@ -193,6 +194,7 @@ readData3: async function () {
      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
        // エラーフラグを初期化
        this.sizeError = false;
+       this.quantityError = false;
  
        // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
@@ -203,7 +205,10 @@ readData3: async function () {
             console.log("サイズが設定されていません");
             this.sizeError = true; // エラーフラグを設定
       }
-        if (!selectedQuantity) console.log("数量が設定されていません");
+        if (!selectedQuantity) { 
+        console.log("数量が設定されていません");
+          this.quantityError = true; // 個数未選択のエラーフラグを設定
+        }
         return;
 
     }
@@ -227,7 +232,7 @@ readData3: async function () {
 
         // フィールドをリセット
         this.selectedSize = '';
-        this.selectedQuantity = 1;
+        this.selectedQuantity = '';
       
       // ダイアログを閉じる
         this.dialog = false;
