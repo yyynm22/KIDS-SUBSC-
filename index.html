@@ -67,7 +67,7 @@
         <v-card-title class="headline1" class="custom-font">Sign Up</v-card-title>
         <v-card-text>
             <!-- エラーメッセージ表示 (配列ベースのエラーメッセージ) -->
-            <v-alert v-if="registerErrorMessages.length" type="error" dismissible class="custom-font">
+            <v-alert v-if="registerErrorMessages.length" type="error" class="custom-font">
                 <ul>
                     <li v-for="(message, index) in registerErrorMessages" :key="index">{{ message }}</li>
                 </ul>
@@ -138,7 +138,7 @@
                 <v-card-title class="headline1" class="custom-font">Login</v-card-title>
                 <v-card-text>
                     <!-- エラーメッセージ表示 -->
-                    <v-alert v-if="usererrorMessage" type="error" dismissible class="custom-font">
+                    <v-alert v-if="usererrorMessage" type="error" class="custom-font">
                         {{ usererrorMessage }}
                     </v-alert>
                     <v-text-field v-model="user_mail" label="Email　address" outlined class="custom-font"></v-text-field>
@@ -221,7 +221,7 @@ append-icon="mdi-eye"
                     <v-card-title class="headline1"class="custom-font">Login<br>こちらは従業員のログインページです</v-card-title>
                     <v-card-text>
                         <!-- エラーメッセージ表示 -->
-                        <v-alert v-if="employeeerrorMessage" type="error" dismissible class="custom-font">
+                        <v-alert v-if="employeeerrorMessage" type="error" class="custom-font">
                             {{ employeeerrorMessage }}
                         </v-alert>
                         <v-text-field v-model="employee_name" label="name" outlined class="custom-font"></v-text-field>
