@@ -30,6 +30,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+  background: #FFF8DC;
 }
 
 /* タブの文字色を指定カラーに設定 */
