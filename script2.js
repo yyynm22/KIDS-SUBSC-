@@ -1,128 +1,92 @@
-new Vue({
-  el: '#app',
-  vuetify: new Vuetify(),
-  data() {
-    return {
-      tab: 0,
-      userData: {
-        user_id: '',
-        user_name: '',
-        user_mail: '',
-        user_pass: '',
-        user_postcode: '',
-        user_adress: '',
-        user_telenum: ''
-      },
-      orderHistory: [],
-      showPassword: false
-    };
-  },
-  methods: {
-    fetchUserData() {
-      this.userData.user_id = sessionStorage.getItem('user_id') || '';
-      this.userData.user_name = sessionStorage.getItem('user_name') || '';
-      this.userData.user_mail = sessionStorage.getItem('user_mail') || '';
-      this.userData.user_pass = sessionStorage.getItem('user_pass') || '';
-      this.userData.user_postcode = sessionStorage.getItem('user_postcode') || '';
-      this.userData.user_adress = sessionStorage.getItem('user_adress') || '';
-      this.userData.user_telenum = sessionStorage.getItem('user_telenum') || '';
-    },
+/* フッター、ヘッダーのフォント設定 */
+.custom-font {
+    font-family: 'M PLUS 1', sans-serif !important;
+}
 
-    // 注文履歴の取得
-    async fetchOrderHistory() {
-  try {
-    const userId = this.userData.user_id;
+/* ヘッダーのタイトルを中央に配置 */
+.centered-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    // 注文履歴の取得
-    const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT6', {
-      params: { user_id: userId }
-    });
+/* ログアウトボタンにスタイルを追加 */
+.logout-btn {
+    margin-right: 5mm; /* HOMEボタンとのスペースを確保 */
+}
 
-    // 商品情報の取得
-    const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
+/* タブのコンテナを中央に配置 */
+.custom-tabs {
+    display: flex;
+    justify-content: center; /* 横方向に中央揃え */
+    padding: 0;
+    margin: 0;
+}
 
-    // データをマッピングする
-    const orders = orderResponse.data.List;
-    const products = productResponse.data.List;
+/* タブ内のコンテンツを中央に配置 */
+.centered-content {
+    text-align: center; /* 文章の中央揃え */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-    // 注文履歴データを集約するためのマップ
-    const orderMap = {};
+/* タブの文字色を指定カラーに設定 */
+.v-tab {
+    color: #000000; /* デフォルトの文字色 */
+}
 
-    orders.forEach(order => {
-      if (!orderMap[order.order_id]) {
-        orderMap[order.order_id] = {
-          order_id: order.order_id,
-          items: []
-        };
-      }
+/* 選択されたタブの文字色とアンダーラインの色 */
+.v-tab--active {
+    color: #90f0b8; /* 選択されたタブの文字色 */
+}
 
-      const product = products.find(p => p.product_id === order.product_id);
-      if (product) {
-        // 既存のアイテムを探す
-        const existingItem = orderMap[order.order_id].items.find(item => item.product_id === order.product_id && item.product_size === order.product_size);
-        if (existingItem) {
-          existingItem.quantity += order.quantity; // 数量を追加
-        } else {
-          orderMap[order.order_id].items.push({
-            product_id: order.product_id,
-            product_name: product.product_name,
-            product_category: product.product_category,
-            product_gender: product.product_gender,
-            product_image_url: product.URL,
-            product_size: order.product_size,
-            quantity: order.quantity
-          });
-        }
-      }
-    });
+/* タブのアンダーラインの色 */
+.v-tabs .v-tab--active {
+    color: #90f0b8 !important; /* タブが選択されたときの文字色 */
+    border-bottom: 2px solid #90f0b8; /* 選択されたタブのアンダーラインの色 */
+}
 
-    // 集約したデータをorderHistoryにセット
-    this.orderHistory = Object.values(orderMap).map(order => ({
-      order_id: order.order_id,
-      total_quantity: order.items.reduce((total, item) => total + item.quantity, 0),
-      items: order.items
-    }));
+/* カーソルを当てたときのアンダーラインの色 */
+.v-tabs .v-tab:hover {
+    border-bottom: 2px solid transparent; /* カーソルを当てたときのアンダーラインを透明に */
+}
 
-    // デバッグ用にコンソール出力
-    console.log('Aggregated Order History:', this.orderHistory.map(order => ({
-      order_id: order.order_id,
-      total_quantity: order.total_quantity,
-      items: order.items.map(item => ({
-        product_id: item.product_id,
-        product_name: item.product_name,
-        quantity: item.quantity
-      }))
-    })));
+/* アクティブなタブ以外のカーソルを当てたときのアンダーラインの色 */
+.v-tabs .v-tab--active:hover {
+    border-bottom: 2px solid #90f0b8 !important; /* アクティブタブのカーソルを当てたときのアンダーライン色 */
+}
 
-  } catch (error) {
-    console.error('Error fetching order history:', error);
-  }
-},
+/* パスワードフィールドにカスタムスタイルを適用 */
+.custom-password .v-input__control .v-input__append-inner .v-icon {
+    color: #90f0b8; /* 目のアイコンの色 */
+}
 
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    },
+/* パスワードフィールドのクリック時のアンダーライン色を変更 */
+.custom-password .v-input__control::after {
+    border-bottom: 2px solid #90f0b8 !important;
+}
 
-    Logout() {
-      // ログアウト処理
-      sessionStorage.clear();
-      window.location.href = './index.html';
-    },  
-    scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // スムーズにスクロール
-    });
-  },   
+/* フォントの設定 */
+body {
+    font-family: 'M PLUS 1', sans-serif;
+}
 
-    addData() {
-      // HOME ボタンの動作
-      window.location.href = './index1.html';
-    }
-  },
-  mounted() {
-    this.fetchUserData();
-    this.fetchOrderHistory();
-  },
-  
-});
+/* カードデザインの改善 */
+.custom-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
+    border-radius: 8px; /* 角を少し丸める */
+    padding: 16px;
+}
+
+/* 注文履歴のリストスタイル */
+.order-list .v-list-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.order-list .v-img {
+    border-radius: 4px;
+}
