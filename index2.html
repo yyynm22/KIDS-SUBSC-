@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App開発２</title>
+    <title>Kids Sabsc(my page)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
@@ -40,7 +40,7 @@
                     <v-tabs
                         v-model="tab"
                         background-color="white"
-                        color="#f09199"
+                        color="#90f0b8"
                         align-tabs="center"
                         class="custom-tabs"
                     >
@@ -57,19 +57,19 @@
                                     <v-col cols="12">
                                         <v-list dense class="info-list">
                                             <v-list-item>
-                                                <v-list-item-content>ID:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_id }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">ID:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_id }}</v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>名前:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_name }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">名前:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_name }}</v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>メールアドレス:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_mail }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">メールアドレス:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_mail }}</v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>パスワード:</v-list-item-content>
+                                                <v-list-item-content class="custom-font">パスワード:</v-list-item-content>
                                                 <v-list-item-action>
                                                     <v-text-field
                                                         :type="showPassword ? 'text' : 'password'"
@@ -78,20 +78,21 @@
                                                         append-icon="mdi-eye"
                                                         @click:append="togglePasswordVisibility"
                                                         class="custom-password"
+                                                        class="custom-font"
                                                     ></v-text-field>
                                                 </v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>郵便番号:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_postcode }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">郵便番号:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_postcode }}</v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>住所:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_adress }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">住所:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_adress }}</v-list-item-action>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>電話番号:</v-list-item-content>
-                                                <v-list-item-action>{{ userData.user_telenum }}</v-list-item-action>
+                                                <v-list-item-content class="custom-font">電話番号:</v-list-item-content>
+                                                <v-list-item-action class="custom-font">{{ userData.user_telenum }}</v-list-item-action>
                                             </v-list-item>
                                         </v-list>
                                     </v-col>
@@ -108,17 +109,17 @@
                     <v-list dense class="order-list">
                         <v-list-item v-for="order in orderHistory" :key="order.order_id">
                             <v-list-item-content>
-                                <v-list-item-title>注文番号: {{ order.order_id }}</v-list-item-title>
-                                <v-list-item-subtitle>合計個数: {{ order.total_quantity }}</v-list-item-subtitle>
+                                <v-list-item-title class="custom-font">注文番号: {{ order.order_id }}</v-list-item-title>
+                                <v-list-item-subtitle class="custom-font">合計個数: {{ order.total_quantity }}</v-list-item-subtitle>
                                 <v-list dense>
                                     <v-list-item v-for="item in order.items" :key="item.product_id">
                                         <v-img :src="item.product_image_url" alt="商品画像" max-width="100" class="mr-3"></v-img>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{ item.product_name }}</v-list-item-title>
-                                            <v-list-item-subtitle>カテゴリ: {{ item.product_category }}</v-list-item-subtitle>
-                                            <v-list-item-subtitle>サイズ: {{ item.product_size }}</v-list-item-subtitle>
-                                            <v-list-item-subtitle>性別: {{ item.product_gender }}</v-list-item-subtitle>
-                                            <v-list-item-subtitle>個数: {{ item.quantity }}</v-list-item-subtitle>
+                                            <v-list-item-title class="custom-font">{{ item.product_name }}</v-list-item-title>
+                                            <v-list-item-subtitle class="custom-font">カテゴリ: {{ item.product_category }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle class="custom-font">性別: {{ item.product_gender }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle class="custom-font">個数: {{ item.quantity }}</v-list-item-subtitle>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-list>
@@ -128,7 +129,7 @@
                 </v-col>
             </v-row>
             <v-row justify="center" v-else>
-                <v-col cols="12">
+                <v-col cols="12" class="custom-font">
                     <p>注文履歴がありません。</p>
                 </v-col>
             </v-row>
@@ -146,6 +147,9 @@
                 <v-col class="text-center" cols="12">
                     © 2024 TeamA
                 </v-col>
+               <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
             </v-footer>
         </v-app>
     </div>
