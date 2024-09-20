@@ -226,22 +226,22 @@ function updateListBackground() {
 }
 
 function nextClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
+    slide.classList.remove(`slide${(count % totalSlides) + 1}`); // 修正
     count++;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
+    slide.classList.add(`slide${(count % totalSlides) + 1}`);
     updateListBackground();
 }
 
 function prevClick() {
-    slide.classList.remove(`slide${count % totalSlides + 1}`);
+    slide.classList.remove(`slide${(count % totalSlides) + 1}`); // 修正
     count--;
     if (count < 0) count = totalSlides - 1;
-    slide.classList.add(`slide${count % totalSlides + 1}`);
+    slide.classList.add(`slide${(count % totalSlides) + 1}`);
     updateListBackground();
 }
 
 function startAutoPlay() {
-    autoPlayInterval = setInterval(nextClick, 3000);
+    autoPlayInterval = setInterval(nextClick, 7000);
 }
 
 function resetAutoPlayInterval() {
