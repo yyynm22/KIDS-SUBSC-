@@ -34,79 +34,58 @@ new Vue({
     },
 
     async fetchOrderHistory() {
-      try {
-        console.log("注文履歴の取得を開始します。");
+  try {
+    console.log("注文履歴の取得を開始します。");
 
-        // 注文履歴の取得
-        const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
-        const orders = orderResponse.data.List; // `List` プロパティから配列を取得
-        console.log("取得した注文履歴:", orders);
+    // 注文履歴の取得
+    const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
+    const orders = orderResponse.data.List;
+    console.log("取得した注文履歴:", orders);
 
-        if (!Array.isArray(orders)) {
-          throw new TypeError('Orders data is not an array');
-        }
+    if (!Array.isArray(orders)) {
+      throw new TypeError('Orders data is not an array');
+    }
 
-        // user_id リストを作成
-        const userIds = [...new Set(orders.map(order => order.user_id))]; // 重複排除
-        console.log("取得したuser_idリスト:", userIds);
+    // 顧客情報と商品情報の取得
+    const userIds = [...new Set(orders.map(order => order.user_id))];
+    const userPromises = userIds.map(userId => this.fetchUserInfo(userId));
+    const userResponses = await Promise.all(userPromises);
+    const users = userResponses.flat();
 
-        // 顧客情報の取得 (user_passを除外)
-        console.log("顧客情報の取得を開始します。");
-        const userPromises = userIds.map(userId =>
-          this.fetchUserInfo(userId)
-        );
+    const productIds = [...new Set(orders.map(order => order.product_id))];
+    const productPromises = productIds.map(productId => this.fetchProductInfo(productId));
+    const productResponses = await Promise.all(productPromises);
+    const products = productResponses.flat();
 
-        // 全ての顧客情報を取得
-        const userResponses = await Promise.all(userPromises);
-        const users = userResponses.flat();  // 二重配列を平坦化
-        console.log("取得した顧客情報:", users);
+    // 統合データの作成
+    const ordersWithDetails = orders.map(order => {
+      const product = products.find(product => product.product_id === order.product_id);
+      const user = users.find(user => user.user_id === order.user_id);
 
-        // product_id リストを作成
-        const productIds = [...new Set(orders.map(order => order.product_id))]; // 重複排除
-        console.log("取得したproduct_idリスト:", productIds);
+      return {
+        ...order,
+        user_name: user ? user.user_name : '',
+        user_mail: user ? user.user_mail : '',
+        user_postcode: user ? user.user_postcode : '',
+        user_adress: user ? user.user_adress : '',
+        user_telenum: user ? user.user_telenum : '',
+        product_name: product ? product.product_name : '',
+        product_id: product ? product.product_id : '',
+        product_size: order.product_size,
+        quantity: order.quantity,
+        URL: product ? product.URL : ''
+      };
+    });
 
-        // 商品情報の取得
-        console.log("商品情報の取得を開始します。");
-        const productPromises = productIds.map(productId =>
-          this.fetchProductInfo(productId)
-        );
+    // `orderHistory`にデータを設定
+    this.orderHistory = ordersWithDetails;
+    console.log("最終的な注文履歴データ:", this.orderHistory); // ここで確認
 
-        // 全ての商品情報を取得
-        const productResponses = await Promise.all(productPromises);
-        const products = productResponses.flat();  // 二重配列を平坦化
-        console.log("取得した商品情報:", products);
-        
-        // 取得した注文履歴、顧客情報、商品情報を統合
-        const ordersWithDetails = orders.map(order => {
-  const product = products.find(product => product.product_id === order.product_id);
-  const user = users.find(user => user.user_id === order.user_id);
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+  }
+},
 
-  const orderWithDetails = {
-    ...order,
-    user_name: user ? user.user_name : '',
-    user_mail: user ? user.user_mail : '',
-    user_postcode: user ? user.user_postcode : '',
-    user_adress: user ? user.user_adress : '',
-    user_telenum: user ? user.user_telenum : '',
-    product_name: product ? product.product_name : '',
-    product_id: product ? product.product_id : '',
-    product_size: order.product_size,  // ここで注文データからサイズを直接取得
-    quantity: order.quantity,
-    URL: product ? product.URL : ''
-  };
-
-  return orderWithDetails;
-});
-
-
-        // 統合したデータを `orderHistory` に設定
-        this.orderHistory = ordersWithDetails;
-        console.log("最終的な注文履歴データ:", this.orderHistory);
-
-      } catch (error) {
-        console.error('Error fetching order history:', error);
-      }
-    },
 
     Logout() {
       // ログアウト処理
@@ -122,8 +101,6 @@ new Vue({
   mounted() {
     // コンポーネントがマウントされたときに注文履歴を取得
     this.fetchOrderHistory();
-    
-  console.log("Order History Data:", this.orderHistory);
 
 
   }
