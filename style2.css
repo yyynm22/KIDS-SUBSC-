@@ -39,13 +39,13 @@
 
 /* 選択されたタブの文字色とアンダーラインの色 */
 .v-tab--active {
-    color: #f09199; /* 選択されたタブの文字色 */
+    color: #90f0b8; /* 選択されたタブの文字色 */
 }
 
 /* タブのアンダーラインの色 */
 .v-tabs .v-tab--active {
-    color: #f09199 !important; /* タブが選択されたときの文字色 */
-    border-bottom: 2px solid #f09199; /* 選択されたタブのアンダーラインの色 */
+    color: #90f0b8 !important; /* タブが選択されたときの文字色 */
+    border-bottom: 2px solid #90f0b8; /* 選択されたタブのアンダーラインの色 */
 }
 
 /* カーソルを当てたときのアンダーラインの色 */
@@ -55,17 +55,17 @@
 
 /* アクティブなタブ以外のカーソルを当てたときのアンダーラインの色 */
 .v-tabs .v-tab--active:hover {
-    border-bottom: 2px solid #f09199 !important; /* アクティブタブのカーソルを当てたときのアンダーライン色 */
+    border-bottom: 2px solid #90f0b8 !important; /* アクティブタブのカーソルを当てたときのアンダーライン色 */
 }
 
 /* パスワードフィールドにカスタムスタイルを適用 */
 .custom-password .v-input__control .v-input__append-inner .v-icon {
-    color: #f09199; /* 目のアイコンの色 */
+    color: #90f0b8; /* 目のアイコンの色 */
 }
 
 /* パスワードフィールドのクリック時のアンダーライン色を変更 */
 .custom-password .v-input__control::after {
-    border-bottom: 2px solid #f09199 !important;
+    border-bottom: 2px solid #90f0b8 !important;
 }
 
 /* フォントの設定 */
