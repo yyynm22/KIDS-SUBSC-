@@ -40,7 +40,7 @@
       <template>
   <v-container>
  
- <v-snackbar v-model="showAlert" :timeout="4000" top>
+ <v-snackbar v-model="showAlert" :timeout="3000" top>
     ご注文ありがとうございます！
   </v-snackbar>
       <v-dialog v-model="cartdialog" max-width="600px">
@@ -62,7 +62,7 @@
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
             <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
-            <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
+          <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
     <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
@@ -147,19 +147,19 @@
 </v-col>
 <!-- 商品情報と選択フィールド -->
 <v-col cols="4" class="custom-font"> <!-- 商品情報が右側に -->
-<v-card-title>{{ selectedItem.product_name }}</v-card-title>
+  <v-card-title>{{ selectedItem.product_name }}</v-card-title>
  
         <!-- サイズ選択 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedSize" :items="['S', 'M', 'L', 'XL']" label="Select Size" class="custom-font" @change="sizeError = false"></v-select>
-  <v-alert v-if="sizeError" type="error" >サイズが未選択です</v-alert>
+<v-select v-model="selectedSize" :items="['80', '90', '100', '110']" label="Select Size" class="custom-font" @change="sizeError = false"></v-select>
+  <v-alert v-if="sizeError" type="error">サイズが未選択です</v-alert>
 </v-col>
 </v-row>
 <!-- 個数入力 -->
 <v-row>
 <v-col cols="12">
-<v-text-field v-model="selectedQuantity" label="Quantity" type="number" min="1"　class="custom-font"></v-text-field>
+<v-select v-model="selectedQuantity" :items="['1', '2', '3', '4', '5']" label="Quantity" type="number" min="1"　class="custom-font"></</v-select>
 </v-col>
 </v-row>
 </v-col>
@@ -195,10 +195,17 @@
       <!-- 商品画像を表示 -->
       <v-img :src="item.URL" aspect-ratio="1.5" @click="selectedItem = item; dialog = true"></v-img>
       
-   
+    <!--  <v-card-title>{{ item.product_name }}</v-card-title>
+      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
+      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>-->
+
       <v-card-actions>
+      
         </v-btn>
-         <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
+        <!--<v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
+          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
+        </v-btn>-->
+        <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
       </v-card-actions>
     </v-card>
   </v-col>
