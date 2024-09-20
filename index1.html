@@ -40,7 +40,7 @@
       <template>
   <v-container>
  
- <v-snackbar v-model="showAlert" :timeout="5000" top>
+ <v-snackbar v-model="showAlert" :timeout="4000" top>
     ご注文ありがとうございます！
   </v-snackbar>
       <v-dialog v-model="cartdialog" max-width="600px">
@@ -62,7 +62,6 @@
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
             <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
-            
             <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
             <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
@@ -148,7 +147,7 @@
 </v-col>
 <!-- 商品情報と選択フィールド -->
 <v-col cols="4" class="custom-font"> <!-- 商品情報が右側に -->
-<div>{{ selectedItem.product_name }}</div>
+<v-card-title>{{ selectedItem.product_name }}</v-card-title>
  
         <!-- サイズ選択 -->
 <v-row>
@@ -181,7 +180,7 @@
 </v-dialog>
   
  <!-- カート追加後のポップアップ通知 -->
-  <v-snackbar v-model="snackbar" :timeout="5000" top>
+  <v-snackbar v-model="snackbar" :timeout="3000" top>
     カートに追加しました！
   </v-snackbar>
 </template>
@@ -196,17 +195,10 @@
       <!-- 商品画像を表示 -->
       <v-img :src="item.URL" aspect-ratio="1.5" @click="selectedItem = item; dialog = true"></v-img>
       
-    <!--  <v-card-title>{{ item.product_name }}</v-card-title>
-      <v-card-subtitle>Category: {{ item.product_category }}</v-card-subtitle>
-      <v-card-subtitle>Gender: {{ item.product_gender }}</v-card-subtitle>-->
-
+   
       <v-card-actions>
-        <v-btn :color="item.liked ? '#f09199' : '#c0c0c0'" @click="toggleLike(item)" dark>
-          <v-icon>{{ item.liked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
         </v-btn>
-        <!--<v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
-          <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
-        </v-btn>-->
+         <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
       </v-card-actions>
     </v-card>
   </v-col>
