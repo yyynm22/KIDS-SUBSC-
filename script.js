@@ -203,8 +203,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const arrayTabs = Array.prototype.slice.call(tabs);
         const index = arrayTabs.indexOf(this);
         document.getElementsByClassName('panel')[index].classList.add('is-show');
-    };
+    }
+
+    // ページロード時に自動再生を開始
+    startAutoPlay();
 }, false);
+
 
 const slide = document.getElementById('slide');
 const prev = document.getElementById('prev');
@@ -265,4 +269,3 @@ indicator.addEventListener('click', (event) => {
         resetAutoPlayInterval();
     }
 });
-
