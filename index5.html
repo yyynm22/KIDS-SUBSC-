@@ -58,18 +58,17 @@
                                         <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
                                         <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
 
-                                        <v-list dense>
-                                            <!-- 商品情報 -->
-                                            <v-list-item>
+                                     <v-list-item>
                                                 <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
                                                 <v-list-item-content>
-                                                    <v-list-item-title>商品名: {{ order.product_name }}</v-list-item-title>
-                                                    <v-list-item-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
+                                                    <v-card-subtitle>商品名: {{ order.product_name }}</v-list-item-title>
+                                                    <v-card-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
+                                                    <v-card-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
+                                                    <v-card-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
                                                 </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
+                                        </v-list-item>
+
+                                        
                                     </v-card>
                                 </v-col>
                             </v-row>
