@@ -46,7 +46,7 @@
                             </v-row>
 
                             <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
-                                <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm="6" md="4">
+                                <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm="12" md="6">
                                     <v-card class="custom-card">
                                         <v-card-title>
                                             注文番号: {{ order.detail_id }}
