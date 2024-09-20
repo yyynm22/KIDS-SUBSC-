@@ -190,30 +190,27 @@ readData3: async function () {
       },
       
       
-      // 商品をカートに追加
-     addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
-       // エラーフラグを初期化
-       this.sizeError = false;
-       this.quantityError = false;
- 
-       // 必須パラメーターが設定されているかチェック
+      addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
+    // エラーフラグを初期化
+    this.sizeError = false;
+    this.quantityError = false;
+
+    // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
         if (!this.user_id) console.log("ユーザーIDが設定されていません");
         if (!selectedItem?.product_id) console.log("商品IDが設定されていません");
-        if (!selectedSize)  {
+        if (!selectedSize) {
             console.log("サイズが設定されていません");
             this.sizeError = true; // エラーフラグを設定
-      }
-        if (!selectedQuantity) { 
-        console.log("数量が設定されていません");
-          this.quantityError = true; // 個数未選択のエラーフラグを設定
+        }
+        if (!selectedQuantity) {
+            console.log("数量が設定されていません");
+            this.quantityError = true; // 個数未選択のエラーフラグを設定
         }
         return;
-
     }
-       
-  
+
     // 数量を数値型に変換
     const params = {
         product_id: selectedItem.product_id,
@@ -226,20 +223,22 @@ readData3: async function () {
         // パラメーターを含んだAPIリクエスト
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/INSERT2', params);
         console.log(response.data);
-      
-      // カートに追加した旨のポップアップを表示
+
+        // カートに追加した旨のポップアップを表示
         this.snackbar = true;
 
         // フィールドをリセット
         this.selectedSize = '';
         this.selectedQuantity = '';
-      
-      // ダイアログを閉じる
+
+        // ダイアログを閉じる
         this.dialog = false;
     } catch (error) {
         console.error('APIリクエストに失敗しました:', error);
     }
 },
+
+      
   //注文確定
   confirmOrder: async function() {
      // カートが空か確認
