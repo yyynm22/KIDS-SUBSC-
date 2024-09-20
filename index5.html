@@ -55,6 +55,12 @@
                                         <p>データを取得中...</p>
                                     </v-col>
                                 </v-row>
+                              
+                                <!-- デバッグ用の表示 -->
+    <div v-if="orderHistory.length">
+        <pre>{{ orderHistory }}</pre>
+    </div>
+
 
                                 <!-- 注文履歴がある場合 -->
                                 <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
