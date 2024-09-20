@@ -106,7 +106,7 @@ li {
   width: 500%;
   height: 100%;
   display: flex;
-  transition: all 1.0s;
+  transition: all 2.5s;
 }
 .slide div { /* スライド */
   width: 20%;
