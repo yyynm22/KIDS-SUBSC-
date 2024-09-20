@@ -85,7 +85,9 @@ new Vue({
 
   } catch (error) {
     console.error('Error fetching order history:', error);
-  }
+  }finally {
+        this.loading = false; // データ取得完了時にloadingをfalseに
+      }
 },
 
 
