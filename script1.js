@@ -12,8 +12,8 @@ const app = new Vue({
       dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
-      selectedQuantity: 1,  // 個数
-      sizes: ['S', 'M', 'L', 'XL'],  // サイズのリスト
+      selectedQuantity: '',  // 個数
+      sizes: ['80', '90', '100', '110'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
      order_id: null,
      snackbar: false, // ポップアップの表示状態を管理する
@@ -184,7 +184,7 @@ readData3: async function () {
       openDialog(item) {
         this.selectedItem = item;
         this.selectedSize = '';
-        this.quantity = 1;
+        this.quantity = '';
         this.dialog = true;
       },
       
