@@ -63,7 +63,7 @@
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
             <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
           <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
-            <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle> 
+            <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
     <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
         <v-icon>mdi-trash-can</v-icon>
@@ -156,14 +156,14 @@
         <!-- サイズ選択 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedSize" :items="['80', '90', '100', '110']" label="Select Size" class="custom-font" @change="sizeError = false"></v-select>
+<v-select v-model="selectedSize" :items="['80', '90', '100', '110']" label="サイズを選択" class="custom-font" @change="sizeError = false"></v-select>
   <v-alert v-if="sizeError" type="error" class="small-alert">サイズを選択してください</v-alert>
 </v-col>
 </v-row>
 <!-- 個数入力 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedQuantity" :items="['1', '2', '3', '4', '5']" label="Quantity" type="number" min="1"　class="custom-font"></</v-select>
+<v-select v-model="selectedQuantity" :items="['1', '2', '3', '4', '5']" label="個数を選択" class="custom-font" @change="quantityError = false"></</v-select>
    <v-alert v-if="quantityError" type="error" class="small-alert">個数を選択してください</v-alert>
 </v-col>
 </v-row>
