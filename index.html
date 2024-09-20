@@ -228,10 +228,10 @@
                         <v-text-field
                             v-model="employee_pass"
                             label="Password"
-                            type="password"
+                            :type="showPassword ? 'text' : 'password'" 
                             outlined
-append-icon="mdi-eye"
-                @click:append="togglePasswordVisibility"
+                            append-icon="mdi-eye"
+                            @click:append="togglePasswordVisibility"
 
                             class="custom-font"
                         ></v-text-field>
