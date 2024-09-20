@@ -95,13 +95,20 @@ new Vue({
       // ログアウト処理
       sessionStorage.clear();
       window.location.href = './index.html';
-    },
+    }, 
+    scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // スムーズにスクロール
+    });
+  },  
 
     addData() {
       // HOME ボタンの動作
       window.location.href = './index4.html';
     }
   },
+ 
   mounted() {
     // コンポーネントがマウントされたときに注文履歴を取得
     this.fetchOrderHistory();
