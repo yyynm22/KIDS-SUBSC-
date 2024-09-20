@@ -26,9 +26,16 @@ const app = new Vue({
         showPassword: false,  // パスワード表示切り替え用
     },
         methods: {
+          
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
+           scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // スムーズにスクロール
+    });
+  },   
         validateEmail() {
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // メールアドレスの基本形式
             if (!regex.test(this.register_mail)) {
@@ -182,6 +189,7 @@ const app = new Vue({
     }
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.getElementsByClassName('tab');
     for (let i = 0; i < tabs.length; i++) {
@@ -258,4 +266,3 @@ indicator.addEventListener('click', (event) => {
     }
 });
 
-startAutoPlay();
