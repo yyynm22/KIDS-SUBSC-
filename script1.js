@@ -206,8 +206,9 @@ readData3: async function () {
         }
         if (!selectedQuantity) {
             console.log("数量が設定されていません");
-            this.quantityError = true; // 個数未選択のエラーフラグを設定
-        }
+            this.quantityError = true; // エラーフラグを設定
+            }
+
         return;
     }
 
