@@ -78,6 +78,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトなシャドウ効果 */
     border-radius: 8px; /* 角を少し丸める */
     padding: 16px;
+    whight:50px;
 }
 
 /* 注文履歴のリストスタイル */
