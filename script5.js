@@ -84,6 +84,7 @@ new Vue({
             product_name: product ? product.product_name : '',
             product_id: product ? product.product_id : '',
             product_size: order.product_size,
+            detail_id: order.detail_id,
             quantity: order.quantity,
             URL: product ? product.URL : '',
             checked: false // チェックボックスの初期値を追加
