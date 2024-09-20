@@ -61,25 +61,24 @@
                                     <v-col cols="12">
                                         <v-list dense class="order-list">
                                             <v-list-item v-for="order in orderHistory" :key="order.order_id">
-                                              <!-- コンソールでデータが正しくバインドされているか確認 -->
-    <pre>{{ order }}</pre>
                                                 <v-list-item-content>
                                                     <v-list-item-title>注文番号: {{ order.order_id }}</v-list-item-title>
-                                                    <v-list-item-subtitle>注文者名: {{ order.user_name }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>メール: {{ order.user_mail }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>郵便番号: {{ order.user_postcode }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>住所: {{ order.user_adress }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>電話番号: {{ order.user_telenum }}</v-list-item-subtitle>
 
+                                                    <!-- 注文ごとの商品情報リスト -->
+                                                    <v-list-item-subtitle>商品情報:</v-list-item-subtitle>
                                                     <v-list dense>
-                                                        <!-- 商品情報 -->
-                                                        <v-list-item>
-                                                            <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
+                                                        <v-list-item v-for="item in order.items" :key="item.product_id + '-' + item.product_size">
+                                                            <v-img :src="item.product_image_url" alt="商品画像" max-width="100" class="mr-3"></v-img>
                                                             <v-list-item-content>
-                                                                <v-list-item-title>商品名: {{ order.product_name }}</v-list-item-title>
-                                                                <v-list-item-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
-                                                                <v-list-item-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
-                                                                <v-list-item-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
+                                                                <v-list-item-title>商品名: {{ item.product_name }}</v-list-item-title>
+                                                                <v-list-item-subtitle>商品ID: {{ item.product_id }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>サイズ: {{ item.product_size }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>個数: {{ item.quantity }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>注文者名: {{ item.user_name }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>メール: {{ item.user_mail }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>郵便番号: {{ item.user_postcode }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>住所: {{ item.user_adress }}</v-list-item-subtitle>
+                                                                <v-list-item-subtitle>電話番号: {{ item.user_telenum }}</v-list-item-subtitle>
                                                             </v-list-item-content>
                                                         </v-list-item>
                                                     </v-list>
