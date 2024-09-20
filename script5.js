@@ -3,83 +3,124 @@ new Vue({
   vuetify: new Vuetify(),
   data() {
     return {
-      tab: 0,
-      orderHistory: [],
-      loading: true // ローディングフラグ
+      tab: null,
+                orderHistory: null,
+                loading: true // データ読み込み中を示すフラグ
     };
   },
   methods: {
-    // 注文履歴の取得
+    // ユーザー情報を取得
+    async fetchUserInfo(userId) {
+      try {
+        const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT9?user_id=${userId}`);
+        const data = await response.json();
+        console.log("ユーザー情報のレスポンス:", data);
+        return data.List;  // 正しいプロパティ名に変更
+      } catch (error) {
+        console.error("ユーザー情報取得エラー:", error);
+      }
+    },
+
+    // 商品情報を取得
+    async fetchProductInfo(productId) {
+      try {
+        const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT10?product_id=${productId}`);
+        const data = await response.json();
+        console.log("商品情報のレスポンス:", data);
+        return data.List;  // 正しいプロパティ名に変更
+      } catch (error) {
+        console.error("商品情報取得エラー:", error);
+      }
+    },
+
     async fetchOrderHistory() {
       try {
-        this.loading = true; // データ取得開始時にローディング状態を設定
+        console.log("注文履歴の取得を開始します。");
+
+        // 注文履歴の取得
         const orderResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT8');
-        const productResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
-        const userResponse = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT');
+        const orders = orderResponse.data.List; // `List` プロパティから配列を取得
+        console.log("取得した注文履歴:", orders);
+
+        if (!Array.isArray(orders)) {
+          throw new TypeError('Orders data is not an array');
+        }
+
+        // user_id リストを作成
+        const userIds = [...new Set(orders.map(order => order.user_id))]; // 重複排除
+        console.log("取得したuser_idリスト:", userIds);
+
+        // 顧客情報の取得 (user_passを除外)
+        console.log("顧客情報の取得を開始します。");
+        const userPromises = userIds.map(userId =>
+          this.fetchUserInfo(userId)
+        );
+
+        // 全ての顧客情報を取得
+        const userResponses = await Promise.all(userPromises);
+        const users = userResponses.flat();  // 二重配列を平坦化
+        console.log("取得した顧客情報:", users);
+
+        // product_id リストを作成
+        const productIds = [...new Set(orders.map(order => order.product_id))]; // 重複排除
+        console.log("取得したproduct_idリスト:", productIds);
+
+        // 商品情報の取得
+        console.log("商品情報の取得を開始します。");
+        const productPromises = productIds.map(productId =>
+          this.fetchProductInfo(productId)
+        );
+
+        // 全ての商品情報を取得
+        const productResponses = await Promise.all(productPromises);
+        const products = productResponses.flat();  // 二重配列を平坦化
+        console.log("取得した商品情報:", products);
         
-        console.log("Orders:", orderResponse.data);
-    console.log("Products:", productResponse.data);
-    console.log("Users:", userResponse.data);
-        
-        const orders = orderResponse.data.List;
-        const products = productResponse.data.List;
-        const users = userResponse.data.List;
+        // 取得した注文履歴、顧客情報、商品情報を統合
+        const ordersWithDetails = orders.map(order => {
+  const product = products.find(product => product.product_id === order.product_id);
+  const user = users.find(user => user.user_id === order.user_id);
 
-       const orderMap = {};
+  const orderWithDetails = {
+    ...order,
+    user_name: user ? user.user_name : '',
+    user_mail: user ? user.user_mail : '',
+    user_postcode: user ? user.user_postcode : '',
+    user_adress: user ? user.user_adress : '',
+    user_telenum: user ? user.user_telenum : '',
+    product_name: product ? product.product_name : '',
+    product_id: product ? product.product_id : '',
+    product_size: order.product_size,  // ここで注文データからサイズを直接取得
+    quantity: order.quantity,
+    URL: product ? product.URL : ''
+  };
 
-orders.forEach(order => {
-  if (!orderMap[order.order_id]) {
-    orderMap[order.order_id] = {
-      order_id: order.order_id,
-      items: []
-    };
-  }
-
-           const user = users.find(u => u.user_id === order.user_id);
-  const product = products.find(p => p.product_id === order.product_id);
-
-  if (product) {
-    const existingItem = orderMap[order.order_id].items.find(item => item.product_id === order.product_id && item.product_size === order.product_size);
-    if (existingItem) {
-      existingItem.quantity += order.quantity;
-    } else {
-              orderMap[order.order_id].items.push({
-        user_name: user ? user.user_name : '',
-        user_mail: user ? user.user_mail : '',
-        user_postcode: user ? user.user_postcode : '',
-        user_adress: user ? user.user_adress : '',
-        user_telenum: user ? user.user_telenum : '',
-        product_name: product ? product.product_name : '',
-        product_id: product ? product.product_id : '',
-        product_size: order.product_size,
-        quantity: order.quantity,
-        product_image_url: product ? product.URL : ''
-      });
-           }
-  }
+  return orderWithDetails;
 });
 
-this.orderHistory = Object.values(orderMap).map(order => ({
-  order_id: order.order_id,
-  total_quantity: order.items.reduce((total, item) => total + item.quantity, 0),
-  items: order.items
-}));
+
+        // 統合したデータを `orderHistory` に設定
+        this.orderHistory = ordersWithDetails;
+        console.log("最終的な注文履歴データ:", this.orderHistory);
 
       } catch (error) {
         console.error('Error fetching order history:', error);
-      } finally {
-        this.loading = false; // データ取得完了時にローディング状態を解除
       }
     },
+
     Logout() {
+      // ログアウト処理
       sessionStorage.clear();
       window.location.href = './index.html';
     },
+
     addData() {
+      // HOME ボタンの動作
       window.location.href = './index4.html';
     }
   },
   mounted() {
+    // コンポーネントがマウントされたときに注文履歴を取得
     this.fetchOrderHistory();
     
   console.log("Order History Data:", this.orderHistory);
