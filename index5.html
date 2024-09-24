@@ -46,40 +46,38 @@
                             </v-row>
 
                             <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
-                                <v-col
-    v-for="order in sortedOrderHistory"
-    :key="order.detail_id"
-    cols="12"
-  >
-    <v-card class="custom-card">
-      <v-card-title>
-        注文番号: {{ order.detail_id }}
-        <v-checkbox v-model="order.checked" class="ml-auto" @change="toggleChecked(order)"></v-checkbox>
-      </v-card-title>
-      <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
-      <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
-      <v-card-subtitle>郵便番号: {{ order.user_postcode }}</v-card-subtitle>
-      <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
-      <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
+                                <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm=12 md="6">
+                                    <v-card class="custom-card">
+                                        <v-card-title>
+                                            注文番号: {{ order.detail_id }}
+                                            <v-checkbox v-model="order.checked" class="ml-auto" @change="toggleChecked(order)"></v-checkbox>
+                                        </v-card-title>
+                                        <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
+                                        <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
+                                        <v-card-subtitle>郵便番号: {{ order.user_postcode }}</v-card-subtitle>
+                                        <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
+                                        <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
 
-      <v-list-item>
-        <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
-        <v-list-item-content>
-          <v-card-subtitle>商品名: {{ order.product_name }}</v-card-subtitle>
-          <v-card-subtitle>商品ID: {{ order.product_id }}</v-card-subtitle>
-          <v-card-subtitle>サイズ: {{ order.product_size }}</v-card-subtitle>
-          <v-card-subtitle>個数: {{ order.quantity }}</v-card-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card>
-  </v-col>
-</v-row>
+                                     <v-list-item>
+                                                <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
+                                                <v-list-item-content>
+                                                    <v-card-subtitle>商品名: {{ order.product_name }}</v-list-item-title>
+                                                    <v-card-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
+                                                    <v-card-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
+                                                    <v-card-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
+                                                </v-list-item-content>
+                                        </v-list-item>
 
-<!-- 注文履歴がない場合 -->
-<v-row justify="center" v-else-if="!loading && orderHistory && !orderHistory.length">
-  <v-col cols="12">
-    <p>注文履歴がありません。</p>
-  </v-col>
+                                        
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+
+                            <!-- 注文履歴がない場合 -->
+                            <v-row justify="center" v-else-if="!loading && orderHistory && !orderHistory.length">
+                                <v-col cols="12">
+                                    <p>注文履歴がありません。</p>
+                                </v-col>
                             </v-row>
                         </v-card-text>
                     </v-card>
