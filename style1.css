@@ -11,7 +11,11 @@
 
 /* カートの距離*/
 .v-card-subtitle {
-  margin: 0;
-  padding: 0;
-  line-height: 1.5;
+  margin: 0;          /* 余白をゼロに */
+  padding: 0;         /* パディングをゼロに */
+  line-height: 1.2;   /* 行の高さを少し詰める */
+}
+
+.v-card {
+  padding-bottom: 8px; /* カード内のパディングを調整 */
 }
