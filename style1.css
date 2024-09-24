@@ -8,3 +8,11 @@
     font-weight: bold;
     font-family: 'M PLUS 1', sans-serif;
   }
+
+/* カートの距離*/
+.v-card-subtitle {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
