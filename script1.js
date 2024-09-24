@@ -194,7 +194,11 @@ readData3: async function () {
       this.sizeError = false;
       this.quantityError = false;
     },
-      
+       // 既存のメソッド...
+    closeDialog() {
+        this.dialog = false;
+        this.resetSelections();
+    },
       addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
     // エラーフラグを初期化
     this.sizeError = false;
