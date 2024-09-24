@@ -110,7 +110,25 @@ new Vue({
         return a.order_id - b.order_id;
       });
     },
+  　
+    async updateCheckedStatus(detailId, isChecked) {
+      try {
+        const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
+          method: 'GET' // or 'POST' depending on your implementation
+        });
+        const result = await response.json();
+        console.log("更新結果:", result);
+      } catch (error) {
+        console.error("更新エラー:", error);
+      }
+    },
 
+    toggleChecked(order) {
+      order.checked = !order.checked; // チェックボックスの状態をトグル
+      this.updateCheckedStatus(order.detail_id, order.checked); // APIを呼び出して更新
+      this.sortOrders(); // ソートを適用
+    },
+    
     Logout() {
       // ログアウト処理
       sessionStorage.clear();
@@ -132,4 +150,5 @@ new Vue({
     // コンポーネントがマウントされたときに注文履歴を取得
     this.fetchOrderHistory();
   }
+  
 });
