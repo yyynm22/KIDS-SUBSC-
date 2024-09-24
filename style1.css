@@ -16,6 +16,9 @@
   margin-bottom: 0 !important;  /* 下部の余白をゼロに */
   padding: 0 !important;  /* パディングをゼロに */
   line-height: 1.2 !important;  /* 行間を調整 */
+  padding-left: 5mm !important;  /* 左側に5mmのパディング */
+}
+
 }
 
 .v-card-subtitle {
