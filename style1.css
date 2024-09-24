@@ -10,12 +10,8 @@
   }
 
 /* カートの距離*/
-.v-card-subtitle {
-  margin: 0;          /* 余白をゼロに */
-  padding: 0;         /* パディングをゼロに */
-  line-height: 1.2;   /* 行の高さを少し詰める */
-}
-
-.v-card {
-  padding-bottom: 8px; /* カード内のパディングを調整 */
+.subtitle-spacing {
+  margin-bottom: 0;  /* 下部余白をなくす */
+  padding-bottom: 0; /* 下部パディングをなくす */
+  line-height: 1.5;  /* 行間を調整して間隔を狭くする */
 }
