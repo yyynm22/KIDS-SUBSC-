@@ -27,3 +27,7 @@
 .small-text {
     font-size: 0.95em !important; /* 少し小さくする */
 }
+
+.small2-text {
+    font-size: 1.1em !important; /* 少し小さくする */
+}
