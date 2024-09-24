@@ -61,7 +61,7 @@
         <v-col v-for="item in dataList3" :key="item.product_id" cols="6">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
-            <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
+            <v-card-title class="custom-font small-text">{{ item.product_name }}</v-card-title>
 <v-card-subtitle class="custom-font custom-font-size">サイズ: {{ item.product_size }}</v-card-subtitle>
 <v-card-subtitle class="custom-font custom-font-quantity">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
@@ -211,7 +211,7 @@
         <!--<v-btn :color="item.saved ? 'blue' : 'grey'" @click="toggleSave(item)">
           <v-icon>{{ item.saved ? 'mdi-content-save' : 'mdi-content-save-outline' }}</v-icon>
         </v-btn>-->
-        <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
+        <v-card-title class="custom-font small-text">{{ item.product_name }}</v-card-title>
       </v-card-actions>
     </v-card>
   </v-col>
