@@ -195,6 +195,7 @@ readData3: async function () {
     this.sizeError = false;
     this.quantityError = false;
 
+
     // 必須パラメーターが設定されているかチェック
     if (!this.user_id || !selectedItem?.product_id || !selectedSize || !selectedQuantity) {
         console.log("パラメーターが設定されてない");
@@ -205,9 +206,10 @@ readData3: async function () {
             this.sizeError = true; // エラーフラグを設定
         }
         if (!selectedQuantity) {
-            console.log("数量が設定されていません");
-            this.quantityError = true; // エラーフラグを設定
-            }
+    console.log("個数が設定されていません");
+    this.quantityError = true; // 個数のエラーフラグを設定
+}
+
 
         return;
     }
