@@ -12,14 +12,13 @@
 /* カートの距離*/
 /* サイズと数量の間の余白を取り除くためのスタイル調整 */
 .custom-font-size, .custom-font-quantity {
-  margin-top: 0;  /* 上部の余白をゼロに */
-  margin-bottom: 0;  /* 下部の余白をゼロに */
-  padding: 0;  /* パディングをゼロに */
-  line-height: 1.2;  /* 行間を調整 */
+  margin-top: 0 !important;  /* 上部の余白をゼロに */
+  margin-bottom: 0 !important;  /* 下部の余白をゼロに */
+  padding: 0 !important;  /* パディングをゼロに */
+  line-height: 1.2 !important;  /* 行間を調整 */
 }
 
-/* カード内で全体的に余白を調整する */
 .v-card-subtitle {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
