@@ -19,7 +19,7 @@
     <v-app>
       <!-- ヘッダー -->
       <v-app-bar app class="custom-font" style="justify-content: space-between;" color="#FFF8DC">
-        <v-btn @click="Logout" dark color="#90c8f0" aria-label="ログアウト" title="ログアウト">
+        <v-btn @click="Logout" dark rounded class="custom-font" aria-label="ログアウト" title="ログアウト">
           <v-icon start>mdi-logout</v-icon>
           Logout
         </v-btn>
@@ -31,7 +31,7 @@
   <v-icon start>mdi-cart</v-icon>
 </v-btn>
 
-          <v-btn @click="mypage" dark color="#90c8f0" dark rounded class="custom-font" title="マイページ" aria-label="マイページ">
+          <v-btn @click="mypage" dark color="#f09199" dark rounded class="custom-font" title="マイページ" aria-label="マイページ">
             <v-icon start>mdi-weather-night</v-icon>
             My page
           </v-btn>
@@ -227,7 +227,7 @@
           © 2024 TeamA
         </v-col>
 
-        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" dark color="#90c8f0" @click="scrollToTop">
+        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" dark color="#f09199" @click="scrollToTop">
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
       </v-footer>
