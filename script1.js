@@ -12,7 +12,7 @@ const app = new Vue({
       dialog: false,  // 商品詳細ダイアログの表示・非表示を管理
       selectedItem: {},  // 選択された商品を保存
       selectedSize: '',  // 選択されたサイズ
-      selectedQuantity: '',  // 個数
+      selectedQuantity: null,  // 個数
       sizes: ['80', '90', '100', '110'],  // サイズのリスト
      user_id: '',  // ログインしているユーザーIDを保存
      order_id: null,
