@@ -188,7 +188,12 @@ readData3: async function () {
         this.quantity = '';
         this.dialog = true;
       },
-      
+      resetSelections() {
+      this.selectedSize = null;
+      this.selectedQuantity = null;
+      this.sizeError = false;
+      this.quantityError = false;
+    },
       
       addToCart: async function (selectedItem, selectedSize, selectedQuantity) {
     // エラーフラグを初期化
