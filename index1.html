@@ -62,8 +62,8 @@
           <v-card class="mx-auto" max-width="344" outlined>
             <v-img :src="item.URL" aspect-ratio="1.5"></v-img>
             <v-card-title class="custom-font">{{ item.product_name }}</v-card-title>
-          <v-card-subtitle class="custom-font">サイズ: {{ item.product_size }}</v-card-subtitle>
-            <v-card-subtitle class="custom-font">数量: {{ item.quantity }}</v-card-subtitle>
+<v-card-subtitle class="custom-font custom-font-size">サイズ: {{ item.product_size }}</v-card-subtitle>
+<v-card-subtitle class="custom-font custom-font-quantity">数量: {{ item.quantity }}</v-card-subtitle>
             <div style="text-align: right;">
     <v-btn icon v-on:click="deleteData(item)" style="margin-right: 20px;">
         <v-icon>mdi-trash-can</v-icon>
