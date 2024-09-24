@@ -10,14 +10,16 @@
   }
 
 /* カートの距離*/
-.custom-font-size {
-  margin: 0;  /* サイズ行の余白をゼロに */
-  padding: 0; /* 余白をゼロに */
-  line-height: 1.5;  /* 行の高さを調整して、詰まりすぎないようにする */
+/* サイズと数量の間の余白を取り除くためのスタイル調整 */
+.custom-font-size, .custom-font-quantity {
+  margin-top: 0;  /* 上部の余白をゼロに */
+  margin-bottom: 0;  /* 下部の余白をゼロに */
+  padding: 0;  /* パディングをゼロに */
+  line-height: 1.2;  /* 行間を調整 */
 }
 
-.custom-font-quantity {
-  margin: 0;  /* 数量行の余白をゼロに */
-  padding: 0; /* 余白をゼロに */
-  line-height: 1.5;  /* 行の高さを調整 */
+/* カード内で全体的に余白を調整する */
+.v-card-subtitle {
+  margin: 0;
+  padding: 0;
 }
