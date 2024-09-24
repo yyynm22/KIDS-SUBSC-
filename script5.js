@@ -87,7 +87,7 @@ new Vue({
             detail_id: order.detail_id,
             quantity: order.quantity,
             URL: product ? product.URL : '',
-            checked: false // チェックボックスの初期値を追加
+            checked: order.checked // データベースからの値を反映
           };
         });
 
