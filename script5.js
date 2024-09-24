@@ -111,24 +111,33 @@ new Vue({
       });
     },
   　
-    async updateCheckedStatus(detailId, isChecked) {
-      try {
-        const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
-          method: 'GET' // or 'POST' depending on your implementation
-        });
-        const result = await response.json();
-        console.log("更新結果:", result);
-      } catch (error) {
-        console.error("更新エラー:", error);
-      }
+   async updateSubscription(detailId, isChecked) {
+        try {
+            const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
+                method: 'GET', // ここはGETメソッドを使用しますが、必要に応じてPOSTに変更できます
+            });
+
+            const data = await response.json();
+            console.log("更新結果:", data);
+        } catch (error) {
+            console.error("更新エラー:", error);
+        }
     },
 
-    toggleChecked(order) {
-      order.checked = !order.checked; // チェックボックスの状態をトグル
-      this.updateCheckedStatus(order.detail_id, order.checked); // APIを呼び出して更新
-      this.sortOrders(); // ソートを適用
+    sortOrders() {
+        // チェックボックスが変更されたときに再ソート
+        this.orderHistory.sort((a, b) => {
+            if (a.checked && !b.checked) return 1;
+            if (!a.checked && b.checked) return -1;
+            return a.order_id - b.order_id;
+        });
+        
+        // チェックボックスの状態に応じてAPIを呼び出す
+        const checkedOrders = this.orderHistory.filter(order => order.checked);
+        checkedOrders.forEach(order => {
+            this.updateSubscription(order.detail_id, order.checked);
+        });
     },
-    
     Logout() {
       // ログアウト処理
       sessionStorage.clear();
