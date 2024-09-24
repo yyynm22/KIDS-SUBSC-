@@ -164,8 +164,8 @@
 <!-- 個数入力 -->
 <v-row>
 <v-col cols="12">
-<v-select v-model="selectedQuantity" :items="['1', '2', '3', '4', '5']" label="個数を選択" class="custom-font" @change="quantityError = false"></</v-select>
-   <v-alert v-if="quantityError" type="error" class="small-alert">個数を選択してください</v-alert>
+<v-select v-model="selectedQuantity" :items="['1', '2', '3', '4', '5']" label="個数を選択" class="custom-font" @change="quantityError = false"></v-select>
+<v-alert v-if="quantityError" type="error" class="small-alert">個数を選択してください</v-alert>
 </v-col>
 </v-row>
 </v-col>
