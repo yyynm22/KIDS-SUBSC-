@@ -23,3 +23,7 @@
   margin: 0 !important;
   padding: 0 !important;
 }
+
+.small-text {
+    font-size: 0.85em !important; /* 少し小さくする */
+}
