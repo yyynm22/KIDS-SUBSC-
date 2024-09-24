@@ -11,9 +11,13 @@
 
 /* カートの距離*/
 .custom-font-size {
-  margin-bottom: 0px; /* サイズと数量間のスペースを削除 */
+  margin: 0;  /* サイズ行の余白をゼロに */
+  padding: 0; /* 余白をゼロに */
+  line-height: 1.5;  /* 行の高さを調整して、詰まりすぎないようにする */
 }
 
 .custom-font-quantity {
-  margin-top: 4px; /* 少しの余白を追加し、見栄えを整える */
+  margin: 0;  /* 数量行の余白をゼロに */
+  padding: 0; /* 余白をゼロに */
+  line-height: 1.5;  /* 行の高さを調整 */
 }
