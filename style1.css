@@ -11,8 +11,9 @@
 
 /* カートの距離*/
 .custom-font-size {
-  margin-bottom: 0; /* サイズの下の余白を削除 */
+  margin-bottom: 0px; /* サイズと数量間のスペースを削除 */
 }
+
 .custom-font-quantity {
-  margin-top: 0;    /* 数量の上の余白を削除 */
+  margin-top: 4px; /* 少しの余白を追加し、見栄えを整える */
 }
