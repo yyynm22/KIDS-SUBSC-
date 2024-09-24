@@ -104,6 +104,7 @@ new Vue({
 
     // サブスクリプションの詳細を更新
     async updateSubscriptionDetail(detailId, isChecked) {
+       console.log(`Updating detail_id: ${detailId}, checked: ${isChecked}`);
       try {
         const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
           method: 'POST'
