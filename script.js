@@ -38,12 +38,7 @@ const app = new Vue({
                 return false;
             }
             return true;
-        },scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // スムーズにスクロール
-    });
-  },   
+        },
         validatePostcode() {
             const regex = /^[0-9]{7}$/; // 郵便番号は7桁の数字
             if (!regex.test(this.register_postcode)) {
