@@ -41,6 +41,13 @@ new Vue({
         return;
       }
 
+      // URLが正しい形式かを検証
+  const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+  if (!urlPattern.test(this.URL)) {
+    this.errorMessage = "正しいURLを入力してください (例: http://example.com)";
+    return;
+  }
+
       this.errorMessage = ''; // 全ての項目が入力されている場合はエラーメッセージをクリア
       const param = {
         product_category: this.product_category,
