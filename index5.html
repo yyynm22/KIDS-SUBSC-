@@ -1,107 +1,122 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KidsSubsc</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="./style5.css">
+  <meta charset="UTF-8">
+  <title>Kids Sabsc (Product)</title>
+  <link rel="stylesheet" href="./style4.css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
+  <link rel='stylesheet' href='https://unpkg.com/@mdi/font@6.x/css/materialdesignicons.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div id="app">
-        <v-app>
-            <!-- アプリバー -->
-            <v-app-bar app class="custom-font" color="#FFF8DC">
-                <!-- ログアウトボタン -->
-                <v-btn @click="Logout" dark rounded class="custom-font logout-btn" aria-label="ログアウト" title="ログアウト">
-                    <v-icon start>mdi-logout</v-icon>
-                    Logout
-                </v-btn>
+  <div id="app">
+    <v-app>
+      <!-- ヘッダー -->
+      <v-app-bar app class="custom-font" style="justify-content: space-between;">
+        <v-btn @click="Logout" dark rounded class="custom-font" aria-label="ログアウト" title="ログアウト">
+          <v-icon start>mdi-logout</v-icon>
+          Logout
+        </v-btn>
+        <v-toolbar-title style="position: absolute; left: 50%; transform: translateX(-50%);">Kids Sabsc</v-toolbar-title>
+       
+     <v-btn @click="orderdetail" dark color="#f09199" rounded class="custom-font" title="注文詳細" aria-label="注文詳細">
+            order detail
+          </v-btn>
+         </v-app-bar>
 
-                <!-- HOMEボタン -->
-                <v-btn @click="addData" dark color="#f09199" rounded class="custom-font">
-                    <v-icon start>mdi-home</v-icon>
-                    Home
-                </v-btn>
+     
+      <!--タブ-->
+      <ul class="tab-group">
+        <li class="tab tab-A is-active">Regist Product</li>
+        <li class="tab tab-B" v-on:click="readData">All Product</li>
+      </ul>
 
-                <v-spacer></v-spacer>
-                <v-toolbar-title class="centered-title">Kids Subsc</v-toolbar-title>
-                <v-spacer></v-spacer>
-            </v-app-bar>
+      <!--タブを切り替えて表示するコンテンツ-->
+      <div class="panel-group">
+  <div class="panel tab-A is-show">
+    <!-- エラーメッセージの表示 -->
+    <v-container v-if="errorMessage" class="mt-2">
+      <v-alert type="error" dense text outlined>
+        {{ errorMessage }}
+      </v-alert>
+    </v-container>
 
-            <v-main>
-                <v-container>
-                    <!-- 注文詳細 -->
-                    <v-card flat>
-                        <v-card-text class="centered-content">
-                            <h2>注文詳細</h2> <!-- 注文詳細のタイトルを追加 -->
-                            <!-- データ取得中 -->
-                            <v-row justify="center" v-if="loading">
-                                <v-col cols="12">
-                                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                                    <p>データを取得中...</p>
-                                </v-col>
-                            </v-row>
+    <v-row class="mb-3 mt-3" align="center" justify="center">
+      <v-col cols="4">
+        <select id="temp-A" v-model="product_category" class="product_category">
+          <option value="">category</option>
+          <option value="Tops">Tops</option>
+          <option value="Pants">Bottoms</option>
+          <option value="All">All</option>
+        </select>
+        <select id="temp-B" v-model="product_gender" class="product_gender">
+          <option value="">gender</option>
+          <option value="Girl">Girl</option>
+          <option value="Boy">Boy</option>
+          <option value="All">All</option>
+        </select>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field class="ml-6 mr-6" v-model="product_name" label="product name" placeholder="product" outlined></v-text-field>
+        <v-text-field class="ml-6 mr-6" v-model="URL" label="URL" placeholder="URL" outlined></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="mb-3 mt-3" align="center" justify="center">
+      <v-btn v-on:click="addData" dark color="brown">
+        <v-icon left>mdi-content-save</v-icon>
+        save
+      </v-btn>
+    </v-row>
+  </div>
 
-                            <v-row class="mb-3 mt-3" justify="center" v-if="orderHistory && orderHistory.length">
-                                <v-col v-for="order in sortedOrderHistory" :key="order.product_id" cols="12" sm=12 md="6">
-                                    <v-card class="custom-card">
-                                        <v-card-title>
-                                            注文番号: {{ order.detail_id }}
-                                            <v-checkbox :input-value="order.checked" class="ml-auto" @click="toggleChecked(order)">
-                                                
-                                            </v-checkbox>
-                                        </v-card-title>
-                                        <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
-                                        <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
-                                        <v-card-subtitle>郵便番号: {{ order.user_postcode }}</v-card-subtitle>
-                                        <v-card-subtitle>住所: {{ order.user_adress }}</v-card-subtitle>
-                                        <v-card-subtitle>電話番号: {{ order.user_telenum }}</v-card-subtitle>
+  <div class="panel tab-B">
+    <v-row class="mb-3 mt-3" justify="center">
+      <!-- Card Container for product List -->
+      <v-row class="productlist">
+        <v-col v-for="data in productList" :key="data.product_id" cols="12" sm="4" md="4">
+          <v-card :class="['mx-auto', 'my-3', { 'expand': data.isExpanded }]" max-width="344" style="min-height: 450px;" v-on:click="toggleExpand(data)">
+            <v-card-title>
+              <span> {{ data.product_name }}</span>
+            </v-card-title>
+            <v-card-subtitle>
+              <span> {{ data.product_category }}</span><br>
+            </v-card-subtitle>
+            <v-card-text>
+              <p>{{ data.product_gender }}</p>
+            </v-card-text>
+            <v-card-actions>
+              <v-img :src="data.URL" height="200" contain></v-img>
+              <v-btn v-on:click.stop="deleteData(data)" style="position: absolute; top: 8px; right: 8px;" small rounded>
+                <v-icon>mdi-delete-forever</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-row>
+  </div>
+</div>
 
-                                     <v-list-item>
-                                                <v-img :src="order.URL" alt="商品画像" max-width="100" class="mr-3"></v-img>
-                                                <v-list-item-content>
-                                                    <v-card-subtitle>商品名: {{ order.product_name }}</v-list-item-title>
-                                                    <v-card-subtitle>商品ID: {{ order.product_id }}</v-list-item-subtitle>
-                                                    <v-card-subtitle>サイズ: {{ order.product_size }}</v-list-item-subtitle>
-                                                    <v-card-subtitle>個数: {{ order.quantity }}</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                        </v-list-item>
 
-                                        
-                                    </v-card>
-                                </v-col>
-                            </v-row>
+        
+      <!-- フッター -->
+      <v-footer app padless class="custom-font">
+        <v-col class="text-center" cols="12">
+          © 2024 TeamA
+        </v-col>
+        <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
+      </v-footer>
+    </v-app>
+  </div>
 
-                            <!-- 注文履歴がない場合 -->
-                            <v-row justify="center" v-else-if="!loading && orderHistory && !orderHistory.length">
-                                <v-col cols="12">
-                                    <p>注文履歴がありません。</p>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                    </v-card>
-                </v-container>
-            </v-main>
-
-            <!-- フッター -->
-            <v-footer app padless class="custom-font" color="#FFF8DC">
-                <v-col class="text-center" cols="12">
-                    © 2024 TeamA
-                </v-col>
-                <v-btn dark fab fixed bottom right large elevation-6 title="一番上にスクロール" aria-label="一番上にスクロール" color="#f09199" @click="scrollToTop">
-                    <v-icon>mdi-chevron-up</v-icon>
-                </v-btn>
-            </v-footer>
-        </v-app>
-    </div>
-
-    <!-- 必要なスクリプトを読み込み -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
-    <script src="./script5.js"></script>
+  <!-- JavaScript -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js'></script>
+  <script src="./script4.js"></script>
 </body>
 </html>
