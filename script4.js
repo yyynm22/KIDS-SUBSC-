@@ -32,8 +32,8 @@ new Vue({
         this.errorMessage = "genderの入力をしてください";
         return;
       }
-      if (!this.product_name) {
-        this.errorMessage = "product nameの入力をしてください";
+      if (this.product_name.length > 9) {
+        this.errorMessage = "product nameを9文字以内で入力してください";
         return;
       }
       if (!this.URL) {
