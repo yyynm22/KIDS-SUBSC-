@@ -233,3 +233,23 @@ img {
 .orderdetail-btn {
   float: right;
 }
+
+/* プルダウン（セレクトボックス）のスタイル */
+.product_category,
+.product_gender {
+  font-family: 'M PLUS 1', sans-serif;
+  padding: 10px;
+  border: 2px solid #D2B48C; /* 枠線を追加 */
+  border-radius: 4px;
+  font-size: 16px;
+  color: #A52A2A; 
+  width: 150px; /* 必要に応じて調整 */
+  box-sizing: border-box;
+  margin: 5px;
+  background-color: #fff;
+}
+
+.product_category:hover,
+.product_gender:hover {
+  border-color: #F5DEB3; 
+}
