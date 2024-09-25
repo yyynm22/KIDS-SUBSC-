@@ -74,16 +74,7 @@ filterData() {
     this.resetFilters();  // 検索条件をリセット
     this.filterData();    // すべてのデータを再度表示
   },
-      // スクロールイベントのハンドラ
-    handleScroll() {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const bottomPosition = document.documentElement.scrollHeight;
-
-      // ページの下にスクロールしたら更新処理を呼び出し
-      if (scrollPosition >= bottomPosition) {
-        this.updateData();
-      }
-    },
+      
 
 
       mypage() {
