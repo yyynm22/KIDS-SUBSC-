@@ -102,26 +102,38 @@ new Vue({
       }
     },
 
-    // サブスクリプションの詳細を更新
-    async updateSubscriptionDetail(detailId, isChecked) {
-       console.log(`Updating detail_id: ${detailId}, checked: ${isChecked}`);
-      try {
-        const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
-          method: 'POST'
-        });
-        const data = await response.json();
-        console.log("サブスクリプション詳細更新のレスポンス:", data);
-      } catch (error) {
-        console.error("サブスクリプション詳細更新エラー:", error);
-      }
-    },
+   // サブスクリプションの詳細を更新
+  async updateSubscriptionDetail(detailId, isChecked) {
+    console.log(`Updating detail_id: ${detailId}, checked: ${isChecked}`);
+    try {
+      const response = await fetch(`https://m3h-yuunaminagawa.azurewebsites.net/api/Update?detail_id=${detailId}&checked=${isChecked}`, {
+        method: 'POST'
+      });
+      const data = await response.json();
+      console.log("サブスクリプション詳細更新のレスポンス:", data);
+      return data; // レスポンスを返す
+    } catch (error) {
+      console.error("サブスクリプション詳細更新エラー:", error);
+      throw error; // エラーを投げる
+    }
+  },
 
     // チェックボックスの状態を変更
-    toggleChecked(order) {
+  async toggleChecked(order) {
+    try {
       order.checked = !order.checked; // チェック状態を切り替え
-      this.updateSubscriptionDetail(order.detail_id, order.checked); // 更新APIを呼び出す
-      this.sortOrders(); // 並べ替え
-    },
+      console.log(`Order checked state: ${order.checked}`);
+
+      // APIの更新を待機してから並べ替えを実行
+      const response = await this.updateSubscriptionDetail(order.detail_id, order.checked);
+      console.log('API update response:', response);
+
+      // 並べ替え
+      this.sortOrders();
+    } catch (error) {
+      console.error('Error updating subscription detail:', error);
+    }
+  },
 
     sortOrders() {
       // チェックボックスが変更されたときに再ソート
