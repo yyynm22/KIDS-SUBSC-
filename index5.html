@@ -50,7 +50,9 @@
                                     <v-card class="custom-card">
                                         <v-card-title>
                                             注文番号: {{ order.detail_id }}
-                                            <v-checkbox v-model="order.checked" class="ml-auto" @change="toggleChecked(order)"></v-checkbox>
+                                            <v-checkbox :input-value="order.checked" class="ml-auto" @click="toggleChecked(order)">
+                                                
+                                            </v-checkbox>
                                         </v-card-title>
                                         <v-card-subtitle>注文者名: {{ order.user_name }}</v-card-subtitle>
                                         <v-card-subtitle>メール: {{ order.user_mail }}</v-card-subtitle>
