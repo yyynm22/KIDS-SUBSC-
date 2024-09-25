@@ -7,29 +7,41 @@ new Vue({
       product_category: '',
       product_gender: '',
       URL: '',
-      productList: [], // 商品リストを追加
+      productList: [],
       employee_id: '',
+      errorMessage: '' // エラーメッセージを格納する変数を追加
     };
   },
 
   methods: {
     Logout() {
-      // ログアウト処理
-      window.location.href = '/index.html';  // ログインページにリダイレクト
+      window.location.href = '/index.html';
     },
     
-     orderdetail() {
-        // 注文詳細遷移
-        window.location.href = '/index5.html';
-     },
+    orderdetail() {
+      window.location.href = '/index5.html';
+    },
 
     async addData() {
       // 必要な項目が全て入力されていることを確認
-      if (!this.product_category ||!this.product_gender || !this.product_name || !this.URL) {
-        console.log("必要な項目が入力されていません");
+      if (!this.product_category) {
+        this.errorMessage = "categoryの入力をしてください";
+        return;
+      }
+      if (!this.product_gender) {
+        this.errorMessage = "genderの入力をしてください";
+        return;
+      }
+      if (!this.product_name) {
+        this.errorMessage = "product nameの入力をしてください";
+        return;
+      }
+      if (!this.URL) {
+        this.errorMessage = "URLの入力をしてください";
         return;
       }
 
+      this.errorMessage = ''; // 全ての項目が入力されている場合はエラーメッセージをクリア
       const param = {
         product_category: this.product_category,
         product_gender: this.product_gender,
@@ -44,18 +56,18 @@ new Vue({
         this.product_gender = '';
         this.product_name = '';
         this.URL = '';
-        // データを再取得または追加する処理
         this.readData();
       } catch (error) {
         console.error("データの追加に失敗しました", error);
       }
     },
+
     scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // スムーズにスクロール
-    });
-  },  
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     
     async deleteData(data) {
       if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
@@ -74,7 +86,6 @@ new Vue({
         const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE1', param);
         console.log(response.data);
     
-        // 削除が成功した場合、商品リストから削除した商品を除外
         if (response.data.result) {
           this.productList = this.productList.filter(item => item.product_category !== data.product_category ||
             item.product_gender !== data.product_gender || item.product_name !== data.product_name || item.URL !== data.URL);
@@ -87,43 +98,40 @@ new Vue({
     },
     
     async readData() {
-      try  {
+      try {
         const response = await axios.get('https://m3h-yuunaminagawa.azurewebsites.net/api/SELECT3');
         console.log(response.data);
         this.productList = response.data.List.sort((a, b) => a.product_category - b.product_category);
-    } catch (error) {
+      } catch (error) {
         console.error("データの取得に失敗しました:", error);
-    }
+      }
     },
 
-  toggleExpand(card) {
+    toggleExpand(card) {
       if (card.isExpanded) {
-          card.isExpanded = false;
+        card.isExpanded = false;
       } else {
-          // 他のカードの拡大を解除
-          this.productList.forEach(item => {
-              item.isExpanded = false;
-          });
-          card.isExpanded = true;
+        this.productList.forEach(item => {
+          item.isExpanded = false;
+        });
+        card.isExpanded = true;
       }
+    }
   }
-
-
-},
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-const tabs = document.getElementsByClassName('tab');
-for (let i = 0; i < tabs.length; i++) {
-  tabs[i].addEventListener('click', tabSwitch, false);
-}
+  const tabs = document.getElementsByClassName('tab');
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].addEventListener('click', tabSwitch, false);
+  }
 
-function tabSwitch() {
-  document.getElementsByClassName('is-active')[0].classList.remove('is-active');
-  this.classList.add('is-active');
-  document.getElementsByClassName('is-show')[0].classList.remove('is-show');
-  const arrayTabs = Array.prototype.slice.call(tabs);
-  const index = arrayTabs.indexOf(this);
-  document.getElementsByClassName('panel')[index].classList.add('is-show');
-};
+  function tabSwitch() {
+    document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+    this.classList.add('is-active');
+    document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+    const arrayTabs = Array.prototype.slice.call(tabs);
+    const index = arrayTabs.indexOf(this);
+    document.getElementsByClassName('panel')[index].classList.add('is-show');
+  };
 }, false);
