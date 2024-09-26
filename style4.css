@@ -265,3 +265,7 @@ img {
   font-size: 1.2rem;
   text-align: center;
 }
+
+.v-dialog__content {
+  overflow: hidden;
+}
