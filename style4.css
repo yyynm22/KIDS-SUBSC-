@@ -255,14 +255,5 @@ img {
 }
 
 
-.v-dialog {
-  overflow-y: auto; /* 縦方向のスクロールを許可 */
-  overflow-x: hidden; /* 横方向のスクロールを非表示にする */
-}
-
-.v-dialog .v-card {
-  max-width: 100%; /* 最大幅を100%に設定し、拡大を防ぐ */
-  overflow: hidden; /* コンテンツのオーバーフローを隠す */
-}
 
 
