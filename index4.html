@@ -97,13 +97,12 @@
       </v-row>
     </v-row>
   </div>
-</div><v-dialog class="scroll" v-model="dialog" max-width="500">
+</div><v-dialog v-model="dialog" max-width="500">
   <v-card class="rounded-card">
     <v-card-title class="headline">本当に削除しますか？</v-card-title>
 <v-card-text class="alert-message">
-  <v-alert type="info" border="left" dense text class="custom-font">
-  お客様が購入済みで未発送の商品でないか確認することを推奨します。
-  </v-alert>
+   <v-alert type="info" border="left" dense text class="custom-font">
+  お客様が購入済みで未発送の商品でないかを確認することを推奨します。
 </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
