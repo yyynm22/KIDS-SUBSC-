@@ -254,3 +254,17 @@ img {
   transform: none !important; /* 拡大効果を無効化 */
 }
 
+.header {
+  z-index: 1000; /* ヘッダーが最前面に来るように設定 */
+  position: relative; /* 必要に応じてpositionを指定 */
+}
+
+.footer {
+  z-index: 1000; /* フッターも最前面に設定 */
+  position: relative;
+}
+
+.v-card {
+  z-index: 1; /* v-cardはヘッダーやフッターよりも下に表示されるように */
+}
+
