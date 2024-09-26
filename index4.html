@@ -99,10 +99,10 @@
   </div>
 </div><v-dialog v-model="dialog" max-width="500">
   <v-card class="rounded-card">
-    <v-card-title class="headline">本当に削除する？</v-card-title>
-    <v-card-text>
-      削除すると情報は元に戻せないよ！本当に削除して大丈夫？
-    </v-card-text>
+    <v-card-title class="headline">本当に削除しますか？</v-card-title>
+<v-card-text class="alert-message">
+  お客様が購入済みで未発送の商品がないか確認することを推奨します。
+</v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn rounded color="grey" text @click="dialog = false">やめる</v-btn>
