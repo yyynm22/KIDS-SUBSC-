@@ -107,14 +107,15 @@ body {
   border: solid 1px #D2B48C; 
   border-top: none;
   background: #FFF8DC; 
-  display: flex; /* Flexboxを使用 */
-  flex-direction: column; /* 縦方向に並べる */
-  align-items: center; /* 横方向に中央揃え */
-  justify-content: center; /* 縦方向に中央揃え */
-  min-height: calc(100vh - 64px - 56px); /* ヘッダーとフッターの高さを引いた高さ */
-  padding: 20px; /* 必要に応じて調整 */
-  box-sizing: border-box; /* パディングがサイズに影響しないように */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 300px); /* 高さを調整して短くする */
+  padding: 10px; /* パディングを少し減らす */
+  box-sizing: border-box;
 }
+
 
 .panel {
   display: none;
