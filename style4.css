@@ -195,10 +195,6 @@ img {
   transition: transform 0.3s ease-in-out;
 }
 
-  .v-card:hover {
-      transform: scale(1.05); /* Slight zoom on hover */
-  }
-
 .v-card-title {
   background-color: #f5f5f5;
   border-bottom: 1px solid #e0e0e0;
