@@ -267,5 +267,6 @@ img {
 }
 
 .v-dialog__content {
-  overflow: hidden;
+  overflow: hidden !important;
 }
+
