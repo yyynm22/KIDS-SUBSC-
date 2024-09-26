@@ -256,9 +256,13 @@ img {
 
 
 
-.scroll .v-dialog,
-.scroll .v-dialog__content {
-  overflow: hidden !important;
+.scroll {
+  overflow: hidden; /* スクロールバーを表示しない */
+}
+
+.alert-message {
+  max-height: 200px; /* 最大の高さを設定（必要に応じて調整） */
+  overflow-y: auto; /* 内容が多い場合は縦スクロール */
 }
 
 
