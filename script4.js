@@ -9,7 +9,9 @@ new Vue({
       URL: '',
       productList: [],
       employee_id: '',
-      errorMessage: '' // エラーメッセージを格納する変数を追加
+      errorMessage: '', // エラーメッセージを格納する変数を追加
+      dialog: false, // ダイアログ表示フラグ
+    selectedData: null // 削除対象のデータを保持
     };
   },
 
@@ -75,34 +77,44 @@ new Vue({
         behavior: 'smooth'
       });
     },
+    // 削除確認ダイアログを表示するためのメソッド
+  confirmDelete(data) {
+    // 削除対象のデータを設定
+    this.selectedData = data;
+    // ダイアログを表示
+    this.dialog = true;
+  },
+    // データ削除処理を行うメソッド
+  async deleteData() {
+    const data = this.selectedData;
     
-    async deleteData(data) {
-      if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
-        console.log("必須項目が不足しています");
-        return;
+    if (!data.product_category || !data.product_gender || !data.product_name || !data.URL) {
+      console.log("必須項目が不足しています");
+      return;
+    }
+
+    const param = {
+      product_category: data.product_category,
+      product_gender: data.product_gender,
+      product_name: data.product_name,
+      URL: data.URL,
+    };
+
+    try {
+      const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE1', param);
+      console.log(response.data);
+
+      if (response.data.result) {
+        this.productList = this.productList.filter(item => item.product_category !== data.product_category ||
+          item.product_gender !== data.product_gender || item.product_name !== data.product_name || item.URL !== data.URL);
+        this.dialog = false; // ダイアログを閉じる
+      } else {
+        console.log("削除に失敗しました");
       }
-    
-      const param = {
-        product_category: data.product_category,
-        product_gender: data.product_gender,
-        product_name: data.product_name,
-        URL: data.URL,
-      };
-    
-      try {
-        const response = await axios.post('https://m3h-yuunaminagawa.azurewebsites.net/api/DELETE1', param);
-        console.log(response.data);
-    
-        if (response.data.result) {
-          this.productList = this.productList.filter(item => item.product_category !== data.product_category ||
-            item.product_gender !== data.product_gender || item.product_name !== data.product_name || item.URL !== data.URL);
-        } else {
-          console.log("削除に失敗しました");
-        }
-      } catch (error) {
-        console.error("データの削除に失敗しました:", error);
-      }
-    },
+    } catch (error) {
+      console.error("データの削除に失敗しました:", error);
+    }
+  },
     
     async readData() {
       try {
