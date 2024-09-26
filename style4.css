@@ -266,7 +266,3 @@ img {
   text-align: center;
 }
 
-.v-dialog, .v-dialog__content {
-  overflow: hidden !important;
-}
-
