@@ -268,11 +268,9 @@ img {
   z-index: 1; /* v-cardはヘッダーやフッターよりも下に表示されるように */
 }
 
-/* アラートメッセージのカスタムスタイル */
-.alert-message {
-  font-size: 16px !important; /* 文字サイズを少し大きく設定 */
-  color: #d81b60 !important; /* 濃いピンク (#d81b60) に変更 */
-  font-weight: bold !important; /* 文字を太字にして強調 */
+.alert-message .v-alert {
+  font-size: 16px !important;  /* 文字サイズを調整 */
+  color: #ff1493 !important;   /* 濃いピンク色を設定 */
 }
 
 
