@@ -260,9 +260,8 @@ img {
   overflow: hidden !important; /* スクロールバーを非表示にする */
 }
 
-.rounded-card {
-  max-height: 80vh; /* 高さの最大値を設定 */
-  overflow-y: auto; /* 縦方向のオーバーフローを許可 */
+.alert-message {
+  max-height: 300px; /* 高さ制限を設ける */
+  overflow: hidden !important; /* 内容がはみ出した場合、スクロールバーを表示しない */
 }
-
 
