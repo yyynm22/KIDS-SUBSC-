@@ -88,7 +88,7 @@
             </v-card-text>
             <v-card-actions>
               <v-img :src="data.URL" height="200" contain></v-img>
-              <v-btn v-on:click.stop="deleteData(data)" style="position: absolute; top: 8px; right: 8px;" small rounded>
+              <v-btn v-on:click.stop="confirmDelete(data)" style="position: absolute; top: 8px; right: 8px;" small rounded>
                 <v-icon>mdi-delete-forever</v-icon>
               </v-btn>
             </v-card-actions>
@@ -97,7 +97,19 @@
       </v-row>
     </v-row>
   </div>
-</div>
+</div><v-dialog v-model="dialog" max-width="500">
+  <v-card class="rounded-card">
+    <v-card-title class="headline">本当に削除する？</v-card-title>
+    <v-card-text>
+      削除すると情報は元に戻せないよ！本当に削除して大丈夫？
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn rounded color="grey" text @click="dialog = false">やめる</v-btn>
+      <v-btn rounded color="red" text @click="deleteData">削除する</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
 
 
         
