@@ -53,10 +53,10 @@ filterData() {
     this.filteredList = this.dataList2;
   } else {
     this.filteredList = this.dataList2.filter(item => {
-       // Categoryが 'All' の場合、'All' として登録されているアイテムのみ表示
+       // Categoryが 'Others' の場合、'Others' として登録されているアイテムのみ表示
     // Categoryが特定のカテゴリー（Tops, Bottomsなど）の場合、そのカテゴリーでフィルタリング
-    const matchesCategory = (this.Category === 'All')
-      ? item.product_category === 'All'
+    const matchesCategory = (this.Category === 'Others')
+      ? item.product_category === 'Others'
       : (this.Category === '' || item.product_category === this.Category);
 
     // Kidsgenderが 'All' の場合は性別フィルタを無視、特定の性別でフィルタリング
