@@ -257,12 +257,12 @@ img {
 
 
 .scroll {
-  overflow: hidden; /* スクロールバーを表示しない */
+  overflow: hidden !important; /* スクロールバーを非表示にする */
 }
 
-.alert-message {
-  max-height: 200px; /* 最大の高さを設定（必要に応じて調整） */
-  overflow-y: auto; /* 内容が多い場合は縦スクロール */
+.rounded-card {
+  max-height: 80vh; /* 高さの最大値を設定 */
+  overflow-y: auto; /* 縦方向のオーバーフローを許可 */
 }
 
 
