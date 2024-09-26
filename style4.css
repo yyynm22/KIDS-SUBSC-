@@ -254,17 +254,7 @@ img {
   border-color: #F5DEB3; 
 }
 
-/* 削除アラートのカラーのスタイル */
-.alert-message {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 10px;
-  border: 1px solid #ffeeba;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 1.2rem;
-  text-align: center;
-}
+
 
 .scroll .v-dialog,
 .scroll .v-dialog__content {
