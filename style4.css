@@ -249,3 +249,8 @@ img {
 .product_gender:hover {
   border-color: #F5DEB3; 
 }
+
+.expand {
+  transform: none !important; /* 拡大効果を無効化 */
+}
+
